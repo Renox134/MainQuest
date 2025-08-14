@@ -1,8 +1,6 @@
 import pytest
 import json
 
-from model.objective import Objective
-from model.activity import Activity
 from model.quest import Quest
 
 class TestQuest:
@@ -17,13 +15,34 @@ class TestQuest:
         assert q_2 == q_2
         assert not (q_1 == q_2)
 
-    def test_quest_export(self, request: pytest.FixtureRequest):
-        try:
-            q_1: Quest = request.getfixturevalue("quest_1")
-            q_1_r: Quest = request.getfixturevalue("quest_2")
-            q_2: Quest= request.getfixturevalue("quest_with_time")
 
+    @pytest.mark.parametrize(
+            "quest",
+            ["quest_1", "quest_2", "quest_with_time"]
+
+    )
+    def test_io(self, quest: str, request: pytest.FixtureRequest,):
+        self.quest_export(request, quest)
+        self.quest_import(request, quest)
+
+    def quest_export(self, request: pytest.FixtureRequest, quest: str):
+        try:
+            q_1: Quest = request.getfixturevalue(quest)
             with open("test_quest_log.json", "w", encoding="utf-8") as file:
+
                 json.dump(q_1.to_dict(), file, indent=4)
+        except:
+            assert False
+
+    def quest_import(self, request: pytest.FixtureRequest, quest: str):
+        try:
+            q_1: Quest = request.getfixturevalue(quest)
+
+            with open("test_quest_log.json", "r", encoding="utf-8") as file:
+                d = json.load(file)
+                q_1_import: Quest = Quest.to_quest(d)
+
+            assert q_1 == q_1_import
+
         except:
             assert False

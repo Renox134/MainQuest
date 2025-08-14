@@ -3,9 +3,10 @@ from typing import List, Dict, Any
 import datetime
 from model.objective import Objective
 
+
 class Quest:
     """
-    A class representing a quest. Quest 
+    A class representing a quest.
     """
     @staticmethod
     def to_quest(data: Dict[str, Any]) -> "Quest":
@@ -14,38 +15,31 @@ class Quest:
         """
         # Convert objectives from dicts to Objective objects
         objectives = []
-        for obj_data in data.get("Objectives", []):
+        for obj_data in data.get("objectives", []):
             if isinstance(obj_data, dict):
-                objectives.append(
-                    Objective(
-                        description=obj_data.get("Description", ""),
-                        status=obj_data.get("Status", 0.0)
-                    )
-                )
-            elif isinstance(obj_data, Objective):
-                objectives.append(obj_data)
+                objectives.append(Objective.to_objective(obj_data))
             else:
                 raise ValueError(f"Invalid objective type: {type(obj_data)}")
 
         # Parse date
-        date_str = data.get("Date")
+        date_str = data.get("date")
         date = None
         if date_str:
             date = datetime.datetime.strptime(date_str, "%d/%m/%Y").date()
 
         # Parse time
-        time_str = data.get("Time")
+        time_str = data.get("time")
         time = None
         if time_str:
             time = datetime.datetime.strptime(time_str, "%H:%M:%S").time()
 
         return Quest(
             objectives=objectives,
-            name=data.get("Name", ""),
-            status=data.get("Status", 0.0),
+            name=data.get("name", ""),
+            status=data.get("status", 0.0),
             date=date,
             time=time,
-            duration=data.get("Duration")
+            duration=data.get("duration", 0)
         )
 
     def __init__(self, objectives: List[Objective], name: str, status: float = 0,
@@ -62,13 +56,13 @@ class Quest:
             time (datetime.time): Optional var for the time at which the quest takes place.
             duration (int): Optional var for the duration (in minutes) that the quest takes.
         """
-        
+
         self.objectives: List[Objective] = objectives
         self.name: str = name
         self.status = status
         self.date: datetime.date | None = date
         self.time: datetime.time | None = time
-        self.duration: int = duration
+        self.duration: int | None = duration
 
     def set_status(self, status: float) -> None:
         self.status = status
@@ -90,7 +84,7 @@ class Quest:
         if self.duration is not None:
             dur = "Duration:\t" + str(self.duration) + "\n"
         return name + obj + date + time + dur
-    
+
     def to_dict(self) -> Dict[str, Any]:
         date = None
         if self.date is not None:
@@ -99,21 +93,21 @@ class Quest:
         time = None
         if self.time is not None:
             time = self.time.strftime("%H:%M:%S")
-        return {"Name": self.name,
-                "Objectives": [o.to_dict() for o in self.objectives],
-                "Status": self.status,
-                "Date": date,
-                "Time": time,
-                "Duration": self.duration}
+        return {"name": self.name,
+                "objectives": [o.to_dict() for o in self.objectives],
+                "status": self.status,
+                "date": date,
+                "time": time,
+                "duration": self.duration}
 
     def __eq__(self, other: Any) -> bool:
-            if not isinstance(other, Quest):
-                return NotImplemented
-            return (
-                self.name == other.name
-                and [obj for obj in self.objectives] == [obj for obj in other.objectives]
-                and round(self.status, 2) == round(other.status, 2)
-                and self.date == other.date
-                and self.time == other.time
-                and self.duration == other.duration
-            )
+        if not isinstance(other, Quest):
+            return NotImplemented
+        return (
+            self.name == other.name
+            and [obj for obj in self.objectives] == [obj for obj in other.objectives]
+            and round(self.status, 2) == round(other.status, 2)
+            and self.date == other.date
+            and self.time == other.time
+            and self.duration == other.duration
+        )

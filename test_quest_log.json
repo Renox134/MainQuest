@@ -1,21 +1,30 @@
 {
-    "Name": "Test Quest",
-    "Objectives": [
+    "name": "Test Quest",
+    "objectives": [
         {
-            "Description": "Test objective 1",
-            "Status": 0.0
+            "description": "Trinken",
+            "status": 0.5,
+            "date": "27/07/2002",
+            "time": "23:59:59",
+            "duration": null
         },
         {
-            "Description": "Test objective 2",
-            "Status": 0.0
+            "description": "Essen",
+            "status": 0.5,
+            "date": "28/08/2003",
+            "time": "00:00:00",
+            "duration": null
         },
         {
-            "Description": "Test objective 3",
-            "Status": 0.0
+            "description": "Dach \u00fcber dem Kopf",
+            "status": 0.5,
+            "date": "30/09/2004",
+            "time": "11:59:59",
+            "duration": null
         }
     ],
-    "Status": 0,
-    "Date": null,
-    "Time": null,
-    "Duration": null
+    "status": 0,
+    "date": "13/08/2027",
+    "time": "11:55:30",
+    "duration": 120
 }

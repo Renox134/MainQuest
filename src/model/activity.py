@@ -9,7 +9,7 @@ class Activity:
     def __init__(self, objective: Objective, name: str, status: float = 0.0,
                  date: datetime.date | None = None,
                  time: datetime.time | None = None, duration: int = 0):
-        
+
         self.objective: Objective = objective
         self.name: str = name
         self.status = status

@@ -3,13 +3,14 @@ import pytest
 import datetime
 
 from model.objective import Objective
-from model.activity import Activity
 from model.quest import Quest
 
 
 @pytest.fixture
 def test_objectives() -> List[Objective]:
-    return [Objective("Test objective " + str(i + 1)) for i in range(3)]
+    return [Objective("Trinken", 0.5, datetime.date(2002, 7, 27), datetime.time(23, 59, 59)),
+            Objective("Essen", 0.5, datetime.date(2003, 8, 28), datetime.time(0, 0, 0)),
+            Objective("Dach über dem Kopf", 0.5, datetime.date(2004, 9, 30), datetime.time(11, 59, 59))]
 
 @pytest.fixture
 def quest_1(test_objectives: List[Objective]) -> Quest:
