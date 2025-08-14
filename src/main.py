@@ -1,13 +1,18 @@
+import json
+
 from model.objective import Objective
 from model.quest import Quest
+from model.quest_log import QuestLog
+
+from gui.quest_app import QuestApp
 
 
 if __name__ == "__main__":
-    objectives = []
+    quest_dict = {}
+    with open("main_quest.json", "r") as file:
+        quest_dict = json.load(file)
 
-    for i in range(10):
-        objectives.append(Objective("Objective " + str(i)))
+    q = Quest.to_quest(quest_dict)
+    ql: QuestLog = QuestLog([q])
 
-    q = Quest(objectives, "Test Quest")
-    o = Objective("test")
-    print(o.to_dict())
+    QuestApp(ql).run()

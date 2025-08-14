@@ -1,0 +1,30 @@
+{
+    "name": "Improve MainQuest",
+    "objectives": [
+        {
+            "description": "Create decent first gui",
+            "status": 0.1,
+            "date": null,
+            "time": null,
+            "duration": null
+        },
+        {
+            "description": "Try understand how that magiic works",
+            "status": 0.0,
+            "date": null,
+            "time": null,
+            "duration": null
+        },
+        {
+            "description": "Restructure",
+            "status": 0.0,
+            "date": null,
+            "time": null,
+            "duration": null
+        }
+    ],
+    "status": 0,
+    "date": null,
+    "time": null,
+    "duration": null
+}

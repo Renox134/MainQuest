@@ -57,7 +57,7 @@ class Quest:
             duration (int): Optional var for the duration (in minutes) that the quest takes.
         """
 
-        self.__objectives: List[Objective] = objectives
+        self.objectives: List[Objective] = objectives
         self.name: str = name
         self.status = status
         self.date: datetime.date | None = date
@@ -65,15 +65,15 @@ class Quest:
         self.duration: int | None = duration
 
     def add_objective(self, objective: Objective) -> None:
-        self.__objectives.append(objective)
+        self.objectives.append(objective)
 
     def remove_objective(self, idx: int) -> Objective:
-        return self.__objectives.pop(idx)
+        return self.objectives.pop(idx)
 
     def update_status(self) -> None:
         count = 0
         progress = 0.0
-        for obj in self.__objectives:
+        for obj in self.objectives:
             progress += obj.status
             count += 1
         self.status = round(progress / count, 2)
@@ -84,9 +84,9 @@ class Quest:
     def __str__(self) -> str:
         name = "\nName: \t\t" + self.name + "\n"
         obj = "Objectives:\n"
-        for i, o in enumerate(self.__objectives):
+        for i, o in enumerate(self.objectives):
             obj += "\t" + str(o)
-            if (i == len(self.__objectives) - 1):
+            if (i == len(self.objectives) - 1):
                 obj += "\n"
         date = ""
         time = ""
@@ -108,7 +108,7 @@ class Quest:
         if self.time is not None:
             time = self.time.strftime("%H:%M:%S")
         return {"name": self.name,
-                "objectives": [o.to_dict() for o in self.__objectives],
+                "objectives": [o.to_dict() for o in self.objectives],
                 "status": self.status,
                 "date": date,
                 "time": time,
@@ -119,7 +119,7 @@ class Quest:
             return NotImplemented
         return (
             self.name == other.name
-            and [obj for obj in self.__objectives] == [obj for obj in other.__objectives]
+            and [obj for obj in self.objectives] == [obj for obj in other.objectives]
             and round(self.status, 2) == round(other.status, 2)
             and self.date == other.date
             and self.time == other.time
