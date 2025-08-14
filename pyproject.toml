@@ -1,0 +1,8 @@
+[project] 
+name = "MainQuest"
+version = "0.0.1"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]

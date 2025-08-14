@@ -1,0 +1,21 @@
+{
+    "Name": "Test Quest",
+    "Objectives": [
+        {
+            "Description": "Test objective 1",
+            "Status": 0.0
+        },
+        {
+            "Description": "Test objective 2",
+            "Status": 0.0
+        },
+        {
+            "Description": "Test objective 3",
+            "Status": 0.0
+        }
+    ],
+    "Status": 0,
+    "Date": null,
+    "Time": null,
+    "Duration": null
+}
