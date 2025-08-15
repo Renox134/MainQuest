@@ -8,10 +8,10 @@
     Label:
         text: root.name
         size_hint_x: 0.6
-    ProgressBar:
-        max: 1.0
-        value: root.status
-        size_hint_x: 0.4
+    CircularProgress:
+        progress: root.status
+        size_hint: None, None
+        size: dp(25), dp(25)
 
 
 <QuestListView>:
@@ -24,7 +24,7 @@
         orientation: "vertical"
 
 
-<QuestScreen>:
+<QuestListScreen>:
     orientation: "vertical"
     Label:
         text: "Quest List"

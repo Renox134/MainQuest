@@ -4,13 +4,13 @@
         "objectives": [
             {
                 "description": "Find the magic sword",
-                "status": 0.5,
+                "status": 0.0,
                 "date": null,
                 "time": null,
                 "duration": null
             }
         ],
-        "status": 0.5,
+        "status": 0.0,
         "date": null,
         "time": null,
         "duration": null
@@ -20,13 +20,27 @@
         "objectives": [
             {
                 "description": "Defeat the dragon",
-                "status": 0.2,
+                "status": 20.0,
+                "date": null,
+                "time": null,
+                "duration": null
+            },
+            {
+                "description": "Devour the dragon soul",
+                "status": 0.0,
+                "date": null,
+                "time": null,
+                "duration": null
+            },
+            {
+                "description": "Return to Jarl Balgruf",
+                "status": 0.0,
                 "date": null,
                 "time": null,
                 "duration": null
             }
         ],
-        "status": 0.2,
+        "status": 20.0,
         "date": null,
         "time": null,
         "duration": null
@@ -36,13 +50,27 @@
         "objectives": [
             {
                 "description": "Collect 10 herbs",
-                "status": 1.0,
+                "status": 100.0,
+                "date": null,
+                "time": null,
+                "duration": null
+            },
+            {
+                "description": "(Optional) Sell the herbs elsewhere",
+                "status": 0.0,
+                "date": null,
+                "time": null,
+                "duration": null
+            },
+            {
+                "description": "Bring herbs back to healer",
+                "status": 0.0,
                 "date": null,
                 "time": null,
                 "duration": null
             }
         ],
-        "status": 1.0,
+        "status": 50.0,
         "date": null,
         "time": null,
         "duration": null
