@@ -1,5 +1,5 @@
 {
-    "name": "Test Quest",
+    "name": "Test Quest with time",
     "objectives": [
         {
             "description": "Trinken",
@@ -18,8 +18,8 @@
         {
             "description": "Dach \u00fcber dem Kopf",
             "status": 0.5,
-            "date": "30/09/2004",
-            "time": "11:59:59",
+            "date": null,
+            "time": null,
             "duration": null
         }
     ],

@@ -10,19 +10,19 @@ from model.quest import Quest
 def test_objectives() -> List[Objective]:
     return [Objective("Trinken", 0.5, datetime.date(2002, 7, 27), datetime.time(23, 59, 59)),
             Objective("Essen", 0.5, datetime.date(2003, 8, 28), datetime.time(0, 0, 0)),
-            Objective("Dach über dem Kopf", 0.5, datetime.date(2004, 9, 30), datetime.time(11, 59, 59))]
+            Objective("Dach über dem Kopf", 0.5)]
 
 @pytest.fixture
 def quest_1(test_objectives: List[Objective]) -> Quest:
-    return Quest(test_objectives, "Test Quest", 0)
+    return Quest(test_objectives, "Test Quest 1", 0)
 
 @pytest.fixture
 def quest_2(test_objectives: List[Objective]) -> Quest:
     reversed_objectives = [test_objectives[-1-i] for i in range(len(test_objectives))]
-    return Quest(reversed_objectives, "Test Quest", 0)
+    return Quest(reversed_objectives, "Test Quest 2", 0)
 
 @pytest.fixture
 def quest_with_time(test_objectives: List[Objective]) -> Quest:
     date = datetime.date(2027, 8, 13)
     time = datetime.time(11, 55, 30)
-    return Quest(test_objectives, "Test Quest", 0, date, time, 120)
+    return Quest(test_objectives, "Test Quest with time", 0, date, time, 120)

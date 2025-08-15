@@ -1,40 +1,12 @@
+from typing import List
 from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.recycleview import RecycleView
-from kivy.properties import StringProperty, NumericProperty
 from kivy.lang import Builder
 
-from typing import List
-
-from model.quest_log import QuestLog
 from model.quest import Quest
-from model.objective import Objective
-
-
-# A single quest row in the list
-class QuestListItem(BoxLayout):
-    name = StringProperty("")
-    status = NumericProperty(0.0)
-
-    def on_touch_down(self, touch):
-        if self.collide_point(*touch.pos):
-            print(f"Clicked quest: {self.name}, Status: {self.status}")
-            return True
-        return super().on_touch_down(touch)
-
-
-# The scrollable quest list
-class QuestListView(RecycleView):
-    def __init__(self, quests, **kwargs):
-        super().__init__(**kwargs)
-        self.data = [
-            {"name": q.name, "status": q.status} for q in quests
-        ]
-
-
-# Root layout for the app
-class QuestScreen(BoxLayout):
-    pass
+from model.quest_log import QuestLog
+from gui.components.quest_list_item import QuestListItem  # noqa
+from gui.components.quest_list_view import QuestListView
+from gui.screens.quest_screen import QuestScreen
 
 
 class QuestApp(App):

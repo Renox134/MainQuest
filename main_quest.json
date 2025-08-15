@@ -1,30 +1,50 @@
-{
-    "name": "Improve MainQuest",
-    "objectives": [
-        {
-            "description": "Create decent first gui",
-            "status": 0.1,
-            "date": null,
-            "time": null,
-            "duration": null
-        },
-        {
-            "description": "Try understand how that magiic works",
-            "status": 0.0,
-            "date": null,
-            "time": null,
-            "duration": null
-        },
-        {
-            "description": "Restructure",
-            "status": 0.0,
-            "date": null,
-            "time": null,
-            "duration": null
-        }
-    ],
-    "status": 0,
-    "date": null,
-    "time": null,
-    "duration": null
-}
+[
+    {
+        "name": "Hero's Journey",
+        "objectives": [
+            {
+                "description": "Find the magic sword",
+                "status": 0.5,
+                "date": null,
+                "time": null,
+                "duration": null
+            }
+        ],
+        "status": 0.5,
+        "date": null,
+        "time": null,
+        "duration": null
+    },
+    {
+        "name": "Dragon Slayer",
+        "objectives": [
+            {
+                "description": "Defeat the dragon",
+                "status": 0.2,
+                "date": null,
+                "time": null,
+                "duration": null
+            }
+        ],
+        "status": 0.2,
+        "date": null,
+        "time": null,
+        "duration": null
+    },
+    {
+        "name": "Healer's Aid",
+        "objectives": [
+            {
+                "description": "Collect 10 herbs",
+                "status": 1.0,
+                "date": null,
+                "time": null,
+                "duration": null
+            }
+        ],
+        "status": 1.0,
+        "date": null,
+        "time": null,
+        "duration": null
+    }
+]

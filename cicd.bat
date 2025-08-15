@@ -15,7 +15,7 @@ if defined clearFlag (
     cls
 )
 
-ECHO Starting the CI/CD-Process. Reminder: We should use Gitlab for that.\n\n
+ECHO Starting the CI/CD-Process.
 ECHO:
 ECHO:
 ECHO =========== Starting flake8 ===========
