@@ -1,7 +1,6 @@
 from kivy.uix.recycleview import RecycleView
 from typing import List
 from model.quest import Quest
-from kivy.factory import Factory
 
 
 class QuestListView(RecycleView):
@@ -13,6 +12,3 @@ class QuestListView(RecycleView):
         self.data = [
             {"name": q.name, "status": q.status} for q in quests
         ]
-
-
-Factory.register("QuestListView", cls=QuestListView)

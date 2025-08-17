@@ -4,8 +4,10 @@ from kivy.lang import Builder
 
 from model.quest import Quest
 from model.quest_log import QuestLog
-import gui.components
-import gui.screens
+from gui.components.quest_list_item import QuestListItem  # noqa
+from gui.components.quest_list_view import QuestListView
+from gui.components.circular_progress import CircularProgress
+from gui.screens.quest_screen import QuestScreen
 
 
 class QuestApp(App):
@@ -13,20 +15,12 @@ class QuestApp(App):
         super().__init__(**kwargs)
         self.quest_log: QuestLog = quest_log
 
-    def show_quest_detail(self, quest_name):
-        quest = next((q for q in self.quest_log.get_quests() if q.name == quest_name), None)
-        if quest:
-            detail_screen = self.root.get_screen("quest_detail")
-            detail_screen.populate(quest)
-            self.root.current = "quest_detail"
-
-
     def build(self):
-        Builder.load_file("src/gui/questlist.kv")
+        Builder.load_file("src/gui/quest_list.kv")
 
         quests: List[Quest] = self.quest_log.get_quests()
 
-        root = gui.screens.QuestListScreen()
+        root = QuestScreen()
         quest_list = root.ids.quest_list
-        quest_list.add_widget(gui.components.QuestListView(quests))
+        quest_list.add_widget(QuestListView(quests))
         return root

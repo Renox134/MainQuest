@@ -1,2 +1,0 @@
-from .quest_list_screen import QuestListScreen
-from .quest_detail_screen import QuestDetailScreen
