@@ -1,7 +1,7 @@
 from typing import List, Dict, Any
 
 import datetime
-from model.objective import Objective
+from model.task import Task
 
 
 class Quest:
@@ -17,7 +17,7 @@ class Quest:
         objectives = []
         for obj_data in data.get("objectives", []):
             if isinstance(obj_data, dict):
-                objectives.append(Objective.to_objective(obj_data))
+                objectives.append(Task.to_task(obj_data))
             else:
                 raise ValueError(f"Invalid objective type: {type(obj_data)}")
 
@@ -42,7 +42,7 @@ class Quest:
             duration=data.get("duration", 0)
         )
 
-    def __init__(self, objectives: List[Objective], name: str, status: float = 0,
+    def __init__(self, objectives: List[Task], name: str, status: float = 0,
                  date: datetime.date | None = None,
                  time: datetime.time | None = None, duration: int | None = None):
         """
@@ -57,17 +57,17 @@ class Quest:
             duration (int): Optional var for the duration (in minutes) that the quest takes.
         """
 
-        self.objectives: List[Objective] = objectives
+        self.objectives: List[Task] = objectives
         self.name: str = name
         self.status = status
         self.date: datetime.date | None = date
         self.time: datetime.time | None = time
         self.duration: int | None = duration
 
-    def add_objective(self, objective: Objective) -> None:
+    def add_objective(self, objective: Task) -> None:
         self.objectives.append(objective)
 
-    def remove_objective(self, idx: int) -> Objective:
+    def remove_objective(self, idx: int) -> Task:
         return self.objectives.pop(idx)
 
     def update_status(self) -> None:

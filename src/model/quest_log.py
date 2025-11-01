@@ -10,6 +10,7 @@ class QuestLog:
     """
     def __init__(self, quests: List[Quest] = []):
         self.__quests = quests
+        self.__completed_quests: List[Quest] = []
 
     def get_quests(self) -> List[Quest]:
         return self.__quests
@@ -17,8 +18,8 @@ class QuestLog:
     def add_quest(self, quest: Quest) -> None:
         self.__quests.append(quest)
 
-    def remove_quest(self, idx: int) -> Quest:
-        return self.__quests.pop(idx)
+    def remove_quest(self, quest:Quest) -> Quest:
+        return self.__quests.remove(quest)
 
     def clear_quests(self) -> None:
         self.__quests = []

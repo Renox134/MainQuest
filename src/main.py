@@ -1,14 +1,11 @@
-from model.quest_log import QuestLog
-
-from gui.quest_app import QuestApp
-
-
-def main() -> None:
-    quest_log: QuestLog = QuestLog()
-    quest_log.import_quests("main_quest.json")
-
-    QuestApp(quest_log).run()
+from model.task import Task
+from model.quest import Quest
 
 
 if __name__ == "__main__":
-    main()
+    objectives = []
+
+    for i in range(10):
+        objectives.append(Task("Objective " + str(i)))
+
+    q = Quest(objectives, "Test Quest")
