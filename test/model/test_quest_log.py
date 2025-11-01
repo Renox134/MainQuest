@@ -20,13 +20,13 @@ class TestQuestLog:
         log_1.export_quests("test/test_quest_log.json")
 
         log_2: QuestLog = QuestLog()
-        if len(log_2.get_quests()):
-            log_2.clear_quests()
+        if len(log_2.quests):
+            log_2.quests = []
 
         log_2.import_quests("test/test_quest_log.json")
 
         # asser both logs are equal
-        assert len(log_2.get_quests()) == len(log_1.get_quests())
+        assert len(log_2.quests) == len(log_1.quests)
 
-        for el1, el2 in zip(log_1.get_quests(), log_2.get_quests()):
+        for el1, el2 in zip(log_1.quests, log_2.quests):
             assert el1 == el2

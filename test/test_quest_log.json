@@ -1,92 +1,83 @@
 [
     {
         "name": "Test Quest with time",
-        "objectives": [
+        "tasks": [
             {
-                "description": "Trinken",
-                "status": 0.5,
-                "date": "27/07/2002",
-                "time": "23:59:59",
-                "duration": null
+                "description": "Collect water (timed)",
+                "duedate": "13/08/2027, 11:55:30",
+                "completion_date": null,
+                "duration": 30,
+                "subtasks": []
             },
             {
-                "description": "Essen",
-                "status": 0.5,
-                "date": "28/08/2003",
-                "time": "00:00:00",
-                "duration": null
+                "description": "Gather food (timed)",
+                "duedate": "13/08/2027, 11:55:30",
+                "completion_date": null,
+                "duration": 45,
+                "subtasks": []
             },
             {
-                "description": "Dach über dem Kopf",
-                "status": 0.5,
-                "date": null,
-                "time": null,
-                "duration": null
+                "description": "Build shelter (timed)",
+                "duedate": "13/08/2027, 11:55:30",
+                "completion_date": null,
+                "duration": 120,
+                "subtasks": []
             }
         ],
-        "status": 0,
-        "date": "13/08/2027",
-        "time": "11:55:30",
-        "duration": 120
+        "completed_tasks": []
     },
     {
         "name": "Test Quest 1",
-        "objectives": [
+        "tasks": [
             {
-                "description": "Trinken",
-                "status": 0.5,
-                "date": "27/07/2002",
-                "time": "23:59:59",
-                "duration": null
+                "description": "Collect water",
+                "duedate": "27/07/2002, 23:59:59",
+                "completion_date": null,
+                "duration": 30,
+                "subtasks": []
             },
             {
-                "description": "Essen",
-                "status": 0.5,
-                "date": "28/08/2003",
-                "time": "00:00:00",
-                "duration": null
+                "description": "Gather food",
+                "duedate": "28/08/2003, 00:00:00",
+                "completion_date": null,
+                "duration": 45,
+                "subtasks": []
             },
             {
-                "description": "Dach über dem Kopf",
-                "status": 0.5,
-                "date": null,
-                "time": null,
-                "duration": null
+                "description": "Build shelter",
+                "duedate": null,
+                "completion_date": null,
+                "duration": 120,
+                "subtasks": []
             }
         ],
-        "status": 0,
-        "date": null,
-        "time": null,
-        "duration": null
+        "completed_tasks": []
     },
     {
         "name": "Test Quest 2",
-        "objectives": [
+        "tasks": [
             {
-                "description": "Dach über dem Kopf",
-                "status": 0.5,
-                "date": null,
-                "time": null,
-                "duration": null
+                "description": "Build shelter",
+                "duedate": null,
+                "completion_date": null,
+                "duration": 120,
+                "subtasks": []
             },
             {
-                "description": "Essen",
-                "status": 0.5,
-                "date": "28/08/2003",
-                "time": "00:00:00",
-                "duration": null
+                "description": "Gather food",
+                "duedate": "28/08/2003, 00:00:00",
+                "completion_date": null,
+                "duration": 45,
+                "subtasks": []
             },
             {
-                "description": "Trinken",
-                "status": 0.5,
-                "date": "27/07/2002",
-                "time": "23:59:59",
-                "duration": null
+                "description": "Collect water",
+                "duedate": "27/07/2002, 23:59:59",
+                "completion_date": null,
+                "duration": 30,
+                "subtasks": []
             }
         ],
-        "status": 0,
-        "date": null,
-        "time": null,
-        "duration": null
+        "completed_tasks": []
     }
 ]

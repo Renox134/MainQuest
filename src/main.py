@@ -1,11 +1,11 @@
 from model.task import Task
 from model.quest import Quest
 
+import json
+
 
 if __name__ == "__main__":
-    objectives = []
-
-    for i in range(10):
-        objectives.append(Task("Objective " + str(i)))
-
-    q = Quest(objectives, "Test Quest")
+    with open("test/test_quest.json", "r", encoding="utf-8") as file:
+        d = json.load(file)
+        print(d)
+        q_1_import: Quest = Quest.to_quest(d)

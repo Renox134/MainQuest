@@ -9,23 +9,22 @@ class QuestLog:
     A class that can hold and manage quests.
     """
     def __init__(self, quests: List[Quest] = []):
-        self.__quests = quests
-        self.__completed_quests: List[Quest] = []
+        self.quests = quests
+        self.completed_quests: List[Quest] = []
 
-    def get_quests(self) -> List[Quest]:
-        return self.__quests
-
-    def add_quest(self, quest: Quest) -> None:
-        self.__quests.append(quest)
-
-    def remove_quest(self, quest:Quest) -> Quest:
-        return self.__quests.remove(quest)
-
-    def clear_quests(self) -> None:
-        self.__quests = []
+    def toggle_quest(self, to_toggle: Quest) -> None:
+        """
+        Toggles the completion of the given quest.
+        """
+        if to_toggle in self.quests:
+            self.quests.remove(to_toggle)
+            self.completed_quests.append(to_toggle)
+        elif to_toggle in self.completed_quests:
+            self.completed_quests.remove(to_toggle)
+            self.quests.append(to_toggle)
 
     def export_quests(self, path: str) -> None:
-        to_export = [q.to_dict() for q in self.__quests]
+        to_export = [q.to_dict() for q in self.quests]
 
         with open(path, "w") as file:
             json.dump(to_export, file, indent=4, ensure_ascii=False)
@@ -35,6 +34,6 @@ class QuestLog:
             raw_input = json.load(file)
             for q in raw_input:
                 if isinstance(q, dict):
-                    self.__quests.append(Quest.to_quest(q))
+                    self.quests.append(Quest.to_quest(q))
                 else:
                     print("WARNING: Non-dict found in quest list")
