@@ -49,7 +49,7 @@ class Quest:
         name = "Name: \t\t" + self.name + "\n"
         obj = "tasks:\n"
         for i, o in enumerate(self.tasks):
-            obj += "\t" + str(o) + "\n"
+            obj += str(o) + "\n"
             if (i == len(self.tasks) - 1):
                 obj += "\n"
 

@@ -1,78 +1,161 @@
 [
     {
-        "name": "Hero's Journey",
-        "objectives": [
+        "name": "Test Quest 1",
+        "tasks": [
             {
-                "description": "Find the magic sword",
-                "status": 0.0,
-                "date": null,
-                "time": null,
-                "duration": null
+                "description": "Collect water",
+                "duedate": "27/07/2002, 23:59:59",
+                "completion_date": null,
+                "duration": 30,
+                "subtasks": [
+                    {
+                        "description": "Find a water source",
+                        "duedate": "27/07/2002, 20:00:00",
+                        "completion_date": null,
+                        "duration": 10,
+                        "subtasks": []
+                    },
+                    {
+                        "description": "Fill containers",
+                        "duedate": "27/07/2002, 23:30:00",
+                        "completion_date": null,
+                        "duration": 20,
+                        "subtasks": []
+                    }
+                ]
+            },
+            {
+                "description": "Gather food",
+                "duedate": "28/08/2003, 00:00:00",
+                "completion_date": null,
+                "duration": 45,
+                "subtasks": [
+                    {
+                        "description": "Collect fruits",
+                        "duedate": "27/08/2003, 12:00:00",
+                        "completion_date": null,
+                        "duration": 20,
+                        "subtasks": []
+                    },
+                    {
+                        "description": "Hunt small animals",
+                        "duedate": "27/08/2003, 18:00:00",
+                        "completion_date": null,
+                        "duration": 25,
+                        "subtasks": []
+                    }
+                ]
+            },
+            {
+                "description": "Build shelter",
+                "duedate": null,
+                "completion_date": null,
+                "duration": 120,
+                "subtasks": [
+                    {
+                        "description": "Gather wood",
+                        "duedate": null,
+                        "completion_date": null,
+                        "duration": 40,
+                        "subtasks": []
+                    },
+                    {
+                        "description": "Construct frame",
+                        "duedate": null,
+                        "completion_date": null,
+                        "duration": 60,
+                        "subtasks": []
+                    },
+                    {
+                        "description": "Add roof covering",
+                        "duedate": null,
+                        "completion_date": null,
+                        "duration": 20,
+                        "subtasks": []
+                    }
+                ]
             }
         ],
-        "status": 0.0,
-        "date": null,
-        "time": null,
-        "duration": null
+        "completed_tasks": []
     },
     {
-        "name": "Dragon Slayer",
-        "objectives": [
+        "name": "Find a Unicorn",
+        "tasks": [
             {
-                "description": "Defeat the dragon",
-                "status": 20.0,
-                "date": null,
-                "time": null,
-                "duration": null
+                "description": "Search in northern Europe",
+                "duedate": null,
+                "completion_date": null,
+                "duration": 120,
+                "subtasks": [
+                    {
+                        "description": "Explore forests in Scandinavia",
+                        "duedate": null,
+                        "completion_date": null,
+                        "duration": 60,
+                        "subtasks": []
+                    },
+                    {
+                        "description": "Interview local witnesses",
+                        "duedate": null,
+                        "completion_date": null,
+                        "duration": 30,
+                        "subtasks": []
+                    },
+                    {
+                        "description": "Check historical archives",
+                        "duedate": null,
+                        "completion_date": null,
+                        "duration": 30,
+                        "subtasks": []
+                    }
+                ]
             },
             {
-                "description": "Devour the dragon soul",
-                "status": 0.0,
-                "date": null,
-                "time": null,
-                "duration": null
-            },
-            {
-                "description": "Return to Jarl Balgruf",
-                "status": 0.0,
-                "date": null,
-                "time": null,
-                "duration": null
+                "description": "Search in northern America",
+                "duedate": "28/08/2003, 00:00:00",
+                "completion_date": null,
+                "duration": 45,
+                "subtasks": [
+                    {
+                        "description": "Investigate Canadian forests",
+                        "duedate": "27/08/2003, 12:00:00",
+                        "completion_date": null,
+                        "duration": 25,
+                        "subtasks": []
+                    },
+                    {
+                        "description": "Scout mountain ranges",
+                        "duedate": "27/08/2003, 16:00:00",
+                        "completion_date": null,
+                        "duration": 20,
+                        "subtasks": []
+                    }
+                ]
             }
         ],
-        "status": 20.0,
-        "date": null,
-        "time": null,
-        "duration": null
-    },
-    {
-        "name": "Healer's Aid",
-        "objectives": [
+        "completed_tasks": [
             {
-                "description": "Collect 10 herbs",
-                "status": 100.0,
-                "date": null,
-                "time": null,
-                "duration": null
-            },
-            {
-                "description": "(Optional) Sell the herbs elsewhere",
-                "status": 0.0,
-                "date": null,
-                "time": null,
-                "duration": null
-            },
-            {
-                "description": "Bring herbs back to healer",
-                "status": 0.0,
-                "date": null,
-                "time": null,
-                "duration": null
+                "description": "Search in Siberia",
+                "duedate": "28/08/2003, 00:00:00",
+                "completion_date": "29/08/2003, 14:00:00",
+                "duration": 45,
+                "subtasks": [
+                    {
+                        "description": "Travel to Siberia",
+                        "duedate": "25/08/2003, 10:00:00",
+                        "completion_date": "26/08/2003, 09:00:00",
+                        "duration": 15,
+                        "subtasks": []
+                    },
+                    {
+                        "description": "Search taiga region",
+                        "duedate": "27/08/2003, 00:00:00",
+                        "completion_date": "28/08/2003, 22:00:00",
+                        "duration": 30,
+                        "subtasks": []
+                    }
+                ]
             }
-        ],
-        "status": 50.0,
-        "date": null,
-        "time": null,
-        "duration": null
+        ]
     }
 ]
