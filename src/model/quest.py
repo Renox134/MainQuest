@@ -19,7 +19,7 @@ class Quest:
                 tasks.append(Task.to_task(obj_data))
             else:
                 raise ValueError(f"Invalid task type: {type(obj_data)}")
-            
+
         completed_tasks = []
         for obj_data in data.get("completed_tasks", []):
             if isinstance(obj_data, dict):

@@ -1,7 +1,5 @@
 from model.quest_log import QuestLog
 
-import json
-
 
 if __name__ == "__main__":
     main_log: QuestLog = QuestLog()
