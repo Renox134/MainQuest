@@ -6,6 +6,12 @@ from model.task import Task
 class Quest:
     """
     A class representing a quest.
+
+    Attributes:
+        name(str): The name of the quest.
+        tasks(List[Task]): The task currently allocated to this quest.
+        completed_tasks(List[Task]): All tasks that were completed as
+            part of the quest.
     """
     @staticmethod
     def to_quest(data: Dict[str, Any]) -> "Quest":

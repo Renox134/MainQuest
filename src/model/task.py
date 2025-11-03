@@ -5,6 +5,17 @@ import datetime
 class Task:
     """
     A class representing a task that is to be completed.
+
+    Attributes:
+        description(str): The description of what the task is.
+        subtasks(List[Task]): The list of subtasks that are associated
+            with this task.
+        duedate(datetime.datetime): The time and date of when
+            this task should be completed.
+        completion_date(datetime.datetime): Time time and date at which
+            the task was completed.
+        duration(int): The duration (in minutes) how long the task is
+            estimated to take.
     """
 
     @staticmethod
