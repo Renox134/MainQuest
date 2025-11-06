@@ -8,7 +8,7 @@ from kivymd.uix.screen import Screen
 from kivymd.app import MDApp
 from kivymd.uix.gridlayout import GridLayout
 from kivymd.uix.boxlayout import BoxLayout
-from kivymd.uix.toolbar.toolbar import MDTopAppBar
+from kivymd.uix.toolbar.toolbar import MDTopAppBar, MDBottomAppBar
 
 
 Window.size = (350, 650)
@@ -46,5 +46,12 @@ class MainQuestApp(MDApp):
         """
         top_bar = MDTopAppBar(title="Main Quest")
         top_bar.right_action_items = [["dots-vertical", lambda x: print("menu pressed")]]
-        top_bar.left_action_items = [["eye-settings", lambda x: print("settings pressed")]]
+        top_bar.left_action_items = [["menu", lambda x: print("settings pressed")]]
         return top_bar
+    
+    def __build_app_bottom_bar(self) -> MDBottomAppBar:
+        """
+        Builds the bottom bar.
+        """
+        bottom_bar = MDBottomAppBar()
+        bottom_bar
