@@ -4,54 +4,104 @@ from model.quest_log import QuestLog
 from ui.widgets.quest_widget import QuestWidget
 
 from kivy.core.window import Window
-from kivymd.uix.screen import Screen
+from kivy.lang import Builder
+from kivy.properties import StringProperty
 from kivymd.app import MDApp
-from kivymd.uix.gridlayout import GridLayout
-from kivymd.uix.boxlayout import BoxLayout
-from kivymd.uix.toolbar.toolbar import MDTopAppBar, MDBottomAppBar
-
+from kivymd.uix.navigationbar import MDNavigationBar, MDNavigationItem
+from kivymd.uix.screen import MDScreen
 
 Window.size = (350, 650)
+
+class BaseMDNavigationItem(MDNavigationItem):
+    icon = StringProperty()
+    text = StringProperty()
+
+
+base_app_kv = """
+<BaseMDNavigationItem>
+
+    MDNavigationItemIcon:
+        icon: root.icon
+
+    MDNavigationItemLabel:
+        text: root.text
+
+MDScreen:
+    md_bg_color: self.theme_cls.secondaryContainerColor
+
+    GridLayout:
+        cols: 1
+        rows: 3
+        MDTopAppBar:
+            type: "small"
+             
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "menu"
+
+            MDTopAppBarTitle:
+                text: "Main Quest"
+                pos_hint: {"center_x": .5, "center_y": .5}
+                halign: "center"
+
+            MDTopAppBarTrailingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "dots-vertical"
+
+        BoxLayout:
+            id: quest_layout
+            orientation: "vertical"
+            spacing: 5
+            padding: 10
+
+        MDNavigationBar:
+            id: nav_bar
+            on_switch_tabs: app.on_nav_switch(*args)
+
+            BaseMDNavigationItem:
+                icon: "gmail"
+                text: "Trophy"
+                on_release: app.on_trophy_pressed()
+
+            BaseMDNavigationItem:
+                icon: "home"
+                text: "Home"
+                active: True
+                on_release: app.on_home_pressed()
+
+            BaseMDNavigationItem:
+                icon: "calendar"
+                text: "Calendar"
+                on_release: app.on_calendar_pressed()
+"""
 
 
 class MainQuestApp(MDApp):
     """
     The main app.
     """
+
     def __init__(self, quest_log: QuestLog, **kwargs: Any):
         self.quest_log = quest_log
-
         super().__init__(**kwargs)
 
-    def build(self) -> Screen:
-        screen = Screen()
-        main_layout = GridLayout(cols=1, rows=3)
-        app_header = self.__build_app_header()
-        quest_layout = BoxLayout(orientation="vertical", spacing=5, padding=10)
+    def build(self):
+        self.theme_cls.theme_style = "Dark"
+        self.theme_cls
+        return Builder.load_string(base_app_kv)
 
-        main_layout.add_widget(app_header)
-
+    def on_start(self):
+        """Populate quest widgets dynamically after layout is built."""
+        quest_layout = self.root.ids.quest_layout
         for quest in self.quest_log.quests:
             quest_widget = QuestWidget(quest)
             quest_layout.add_widget(quest_widget.container)
 
-        main_layout.add_widget(quest_layout)
-        screen.add_widget(main_layout)
+    def on_menu_pressed(self, *args):
+        print("settings pressed")
 
-        return screen
+    def on_more_pressed(self, *args):
+        print("menu pressed")
 
-    def __build_app_header(self) -> MDTopAppBar:
-        """
-        Builds the top bar and header for the base app.
-        """
-        top_bar = MDTopAppBar(title="Main Quest")
-        top_bar.right_action_items = [["dots-vertical", lambda x: print("menu pressed")]]
-        top_bar.left_action_items = [["menu", lambda x: print("settings pressed")]]
-        return top_bar
-    
-    def __build_app_bottom_bar(self) -> MDBottomAppBar:
-        """
-        Builds the bottom bar.
-        """
-        bottom_bar = MDBottomAppBar()
-        bottom_bar
+    def on_nav_switch(self, *args):
+        print("Called")
