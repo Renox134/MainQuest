@@ -7,10 +7,10 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import StringProperty
 from kivymd.app import MDApp
-from kivymd.uix.navigationbar import MDNavigationBar, MDNavigationItem
-from kivymd.uix.screen import MDScreen
+from kivymd.uix.navigationbar import MDNavigationItem
 
 Window.size = (350, 650)
+
 
 class BaseMDNavigationItem(MDNavigationItem):
     icon = StringProperty()
@@ -34,7 +34,7 @@ MDScreen:
         rows: 3
         MDTopAppBar:
             type: "small"
-             
+
             MDTopAppBarLeadingButtonContainer:
                 MDActionTopAppBarButton:
                     icon: "menu"
@@ -87,7 +87,7 @@ class MainQuestApp(MDApp):
 
     def build(self):
         self.theme_cls.theme_style = "Dark"
-        self.theme_cls
+        self.theme_cls.primary_palette = "Olive"
         return Builder.load_string(base_app_kv)
 
     def on_start(self):
