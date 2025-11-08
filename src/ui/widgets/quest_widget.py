@@ -18,13 +18,14 @@ KV='''
             ripple_effect: False
 
             MDListItemSupportingText:
-                id: "name_text_field"
+                id: name_text_field
                 halign: "center"
                 text: root.text
 
             LeadingPressedIconButton:
                 id: chevron
                 icon: "chevron-right"
+                pos_hint: {"center_x": .1, "center_y": .5}
                 on_release: app.tap_expansion_chevron(root, chevron)
 
     MDExpansionPanelContent:
@@ -32,15 +33,7 @@ KV='''
         orientation: "vertical"
         padding: "12dp", 0, "12dp", "12dp"
 
-        MDLabel:
-            text: "Here should be the actual tasks"
-            adaptive_height: True
-            padding_x: "16dp"
-            padding_y: "12dp"
-
-BoxLayout:
-    MDList:
-        id: list_container
+ExpansionPanelItem:
 
 '''
 
@@ -61,19 +54,13 @@ class QuestWidget:
 
     def __init__(self, quest: Quest):
         self.quest: Quest = quest
-        self.root: BoxLayout = Builder.load_string(KV)
 
         self.__build()
 
     def __build(self) -> None:
-        main_panel = ExpansionPanelItem()
-        main_panel.text = self.quest.name
-        self.root.ids.list_container.add_widget(main_panel)
-        # self.root.ids.name_text_field.text = self.quest.name
+        self.root = Builder.load_string(KV)
+        self.root.text = self.quest.name
+        task_container = self.root.ids.task_container
 
-        # task_container: BoxLayout = BoxLayout(orientation="vertical")
-
-        # for task in self.quest.tasks:
-        #     task_container.add_widget(MDLabel(text=task.description))
-        
-        # self.root.add_widget(task_container)
+        for task in self.quest.tasks:
+            task_container.add_widget(MDLabel(text=task.description))
