@@ -1,5 +1,4 @@
 from model.quest import Quest
-from kivymd.uix.boxlayout import BoxLayout
 from kivy.lang.builder import Builder
 from kivymd.uix.label import MDLabel
 from kivymd.uix.behaviors import RotateBehavior

@@ -96,11 +96,9 @@ class MainQuestApp(MDApp):
     def on_start(self):
         """Populate quest widgets dynamically after layout is built."""
         quest_layout = self.root.ids.quest_layout
-        for _ in range(10):
-            quest_layout.add_widget(QuestWidget(self.quest_log.quests[0]).root)
-        # for quest in self.quest_log.quests:
-        #     quest_widget = QuestWidget(quest)
-        #     quest_layout.add_widget(quest_widget.root)
+        for quest in self.quest_log.quests:
+            quest_widget = QuestWidget(quest)
+            quest_layout.add_widget(quest_widget.root)
 
     def on_menu_pressed(self, *args):
         self.root.ids.top_app_bar.do_layout()
