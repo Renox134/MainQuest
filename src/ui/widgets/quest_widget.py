@@ -6,8 +6,6 @@ from kivymd.uix.behaviors import RotateBehavior
 from kivy.uix.behaviors import ButtonBehavior
 from kivymd.uix.expansionpanel import MDExpansionPanel
 from kivymd.uix.list import MDListItemLeadingIcon
-from kivy.animation import Animation
-from kivy.metrics import dp
 from kivy.properties import StringProperty
 
 
@@ -79,18 +77,3 @@ class QuestWidget:
         #     task_container.add_widget(MDLabel(text=task.description))
         
         # self.root.add_widget(task_container)
-
-
-    def tap_expansion_chevron(
-        self, panel: MDExpansionPanel, chevron: LeadingPressedIconButton
-    ):
-        Animation(
-            padding=[0, dp(12), 0, dp(12)]
-            if not panel.is_open
-            else [0, 0, 0, 0],
-            d=0.2,
-        ).start(panel)
-        panel.open() if not panel.is_open else panel.close()
-        panel.set_chevron_down(
-            chevron
-        ) if not panel.is_open else panel.set_chevron_up(chevron)

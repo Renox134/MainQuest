@@ -1,10 +1,12 @@
 from typing import Any
 
 from model.quest_log import QuestLog
-from ui.widgets.quest_widget import QuestWidget
+from ui.widgets.quest_widget import QuestWidget, MDExpansionPanel, LeadingPressedIconButton
 
 from kivy.core.window import Window
 from kivy.lang import Builder
+from kivy.metrics import dp
+from kivy.animation import Animation
 from kivy.properties import StringProperty
 from kivymd.app import MDApp
 from kivymd.uix.navigationbar import MDNavigationItem
@@ -97,6 +99,7 @@ class MainQuestApp(MDApp):
         """Populate quest widgets dynamically after layout is built."""
         quest_layout = self.root.ids.quest_layout
         for quest in self.quest_log.quests:
+            print("Quest")
             quest_widget = QuestWidget(quest)
             quest_layout.add_widget(quest_widget.root)
 
@@ -118,3 +121,15 @@ class MainQuestApp(MDApp):
 
     def on_trophy_pressed(self, *args):
         print("Trophy pressed")
+
+    def tap_expansion_chevron(self, panel: MDExpansionPanel, chevron: LeadingPressedIconButton):
+        Animation(
+            padding=[0, dp(12), 0, dp(12)]
+            if not panel.is_open
+            else [0, 0, 0, 0],
+            d=0.2,
+        ).start(panel)
+        panel.open() if not panel.is_open else panel.close()
+        panel.set_chevron_down(
+            chevron
+        ) if not panel.is_open else panel.set_chevron_up(chevron)
