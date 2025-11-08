@@ -1,6 +1,6 @@
 [
     {
-        "name": "Test Quest 1",
+        "name": "Survive",
         "tasks": [
             {
                 "description": "Collect water",
@@ -79,7 +79,7 @@
         "completed_tasks": []
     },
     {
-        "name": "Find a Unicorn",
+        "name": "Find a Dragon",
         "tasks": [
             {
                 "description": "Search in northern Europe",

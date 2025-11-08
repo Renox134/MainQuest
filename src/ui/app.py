@@ -98,7 +98,7 @@ class MainQuestApp(MDApp):
         quest_layout = self.root.ids.quest_layout
         for quest in self.quest_log.quests:
             quest_widget = QuestWidget(quest)
-            quest_layout.add_widget(quest_widget.container)
+            quest_layout.add_widget(quest_widget.root)
 
     def on_menu_pressed(self, *args):
         self.root.ids.top_app_bar.do_layout()
