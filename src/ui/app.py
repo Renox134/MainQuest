@@ -33,11 +33,13 @@ MDScreen:
         cols: 1
         rows: 3
         MDTopAppBar:
+            id: top_app_bar
             type: "small"
 
             MDTopAppBarLeadingButtonContainer:
                 MDActionTopAppBarButton:
                     icon: "menu"
+                    on_release: app.on_menu_pressed()
 
             MDTopAppBarTitle:
                 text: "Main Quest"
@@ -47,6 +49,7 @@ MDScreen:
             MDTopAppBarTrailingButtonContainer:
                 MDActionTopAppBarButton:
                     icon: "dots-vertical"
+                    on_release: app.on_more_pressed()
 
         BoxLayout:
             id: quest_layout
@@ -59,13 +62,13 @@ MDScreen:
             on_switch_tabs: app.on_nav_switch(*args)
 
             BaseMDNavigationItem:
-                icon: "gmail"
-                text: "Trophy"
+                icon: "trophy"
+                text: "Progress"
                 on_release: app.on_trophy_pressed()
 
             BaseMDNavigationItem:
-                icon: "home"
-                text: "Home"
+                icon: "book"
+                text: "Journal"
                 active: True
                 on_release: app.on_home_pressed()
 
@@ -98,10 +101,20 @@ class MainQuestApp(MDApp):
             quest_layout.add_widget(quest_widget.container)
 
     def on_menu_pressed(self, *args):
-        print("settings pressed")
+        self.root.ids.top_app_bar.do_layout()
+        print("menu pressed")
 
     def on_more_pressed(self, *args):
-        print("menu pressed")
+        print("three dots pressed")
 
     def on_nav_switch(self, *args):
         print("Called")
+
+    def on_calendar_pressed(self, *args):
+        print("Calendar pressed")
+
+    def on_home_pressed(self, *args):
+        print("Home pressed")
+
+    def on_trophy_pressed(self, *args):
+        print("Trophy pressed")
