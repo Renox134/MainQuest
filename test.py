@@ -1,124 +1,61 @@
-import asynckivy
-from kivy.animation import Animation
-from kivy.lang import Builder
-from kivy.metrics import dp
-from kivy.uix.behaviors import ButtonBehavior
-
 from kivymd.app import MDApp
-from kivymd.uix.behaviors import RotateBehavior
-from kivymd.uix.expansionpanel import MDExpansionPanel
-from kivymd.uix.list import MDListItemTrailingIcon, MDListItemLeadingIcon
+from kivy.lang.builder import Builder
+from kivymd.uix.screen import MDScreen
+from kivymd.uix.list import MDListItemSupportingText, MDListItemTertiaryText
+
+from src.model.task import Task
+
+import datetime
 
 KV = '''
-<ExpansionPanelItem>
-
-    MDExpansionPanelHeader:
-
-        MDListItem:
-            theme_bg_color: "Custom"
-            md_bg_color: self.theme_cls.surfaceContainerLowColor
-            ripple_effect: False
-
-            MDListItemSupportingText:
-                text: "Supporting text"
-                halign: "center"
-
-            LeadingPressedIconButton:
-                id: chevron
-                icon: "chevron-right"
-                pos_hint: {"center_x": .1, "center_y": .5}
-                halign: "left"
-                on_release: app.tap_expansion_chevron(root, chevron)
-
-    MDExpansionPanelContent:
-        orientation: "vertical"
-        padding: "12dp", 0, "12dp", "12dp"
-        md_bg_color: self.theme_cls.surfaceContainerLowestColor
-
-        MDLabel:
-            text: "Channel information"
-            adaptive_height: True
-            padding_x: "16dp"
-            padding_y: "12dp"
-
-        MDListItem:
-            theme_bg_color: "Custom"
-            md_bg_color: self.theme_cls.surfaceContainerLowestColor
-
-            MDListItemLeadingIcon:
-                icon: "email"
-
-            MDListItemHeadlineText:
-                text: "Email"
-
-            MDListItemSupportingText:
-                text: "kivydevelopment@gmail.com"
-
-        MDListItem:
-            theme_bg_color: "Custom"
-            md_bg_color: self.theme_cls.surfaceContainerLowestColor
-
-            MDListItemLeadingIcon:
-                icon: "instagram"
-
-            MDListItemHeadlineText:
-                text: "Instagram"
-
-            MDListItemSupportingText:
-                text: "Account"
-
-            MDListItemTertiaryText:
-                text: "www.instagram.com/KivyMD"
-
-
 MDScreen:
     md_bg_color: self.theme_cls.backgroundColor
-
-    ScrollView:
-        size_hint_x: .5
+    
+    BoxLayout:
         pos_hint: {"center_x": .5, "center_y": .5}
+        size_hint_x: 0.7
 
-        MDList:
-            id: container
+        MDIconButton:
+            id: checkbutton
+            on_release: app.on_task_press()
+            icon: "checkbox-blank-circle"
+            pos_hint: {"center_x": .5, "center_y": .5}
+    
+        MDListItem:
+            id: base
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: app.on_task_press()
+            MDListItemHeadlineText:
+                id: description
+            MDListItemTrailingIcon:
+                id: chevron
+                icon: "chevron-left"
+                pos_hint: {"center_x": .5, "center_y": .5}
 '''
 
 
-class ExpansionPanelItem(MDExpansionPanel):
-    ...
-
-
-class LeadingPressedIconButton(
-    ButtonBehavior, RotateBehavior, MDListItemLeadingIcon
-):
-    ...
-
-
-class Example(MDApp):
-    def on_start(self):
-        async def set_panel_list():
-            for i in range(12):
-                await asynckivy.sleep(0)
-                self.root.ids.container.add_widget(ExpansionPanelItem())
-
-        asynckivy.start(set_panel_list())
-
+class TestApp(MDApp):
     def build(self):
-        self.theme_cls.theme_style = "Dark"
-        return Builder.load_string(KV)
+        self.screen = MDScreen()
+        self.task: Task = Task(description="Create Task Widget",
+                               subtasks=[Task("Subtask 1"), Task("Subtask 2", datetime.datetime(2025, 11, 20, 12, 20, 0), duration=30)],
+                               notes="Once the task widget works, I can focus on more exiting tasks.",
+                               duedate=datetime.datetime(2025, 11, 20, 12, 20, 0), duration=30)
+        self.root = Builder.load_string(KV)
+        self.root.ids.description.text = self.task.description
+        if self.task.notes != "":
+            self.root.ids.base.add_widget(MDListItemSupportingText(text=self.task.notes))
+        if self.task.duedate is not None:
+            self.root.ids.base.add_widget(MDListItemTertiaryText(text="Due: " + self.task.duedate.strftime("%d/%m/%Y, %H:%M")))
 
-    def tap_expansion_chevron(
-        self, panel: MDExpansionPanel, chevron: LeadingPressedIconButton
-    ):
-        Animation(
-            padding=[0, dp(12), 0, dp(12)]
-            if not panel.is_open
-            else [0, 0, 0, 0],
-            d=0.2,
-        ).start(panel)
-        panel.open() if not panel.is_open else panel.close()
-        panel.set_chevron_down(
-            chevron
-        ) if not panel.is_open else panel.set_chevron_up(chevron)
-
-
-Example().run()
+        return self.root
+    
+    def on_task_press(self, *args):
+        print("Pressed")
+        if self.root.ids.checkbutton.icon == "checkbox-blank-circle":
+            self.root.ids.checkbutton.icon = "checkbox-marked-circle"
+        else:
+            self.root.ids.checkbutton.icon = "checkbox-blank-circle"
+    
+t = TestApp()
+t.run()

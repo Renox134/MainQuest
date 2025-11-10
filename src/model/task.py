@@ -43,6 +43,7 @@ class Task:
         return Task(
             description=data.get("description", ""),
             subtasks=subtasks,
+            notes=data.get("notes", ""),
             duedate=duedate,
             completion_date=completion_date,
             duration=data.get("duration")
@@ -51,6 +52,7 @@ class Task:
     def __init__(self,
                  description: str,
                  subtasks: Optional[List["Task"]] = None,
+                 notes: Optional[str] = None,
                  duedate: Optional[datetime.datetime] = None,
                  completion_date: Optional[datetime.datetime] = None,
                  duration: Optional[int] = None):
@@ -59,6 +61,7 @@ class Task:
         """
         self.description = description
         self.subtasks = subtasks if subtasks is not None else []
+        self.notes = notes if notes is not None else ""
         self.duedate = duedate
         self.completion_date = completion_date
         self.duration = duration
