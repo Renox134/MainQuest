@@ -1,7 +1,6 @@
 #:kivy 2.3.0
 
 <BaseMDNavigationItem>
-
     MDNavigationItemIcon:
         icon: root.icon
 
@@ -11,9 +10,8 @@
 MDScreen:
     md_bg_color: self.theme_cls.secondaryContainerColor
 
-    GridLayout:
-        cols: 1
-        rows: 3
+    BoxLayout:
+        orientation: "vertical"
         MDTopAppBar:
             id: top_app_bar
             type: "small"

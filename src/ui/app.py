@@ -64,7 +64,7 @@ class MainQuestApp(MDApp):
 
     def tap_expansion_chevron(self, panel: MDExpansionPanel, chevron: TrailingPressedIconButton):
         Animation(
-            padding=[0, dp(0), 0, dp(0)]
+            padding=[0, dp(12), 0, dp(12)]
             if not panel.is_open
             else [0, 0, 0, 0],
             d=0.2,
