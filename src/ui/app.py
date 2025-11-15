@@ -2,7 +2,7 @@ from typing import Any
 
 from model.quest_log import QuestLog
 from ui.widgets.task_widget import TaskWidget, MDExpansionPanel, TrailingPressedIconButton
-from ui.widgets.quest_widget import QuestWidget
+from ui.widgets.quest_widget import QuestWidget, ExpansionPanelQuestItem
 
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -11,6 +11,7 @@ from kivy.animation import Animation
 from kivy.properties import StringProperty
 from kivymd.app import MDApp
 from kivymd.uix.navigationbar import MDNavigationItem
+from kivymd.uix.list import MDList
 
 Window.size = (350, 650)
 
@@ -37,11 +38,10 @@ class MainQuestApp(MDApp):
     def on_start(self):
         """Populate quest widgets dynamically after layout is built."""
         quest_layout = self.root.ids.quest_layout
-        # for quest in self.quest_log.quests:
-        #     quest_widget = QuestWidget(quest)
-        #     quest_layout.add_widget(quest_widget.root)
-        for _ in range(5):
-            quest_layout.add_widget(QuestWidget(self.quest_log.quests[_%2]).root)
+        for quest in self.quest_log.quests:
+            quest_widget = QuestWidget(quest)
+            quest_widget.add_widgets()
+            quest_layout.add_widget(quest_widget.root)
 
     def on_menu_pressed(self, *args):
         self.root.ids.top_app_bar.do_layout()
@@ -62,9 +62,7 @@ class MainQuestApp(MDApp):
     def on_trophy_pressed(self, *args):
         print("Trophy pressed")
 
-    def tap_expansion_chevron(self, panel: MDExpansionPanel, chevron: TrailingPressedIconButton):
-        print("Panel height", panel.height)
-        print("Task container height", panel.ids.task_container.height)
+    def tap_expansion_chevron(self, panel: ExpansionPanelQuestItem, chevron: TrailingPressedIconButton):
         Animation(
             padding=[0, dp(12), 0, dp(12)]
             if not panel.is_open
