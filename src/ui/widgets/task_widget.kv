@@ -4,14 +4,12 @@
     MDExpansionPanelHeader:
         MDListItem:
             id: base
-            theme_bg_color: "Custom"
-            md_bg_color: self.theme_cls.surfaceContainerLowColor
             ripple_effect: False
             on_release: app.tap_expansion_chevron(root, chevron)
 
             MDListItemHeadlineText:
                 id: name_text_field
-                halign: "center"
+                halign: "left"
                 text: root.text
 
             TrailingPressedIconButton:
@@ -20,6 +18,9 @@
                 on_release: app.tap_expansion_chevron(root, chevron)
 
     MDExpansionPanelContent:
-        id: task_container
+        id: subtask_container
         orientation: "vertical"
-        padding: "12dp", 0, "12dp", 0
+        # padding: "12dp", 0, "12dp", 0
+
+        MDList:
+            id: subtask_list

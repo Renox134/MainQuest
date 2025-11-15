@@ -19,7 +19,7 @@ MDScreen:
             id: checkbutton
             on_release: app.on_task_press()
             icon: "checkbox-blank-circle"
-            pos_hint: {"center_x": .5, "center_y": .5}
+            pos_hint: {"center_x": .0, "center_y": .5}
     
         MDListItem:
             id: base
@@ -30,7 +30,6 @@ MDScreen:
             MDListItemTrailingIcon:
                 id: chevron
                 icon: "chevron-left"
-                pos_hint: {"center_x": .5, "center_y": .5}
 '''
 
 

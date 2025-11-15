@@ -1,8 +1,8 @@
 from model.quest import Quest
 from ui.widgets.task_widget import TaskWidget
 
+import asynckivy
 from kivy.lang.builder import Builder
-from kivy.clock import Clock
 from kivymd.uix.label import MDLabel
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelContent
 from kivy.properties import StringProperty
@@ -24,18 +24,13 @@ class QuestWidget:
     def __init__(self, quest: Quest):
         self.quest = quest
         self.root = ExpansionPanelQuestItem()
-        self.root.text = quest.name
+        asynckivy.start(self.add_widgets())
 
-    def add_widgets(self) -> None:
-        def do_add(dt) -> None:
-            task_box = self.root.ids.task_list
+    async def add_widgets(self) -> None:
+        self.root.text = self.quest.name
+        task_box = self.root.ids.task_list
 
-            for task in self.quest.tasks:
-                # task_box.add_widget(TaskWidget(task).root)
-                task_box.add_widget(MDLabel(
-                    text=task.description,
-                    adaptive_height=True,
-                    padding=("14dp", "12dp")
-                ))
-        
-        Clock.schedule_once(do_add, 0)
+        for task in self.quest.tasks:
+            await asynckivy.sleep(0)
+            task_widget = TaskWidget(task)
+            task_box.add_widget(task_widget.root)

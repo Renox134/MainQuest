@@ -6,6 +6,7 @@ from ui.widgets.quest_widget import QuestWidget, ExpansionPanelQuestItem
 
 from kivy.core.window import Window
 from kivy.lang import Builder
+import asynckivy
 from kivy.metrics import dp
 from kivy.animation import Animation
 from kivy.properties import StringProperty
@@ -38,10 +39,12 @@ class MainQuestApp(MDApp):
     def on_start(self):
         """Populate quest widgets dynamically after layout is built."""
         quest_layout = self.root.ids.quest_layout
-        for quest in self.quest_log.quests:
-            quest_widget = QuestWidget(quest)
-            quest_widget.add_widgets()
-            quest_layout.add_widget(quest_widget.root)
+        async def add_quests():
+            for quest in self.quest_log.quests:
+                await asynckivy.sleep(0)
+                quest_widget = QuestWidget(quest)
+                quest_layout.add_widget(quest_widget.root)
+        asynckivy.start(add_quests())
 
     def on_menu_pressed(self, *args):
         self.root.ids.top_app_bar.do_layout()
