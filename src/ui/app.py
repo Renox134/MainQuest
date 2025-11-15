@@ -63,6 +63,8 @@ class MainQuestApp(MDApp):
         print("Trophy pressed")
 
     def tap_expansion_chevron(self, panel: MDExpansionPanel, chevron: TrailingPressedIconButton):
+        print("Panel height", panel.height)
+        print("Task container height", panel.ids.task_container.height)
         Animation(
             padding=[0, dp(12), 0, dp(12)]
             if not panel.is_open
