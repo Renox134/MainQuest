@@ -2,10 +2,16 @@ from kivy.lang import Builder
 from kivymd.app import MDApp
 
 
-from kivymd.uix.list import MDList, MDListItem
+from kivymd.uix.behaviors import RotateBehavior
+from kivy.animation import Animation
+from kivy.metrics import dp
+from kivy.uix.behaviors import ButtonBehavior
+from kivymd.uix.list import *
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.navigationbar import MDNavigationItem
 from kivymd.uix.button import MDIconButton
+from kivymd.uix.expansionpanel import *
+import asynckivy
 from kivy.properties import StringProperty
 from kivy.core.window import Window
 
@@ -16,6 +22,11 @@ Window.size = (350, 650)
 class BaseMDNavigationItem(MDNavigationItem):
     icon = StringProperty()
     text = StringProperty()
+
+class TrailingPressedIconButton(
+    ButtonBehavior, RotateBehavior, MDListItemTrailingIcon
+):
+    ...
 
 
 KV = """
@@ -74,6 +85,59 @@ MDScreen:
                 on_release: app.on_calendar_pressed()
 """
 
+Exp = """
+MDExpansionPanel:
+    MDExpansionPanelHeader:
+        MDListItem:
+            id: base
+            ripple_effect: False
+            on_release: app.tap_expansion_chevron(root, chevron)
+
+            MDListItemHeadlineText:
+                id: name_text_field
+                halign: "left"
+                text: "Example Text"
+
+            TrailingPressedIconButton:
+                id: chevron
+                icon: "chevron-right"
+                on_release: app.tap_expansion_chevron(root, chevron)
+
+    MDExpansionPanelContent:
+        id: subtask_container
+        orientation: "vertical"
+        padding: "12dp", "12dp"
+
+        MDList:
+            id: subtask_list
+
+            MDExpansionPanel:
+                MDExpansionPanelHeader:
+                    MDListItem:
+                        id: base
+                        ripple_effect: False
+                        on_release: app.tap_expansion_chevron(root, chevron)
+
+                        MDListItemHeadlineText:
+                            id: name_text_field
+                            halign: "left"
+                            text: "Example Text"
+
+                        TrailingPressedIconButton:
+                            id: chevron
+                            icon: "chevron-right"
+                            on_release: app.tap_expansion_chevron(root, chevron)
+
+                MDExpansionPanelContent:
+                    id: subtask_container
+                    orientation: "vertical"
+                    padding: "12dp", "12dp"
+
+                    MDList:
+                        id: subtask_list
+
+"""
+
 class Task:
     def __init__(self, title: str, subtasks: list = None):
         self.title = title
@@ -88,7 +152,7 @@ class TodoApp(MDApp):
         return Builder.load_string(KV)
 
     def on_start(self):
-        # Build example nested data
+
         tree = Task(
             "Project",
             subtasks=[
@@ -106,7 +170,25 @@ class TodoApp(MDApp):
                 Task("Docs"),
             ],
         )
+        quest_layout = self.root.ids.quest_layout
+        async def add_quests():
+            for _ in range(10):
+                await asynckivy.sleep(0)
+                quest_widget = Builder.load_string(Exp)
+                quest_layout.add_widget(quest_widget)
+        asynckivy.start(add_quests())
 
+    def tap_expansion_chevron(self, panel: MDExpansionPanel, chevron: TrailingPressedIconButton):
+        Animation(
+            padding=[0, dp(12), 0, dp(12)]
+            if not panel.is_open
+            else [0, 0, 0, 0],
+            d=0.2,
+        ).start(panel)
+        panel.open() if not panel.is_open else panel.close()
+        panel.set_chevron_down(
+            chevron
+        ) if not panel.is_open else panel.set_chevron_up(chevron)
 
 if __name__ == "__main__":
     TodoApp().run()
