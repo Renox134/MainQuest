@@ -4,21 +4,21 @@
         "tasks": [
             {
                 "description": "Collect water (timed)",
-                "duedate": "13/08/2027, 11:55:30",
+                "duedate": "13/08/2027, 11:55",
                 "completion_date": null,
                 "duration": 30,
                 "subtasks": []
             },
             {
                 "description": "Gather food (timed)",
-                "duedate": "13/08/2027, 11:55:30",
+                "duedate": "13/08/2027, 11:55",
                 "completion_date": null,
                 "duration": 45,
                 "subtasks": []
             },
             {
                 "description": "Build shelter (timed)",
-                "duedate": "13/08/2027, 11:55:30",
+                "duedate": "13/08/2027, 11:55",
                 "completion_date": null,
                 "duration": 120,
                 "subtasks": []
@@ -31,14 +31,14 @@
         "tasks": [
             {
                 "description": "Collect water",
-                "duedate": "27/07/2002, 23:59:59",
+                "duedate": "27/07/2002, 23:59",
                 "completion_date": null,
                 "duration": 30,
                 "subtasks": []
             },
             {
                 "description": "Gather food",
-                "duedate": "28/08/2003, 00:00:00",
+                "duedate": "28/08/2003, 00:00",
                 "completion_date": null,
                 "duration": 45,
                 "subtasks": []
@@ -65,14 +65,14 @@
             },
             {
                 "description": "Gather food",
-                "duedate": "28/08/2003, 00:00:00",
+                "duedate": "28/08/2003, 00:00",
                 "completion_date": null,
                 "duration": 45,
                 "subtasks": []
             },
             {
                 "description": "Collect water",
-                "duedate": "27/07/2002, 23:59:59",
+                "duedate": "27/07/2002, 23:59",
                 "completion_date": null,
                 "duration": 30,
                 "subtasks": []

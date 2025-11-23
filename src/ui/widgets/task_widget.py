@@ -1,28 +1,36 @@
 from model.task import Task
+from config_reader import Config
+
+import datetime
 
 import asynckivy
 from kivy.lang.builder import Builder
 
 from kivymd.uix.behaviors import RotateBehavior
 from kivy.uix.behaviors import ButtonBehavior
-from kivymd.uix.button import MDIconButton
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.list import MDListItem, MDList
 from kivymd.uix.expansionpanel import MDExpansionPanel
-from kivymd.uix.list import MDListItemTrailingIcon, MDListItemSupportingText, MDListItemTertiaryText
-from kivy.properties import StringProperty
+from kivymd.uix.list import MDListItemTrailingIcon, MDListItemSupportingText, MDListItemTertiaryText, MDListItemLeadingIcon
 
 Builder.load_file("ui/widgets/task_widget.kv")
 
 
 class ExpansionPanelTaskItem(MDExpansionPanel):
-    text = StringProperty()
+    def __init__(self, task: Task=Task(description=""), **kwargs):
+        self.task = task
+        super().__init__(**kwargs)
 
+    def complete_quest(self):
+        print("Want to complete:\n", self.task, "\nAt ", datetime.datetime.now().strftime(Config.get("time_format")))
+        
 
 class TrailingPressedIconButton(
     ButtonBehavior, RotateBehavior, MDListItemTrailingIcon
 ):
     ...
+
+
+class LeadingPressedIconButton(ButtonBehavior, MDListItemLeadingIcon):
+    pass
 
 
 class TaskWidget:
@@ -32,23 +40,14 @@ class TaskWidget:
 
     def __init__(self, task: Task):
         self.task = task
-        self.root = MDListItem()
+        self.root = ExpansionPanelTaskItem(task=self.task)
 
-        asynckivy.start(self.add_widgets())
+        asynckivy.start(self.update_widget())
 
-    async def add_widgets(self) -> None:
-        wrapper = MDBoxLayout(theme_bg_color="Custom", md_bg_color="ff0000",
-                              orientation="horizontal")
+    async def update_widget(self) -> None:
         await asynckivy.sleep(0)
-        
-        task_panel = ExpansionPanelTaskItem(id="ExpansionPanelTaskItem")
-        task_panel.text = self.task.description
         if self.task.notes != "":
-            task_panel.ids.base.add_widget(MDListItemSupportingText(text=self.task.notes))
+            self.root.ids.header.add_widget(MDListItemSupportingText(text=self.task.notes))
         if self.task.duedate is not None:
-            task_panel.ids.base.add_widget(MDListItemTertiaryText(text="Due: " + self.task.duedate.strftime("%d/%m/%Y, %H:%M")))
-        wrapper.add_widget(MDIconButton(icon="checkbox-blank-circle", pos_hint={"center_x": .0, "center_y": .5}))
-        wrapper.add_widget(task_panel)
-        self.root.ids.leading_container.add_widget(wrapper)
-        self.root.ids.leading_container.size_hint_x = 1
-
+            due_date_text = "Due: " + self.task.duedate.strftime(Config.get("time_format"))
+            self.root.ids.header.add_widget(MDListItemTertiaryText(text=due_date_text))

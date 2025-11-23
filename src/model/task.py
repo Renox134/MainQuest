@@ -1,6 +1,8 @@
 from typing import Dict, Any, List, Optional
 import datetime
 
+from config_reader import Config
+
 
 class Task:
     """
@@ -28,13 +30,13 @@ class Task:
         duedate_str = data.get("duedate")
         duedate = None
         if duedate_str:
-            duedate = datetime.datetime.strptime(duedate_str, "%d/%m/%Y, %H:%M:%S")
+            duedate = datetime.datetime.strptime(duedate_str, Config.get("time_format"))
 
         # Parse completion date
         completion_str = data.get("completion_date")
         completion_date = None
         if completion_str:
-            completion_date = datetime.datetime.strptime(completion_str, "%d/%m/%Y, %H:%M:%S")
+            completion_date = datetime.datetime.strptime(completion_str, Config.get("time_format"))
 
         # Parse subtasks (recursively)
         subtasks_data = data.get("subtasks", [])
@@ -70,9 +72,9 @@ class Task:
         output = [f"Description:\t{self.description}"]
 
         if self.duedate:
-            output.append(f"Duedate:\t{self.duedate.strftime('%d/%m/%Y, %H:%M:%S')}")
+            output.append(f"Duedate:\t{self.duedate.strftime(Config.get("time_format"))}")
         if self.completion_date:
-            output.append(f"Completed:\t{self.completion_date.strftime('%d/%m/%Y, %H:%M:%S')}")
+            output.append(f"Completed:\t{self.completion_date.strftime(Config.get("time_format"))}")
         if self.duration is not None:
             output.append(f"Duration:\t{self.duration} minutes")
 
@@ -87,9 +89,9 @@ class Task:
         """
         Convert the Task to a dictionary (serializable form).
         """
-        duedate_str = self.duedate.strftime("%d/%m/%Y, %H:%M:%S") if self.duedate else None
+        duedate_str = self.duedate.strftime(Config.get("time_format")) if self.duedate else None
         completion_str =\
-            self.completion_date.strftime("%d/%m/%Y, %H:%M:%S") if self.completion_date else None
+            self.completion_date.strftime(Config.get("time_format")) if self.completion_date else None
 
         return {
             "description": self.description,

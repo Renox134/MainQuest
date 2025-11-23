@@ -24,9 +24,15 @@
     MDExpansionPanelContent:
         id: task_container
         orientation: "vertical"
-        padding: "12dp", "12dp"
+        # padding: "12dp", "12dp"
         theme_bg_color: "Custom"
         md_bg_color: "00ff00"
 
         MDList:
             id: task_list
+
+            MDLabel:
+                id: label_1
+                text: "Channel information"
+                adaptive_height: True
+                padding: "16dp", "12dp"

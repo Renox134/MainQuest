@@ -1,16 +1,21 @@
 #:kivy 2.3.0
 
 <ExpansionPanelTaskItem>:
+    id: ExpansionPanelTaskItem
     MDExpansionPanelHeader:
         MDListItem:
-            id: base
+            id: header
             ripple_effect: False
             on_release: app.tap_expansion_chevron(root, chevron)
+
+            LeadingPressedIconButton:
+                icon: "checkbox-blank-circle"
+                on_release: root.complete_quest()
 
             MDListItemHeadlineText:
                 id: name_text_field
                 halign: "left"
-                text: root.text
+                text: root.task.description
 
             TrailingPressedIconButton:
                 id: chevron
@@ -20,7 +25,6 @@
     MDExpansionPanelContent:
         id: subtask_container
         orientation: "vertical"
-        padding: "12dp", "12dp"
 
         MDList:
             id: subtask_list

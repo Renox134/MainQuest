@@ -28,9 +28,9 @@ class QuestWidget:
 
     async def add_widgets(self) -> None:
         self.root.text = self.quest.name
-        task_box = self.root.ids.task_list
+        task_list = self.root.ids.task_list
 
         for task in self.quest.tasks:
             await asynckivy.sleep(0)
             task_widget = TaskWidget(task)
-            task_box.add_widget(task_widget.root)
+            task_list.add_widget(task_widget.root)

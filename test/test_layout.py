@@ -76,13 +76,14 @@ KV = """
     MDExpansionPanelContent:
         id: expansion_content
         orientation: "vertical"
-        padding: "12dp", 0, "12dp", "12dp"
+        padding: "12dp", "12dp"
         md_bg_color: self.theme_cls.surfaceContainerLowestColor
 
-        MDLabel:
-            text: "Channel information"
-            adaptive_height: True
-            padding: "16dp", "12dp"
+        # MDLabel:
+        #     id: label_1
+        #     text: "Channel information"
+        #     adaptive_height: True
+        #     padding: "16dp", "12dp"
 
 MDScreen:
     BoxLayout:
@@ -140,7 +141,9 @@ class TodoApp(MDApp):
             for _ in range(10):
                 await asynckivy.sleep(0)
                 quest_widget = ExpansionPanelItem()
-                quest_widget.ids.expansion_content.add_widget(ExpansionPanelItem())
+                print("Len: ", len(quest_widget.ids.expansion_content.children))
+                # quest_widget.ids.expansion_content.add_widget(ExpansionPanelItem())
+                quest_widget.ids.expansion_content.add_widget(MDLabel(text="Channel information", adaptive_height=True, padding=(dp(16),dp(12))))
                 quest_layout.add_widget(quest_widget)
         asynckivy.start(add_quests())
 

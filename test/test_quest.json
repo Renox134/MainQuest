@@ -3,21 +3,21 @@
     "tasks": [
         {
             "description": "Collect water (timed)",
-            "duedate": "13/08/2027, 11:55:30",
+            "duedate": "13/08/2027, 11:55",
             "completion_date": null,
             "duration": 30,
             "subtasks": []
         },
         {
             "description": "Gather food (timed)",
-            "duedate": "13/08/2027, 11:55:30",
+            "duedate": "13/08/2027, 11:55",
             "completion_date": null,
             "duration": 45,
             "subtasks": []
         },
         {
             "description": "Build shelter (timed)",
-            "duedate": "13/08/2027, 11:55:30",
+            "duedate": "13/08/2027, 11:55",
             "completion_date": null,
             "duration": 120,
             "subtasks": []
