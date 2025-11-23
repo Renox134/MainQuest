@@ -10,6 +10,8 @@ from kivymd.uix.list import *
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.navigationbar import MDNavigationItem
 from kivymd.uix.button import MDIconButton
+from kivymd.uix.divider import MDDivider
+from kivymd.uix.label import MDLabel
 from kivymd.uix.expansionpanel import *
 import asynckivy
 from kivy.properties import StringProperty
@@ -22,6 +24,11 @@ Window.size = (350, 650)
 class BaseMDNavigationItem(MDNavigationItem):
     icon = StringProperty()
     text = StringProperty()
+
+
+class ExpansionPanelItem(MDExpansionPanel):
+    ...
+
 
 class TrailingPressedIconButton(
     ButtonBehavior, RotateBehavior, MDListItemTrailingIcon
@@ -38,6 +45,44 @@ KV = """
 
     MDNavigationItemLabel:
         text: root.text
+
+<ExpansionPanelItem>
+    adaptive_height: True
+
+    MDExpansionPanelHeader:
+
+        MDListItem:
+            theme_bg_color: "Custom"
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            ripple_effect: False
+
+            MDListItemLeadingIcon:
+                icon: "checkbox-blank-circle"
+
+            MDListItemHeadlineText:
+                text: "Task description"
+
+            MDListItemSupportingText:
+                text: "Note"
+
+            MDListItemTertiaryText:
+                text: "datetime"
+
+            TrailingPressedIconButton:
+                id: chevron
+                icon: "chevron-right"
+                on_release: app.tap_expansion_chevron(root, chevron)
+
+    MDExpansionPanelContent:
+        id: expansion_content
+        orientation: "vertical"
+        padding: "12dp", 0, "12dp", "12dp"
+        md_bg_color: self.theme_cls.surfaceContainerLowestColor
+
+        MDLabel:
+            text: "Channel information"
+            adaptive_height: True
+            padding: "16dp", "12dp"
 
 MDScreen:
     BoxLayout:
@@ -85,96 +130,17 @@ MDScreen:
                 on_release: app.on_calendar_pressed()
 """
 
-Exp = """
-MDExpansionPanel:
-    MDExpansionPanelHeader:
-        MDListItem:
-            id: base
-            ripple_effect: False
-            on_release: app.tap_expansion_chevron(root, chevron)
-
-            MDListItemHeadlineText:
-                id: name_text_field
-                halign: "left"
-                text: "Example Text"
-
-            TrailingPressedIconButton:
-                id: chevron
-                icon: "chevron-right"
-                on_release: app.tap_expansion_chevron(root, chevron)
-
-    MDExpansionPanelContent:
-        id: subtask_container
-        orientation: "vertical"
-        padding: "12dp", "12dp"
-
-        MDList:
-            id: subtask_list
-
-            MDExpansionPanel:
-                MDExpansionPanelHeader:
-                    MDListItem:
-                        id: base
-                        ripple_effect: False
-                        on_release: app.tap_expansion_chevron(root, chevron)
-
-                        MDListItemHeadlineText:
-                            id: name_text_field
-                            halign: "left"
-                            text: "Example Text"
-
-                        TrailingPressedIconButton:
-                            id: chevron
-                            icon: "chevron-right"
-                            on_release: app.tap_expansion_chevron(root, chevron)
-
-                MDExpansionPanelContent:
-                    id: subtask_container
-                    orientation: "vertical"
-                    padding: "12dp", "12dp"
-
-                    MDList:
-                        id: subtask_list
-
-"""
-
-class Task:
-    def __init__(self, title: str, subtasks: list = None):
-        self.title = title
-        self.subtasks = subtasks or []
-
-class TaskContent(MDBoxLayout):
-    """Container for nested expansion panels (adaptive height)."""
-    pass
-
 class TodoApp(MDApp):
     def build(self):
         return Builder.load_string(KV)
 
     def on_start(self):
-
-        tree = Task(
-            "Project",
-            subtasks=[
-                Task("Frontend", subtasks=[
-                    Task("Login page"),
-                    Task("Dashboard", subtasks=[
-                        Task("Stats Widget"),
-                        Task("User Profile"),
-                    ]),
-                ]),
-                Task("Backend", subtasks=[
-                    Task("Auth"),
-                    Task("Database"),
-                ]),
-                Task("Docs"),
-            ],
-        )
         quest_layout = self.root.ids.quest_layout
         async def add_quests():
             for _ in range(10):
                 await asynckivy.sleep(0)
-                quest_widget = Builder.load_string(Exp)
+                quest_widget = ExpansionPanelItem()
+                quest_widget.ids.expansion_content.add_widget(ExpansionPanelItem())
                 quest_layout.add_widget(quest_widget)
         asynckivy.start(add_quests())
 
