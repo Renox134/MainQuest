@@ -20,15 +20,16 @@ MDScreen:
                     on_release: app.on_menu_pressed()
 
             MDTopAppBarTitle:
+                id: app_title
                 text: "Main Quest"
-                pos_hint: {"center_x": .5, "center_y": .5}
+                # pos_hint: {"center_x": .5, "center_y": .5}
 
             MDTopAppBarTrailingButtonContainer:
                 MDActionTopAppBarButton:
                     icon: "dots-vertical"
                     on_release: app.on_more_pressed()
 
-        ScrollView:    
+        ScrollView:
             MDList:
                 id: quest_layout
 

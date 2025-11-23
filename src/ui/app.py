@@ -11,6 +11,7 @@ from kivy.metrics import dp
 from kivy.animation import Animation
 from kivy.properties import StringProperty
 from kivymd.app import MDApp
+from kivy.clock import Clock
 from kivymd.uix.navigationbar import MDNavigationItem
 
 Window.size = (350, 650)
@@ -77,3 +78,21 @@ class MainQuestApp(MDApp):
         panel.set_chevron_down(
             chevron
         ) if not panel.is_open else panel.set_chevron_up(chevron)
+
+    def refresh_callback(self, *args):
+        '''
+        A method that updates the state of your application
+        while the spinner remains on the screen.
+        '''
+
+        def refresh_callback(interval):
+            self.root.ids.box.clear_widgets()
+            if self.x == 0:
+                self.x, self.y = 15, 30
+            else:
+                self.x, self.y = 0, 15
+            self.set_list()
+            self.root.ids.refresh_layout.refresh_done()
+            self.tick = 0
+
+        Clock.schedule_once(refresh_callback, 1)

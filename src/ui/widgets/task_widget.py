@@ -56,5 +56,6 @@ class TaskWidget:
             self.root.ids.header.add_widget(MDListItemTertiaryText(text=due_date_text))
 
         for subtask in self.task.subtasks:
-            subtask_widget = ExpansionPanelTaskItem(task=subtask, padding=(dp(12), 0, 0, 0))
+            subtask_widget = ExpansionPanelTaskItem(task=subtask,
+                                                    padding=(dp(12), 0, 0, 0))
             self.root.ids.subtask_list.add_widget(subtask_widget)
