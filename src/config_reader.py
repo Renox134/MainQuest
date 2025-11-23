@@ -2,6 +2,7 @@ import json
 
 from typing import Any
 
+
 class Config():
     """
     Reads in the config information from the config json.

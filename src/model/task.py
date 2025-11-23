@@ -69,29 +69,33 @@ class Task:
         self.duration = duration
 
     def __str__(self) -> str:
-        output = [f"Description:\t{self.description}"]
+        out = [f"Description:\t{self.description}"]
 
         if self.duedate:
-            output.append(f"Duedate:\t{self.duedate.strftime(Config.get("time_format"))}")
+            out.append(f"Duedate:\t{self.duedate.strftime(Config.get("time_format"))}")
         if self.completion_date:
-            output.append(f"Completed:\t{self.completion_date.strftime(Config.get("time_format"))}")
+            out.append(f"Completed:\t{self.completion_date.strftime(Config.get("time_format"))}")
         if self.duration is not None:
-            output.append(f"Duration:\t{self.duration} minutes")
+            out.append(f"Duration:\t{self.duration} minutes")
 
         if self.subtasks:
-            output.append(f"Subtasks ({len(self.subtasks)}):")
+            out.append(f"Subtasks ({len(self.subtasks)}):")
             for sub in self.subtasks:
-                output.append(f"  - {sub.description}")
+                out.append(f"  - {sub.description}")
 
-        return "\n".join(output)
+        return "\n".join(out)
 
     def to_dict(self) -> Dict[str, Any]:
         """
         Convert the Task to a dictionary (serializable form).
         """
         duedate_str = self.duedate.strftime(Config.get("time_format")) if self.duedate else None
-        completion_str =\
-            self.completion_date.strftime(Config.get("time_format")) if self.completion_date else None
+
+        completion_str: None | str
+        if self.completion_date is None:
+            completion_str = None
+        else:
+            completion_str = self.completion_date.strftime(Config.get("time_format"))
 
         return {
             "description": self.description,

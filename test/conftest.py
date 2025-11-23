@@ -12,12 +12,12 @@ def test_tasks() -> List[Task]:
     return [
         Task(
             description="Collect water",
-            duedate=datetime.datetime(2002, 7, 27, 23, 59, 59),
+            duedate=datetime.datetime(2002, 7, 27, 23, 59),
             duration=30
         ),
         Task(
             description="Gather food",
-            duedate=datetime.datetime(2003, 8, 28, 0, 0, 0),
+            duedate=datetime.datetime(2003, 8, 28, 0, 0),
             duration=45
         ),
         Task(
@@ -48,7 +48,7 @@ def quest_with_time(test_tasks: List[Task]) -> Quest:
     adjusted_tasks = [
         Task(
             description=o.description + " (timed)",
-            duedate=datetime.datetime(2027, 8, 13, 11, 55, 30),
+            duedate=datetime.datetime(2027, 8, 13, 11, 55),
             duration=o.duration
         )
         for o in test_tasks

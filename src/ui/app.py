@@ -1,7 +1,7 @@
 from typing import Any
 
 from model.quest_log import QuestLog
-from ui.widgets.task_widget import TaskWidget, MDExpansionPanel, TrailingPressedIconButton
+from ui.widgets.task_widget import TrailingPressedIconButton
 from ui.widgets.quest_widget import QuestWidget, ExpansionPanelQuestItem
 
 from kivy.core.window import Window
@@ -12,7 +12,6 @@ from kivy.animation import Animation
 from kivy.properties import StringProperty
 from kivymd.app import MDApp
 from kivymd.uix.navigationbar import MDNavigationItem
-from kivymd.uix.list import MDList
 
 Window.size = (350, 650)
 
@@ -39,6 +38,7 @@ class MainQuestApp(MDApp):
     def on_start(self):
         """Populate quest widgets dynamically after layout is built."""
         quest_layout = self.root.ids.quest_layout
+
         async def add_quests():
             for quest in self.quest_log.quests:
                 await asynckivy.sleep(0)
@@ -65,7 +65,8 @@ class MainQuestApp(MDApp):
     def on_trophy_pressed(self, *args):
         print("Trophy pressed")
 
-    def tap_expansion_chevron(self, panel: ExpansionPanelQuestItem, chevron: TrailingPressedIconButton):
+    def tap_expansion_chevron(self, panel: ExpansionPanelQuestItem,
+                              chevron: TrailingPressedIconButton):
         Animation(
             padding=[0, dp(12), 0, dp(12)]
             if not panel.is_open

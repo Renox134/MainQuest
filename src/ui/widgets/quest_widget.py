@@ -3,10 +3,8 @@ from ui.widgets.task_widget import TaskWidget
 
 import asynckivy
 from kivy.lang.builder import Builder
-from kivymd.uix.label import MDLabel
-from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelContent
+from kivymd.uix.expansionpanel import MDExpansionPanel
 from kivy.properties import StringProperty
-
 
 
 Builder.load_file("ui/widgets/quest_widget.kv")
