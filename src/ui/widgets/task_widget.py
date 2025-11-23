@@ -11,6 +11,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivymd.uix.expansionpanel import MDExpansionPanel
 from kivymd.uix.list import MDListItemTrailingIcon, MDListItemSupportingText, \
     MDListItemTertiaryText, MDListItemLeadingIcon
+from kivy.metrics import dp
 
 Builder.load_file("ui/widgets/task_widget.kv")
 
@@ -53,3 +54,7 @@ class TaskWidget:
         if self.task.duedate is not None:
             due_date_text = "Due: " + self.task.duedate.strftime(Config.get("time_format"))
             self.root.ids.header.add_widget(MDListItemTertiaryText(text=due_date_text))
+
+        for subtask in self.task.subtasks:
+            subtask_widget = ExpansionPanelTaskItem(task=subtask, padding=(dp(12), 0, 0, 0))
+            self.root.ids.subtask_list.add_widget(subtask_widget)
