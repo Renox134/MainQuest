@@ -7,10 +7,11 @@
             id: header
             ripple_effect: False
             on_release: app.tap_expansion_chevron(root, chevron)
+            # on_release: root.open_task_context()
 
             LeadingPressedIconButton:
                 icon: "checkbox-blank-circle"
-                on_release: root.complete_quest()
+                on_release: root.complete_task()
 
             MDListItemHeadlineText:
                 id: name_text_field
@@ -23,7 +24,7 @@
                 on_release: app.tap_expansion_chevron(root, chevron)
 
     MDExpansionPanelContent:
-        id: subtask_container
+        id: expansion_content
         orientation: "vertical"
 
         MDList:

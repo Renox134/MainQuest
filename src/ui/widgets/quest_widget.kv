@@ -22,11 +22,10 @@
                 icon: "dots-vertical"
 
     MDExpansionPanelContent:
-        id: task_container
+        id: expansion_content
         orientation: "vertical"
-        # padding: "12dp", "12dp"
         theme_bg_color: "Custom"
-        md_bg_color: "00ff00"
+        md_bg_color: self.theme_cls.surfaceContainerLowColor
 
         MDList:
             id: task_list

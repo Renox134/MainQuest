@@ -10,9 +10,8 @@ from kivymd.uix.list import *
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.navigationbar import MDNavigationItem
 from kivymd.uix.button import MDIconButton
-from kivymd.uix.divider import MDDivider
 from kivymd.uix.label import MDLabel
-from kivymd.uix.expansionpanel import *
+from kivymd.uix.expansionpanel import MDExpansionPanel
 import asynckivy
 from kivy.properties import StringProperty
 from kivy.core.window import Window
@@ -76,14 +75,8 @@ KV = """
     MDExpansionPanelContent:
         id: expansion_content
         orientation: "vertical"
-        padding: "12dp", "12dp"
+        padding: "12dp", 0, "12dp", "12dp"
         md_bg_color: self.theme_cls.surfaceContainerLowestColor
-
-        # MDLabel:
-        #     id: label_1
-        #     text: "Channel information"
-        #     adaptive_height: True
-        #     padding: "16dp", "12dp"
 
 MDScreen:
     BoxLayout:
@@ -98,7 +91,7 @@ MDScreen:
                     on_release: app.on_menu_pressed()
 
             MDTopAppBarTitle:
-                text: "Main Quest"
+                text: "Test"
                 pos_hint: {"center_x": .5, "center_y": .5}
 
             MDTopAppBarTrailingButtonContainer:
@@ -107,8 +100,11 @@ MDScreen:
                     on_release: app.on_more_pressed()
 
         ScrollView:    
-            MDList:
+            MDGridLayout:
                 id: quest_layout
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
 
         MDNavigationBar:
             id: nav_bar
@@ -141,19 +137,13 @@ class TodoApp(MDApp):
             for _ in range(10):
                 await asynckivy.sleep(0)
                 quest_widget = ExpansionPanelItem()
-                print("Len: ", len(quest_widget.ids.expansion_content.children))
-                # quest_widget.ids.expansion_content.add_widget(ExpansionPanelItem())
-                quest_widget.ids.expansion_content.add_widget(MDLabel(text="Channel information", adaptive_height=True, padding=(dp(16),dp(12))))
+                quest_widget.ids.expansion_content.add_widget(MDListItem(
+                    MDListItemHeadlineText(text="Headline", adaptive_height=True)
+                ))
                 quest_layout.add_widget(quest_widget)
         asynckivy.start(add_quests())
 
     def tap_expansion_chevron(self, panel: MDExpansionPanel, chevron: TrailingPressedIconButton):
-        Animation(
-            padding=[0, dp(12), 0, dp(12)]
-            if not panel.is_open
-            else [0, 0, 0, 0],
-            d=0.2,
-        ).start(panel)
         panel.open() if not panel.is_open else panel.close()
         panel.set_chevron_down(
             chevron

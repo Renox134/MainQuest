@@ -1,0 +1,7 @@
+pillow
+pycairo
+materialyoucolor
+materialshapes
+asynckivy
+kivymd2
+pytest

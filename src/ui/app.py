@@ -11,7 +11,6 @@ from kivy.metrics import dp
 from kivy.animation import Animation
 from kivy.properties import StringProperty
 from kivymd.app import MDApp
-from kivy.clock import Clock
 from kivymd.uix.navigationbar import MDNavigationItem
 
 Window.size = (350, 650)
@@ -47,6 +46,10 @@ class MainQuestApp(MDApp):
                 quest_layout.add_widget(quest_widget.root)
         asynckivy.start(add_quests())
 
+        # fix header
+        self.root.ids.top_app_bar.width = self.root.ids.top_app_bar.minimum_width
+        self.root.ids.top_app_bar.do_layout()
+
     def on_menu_pressed(self, *args):
         self.root.ids.top_app_bar.do_layout()
         print("menu pressed")
@@ -72,27 +75,19 @@ class MainQuestApp(MDApp):
             padding=[0, dp(12), 0, dp(12)]
             if not panel.is_open
             else [0, 0, 0, 0],
-            d=0.2,
+            d=0.25,
         ).start(panel)
-        panel.open() if not panel.is_open else panel.close()
+        if not panel.is_open:
+            panel.bind(on_open=self._after_panel_open)
+            panel.open()
+        else:
+            panel.close()
         panel.set_chevron_down(
             chevron
         ) if not panel.is_open else panel.set_chevron_up(chevron)
 
-    def refresh_callback(self, *args):
-        '''
-        A method that updates the state of your application
-        while the spinner remains on the screen.
-        '''
-
-        def refresh_callback(interval):
-            self.root.ids.box.clear_widgets()
-            if self.x == 0:
-                self.x, self.y = 15, 30
-            else:
-                self.x, self.y = 0, 15
-            self.set_list()
-            self.root.ids.refresh_layout.refresh_done()
-            self.tick = 0
-
-        Clock.schedule_once(refresh_callback, 1)
+    def _after_panel_open(self, panel):
+        panel.unbind(on_open=self._after_panel_open)
+        panel_content = panel.ids.expansion_content
+        panel_content.height = panel_content.minimum_height
+        panel_content.do_layout()

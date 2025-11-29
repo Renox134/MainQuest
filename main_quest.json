@@ -4,20 +4,35 @@
         "tasks": [
             {
                 "description": "Collect water",
-                "duedate": "27/07/2002, 23:59",
+                "duedate": "27/07/2026, 23:59",
                 "completion_date": null,
                 "duration": 30,
                 "subtasks": [
                     {
                         "description": "Find a water source",
-                        "duedate": "27/07/2002, 20:00",
+                        "duedate": "27/07/2026, 20:00",
                         "completion_date": null,
                         "duration": 10,
-                        "subtasks": []
+                        "subtasks": [
+                            {
+                                "description": "Build a rain collector",
+                                "duedate": "27/07/2026, 20:00",
+                                "completion_date": null,
+                                "duration": 120,
+                                "subtasks": []
+                            },
+                            {
+                                "description": "Look for a stream",
+                                "duedate": "27/07/2026, 06:00",
+                                "completion_date": null,
+                                "duration": 60,
+                                "subtasks": []
+                            }
+                        ]
                     },
                     {
                         "description": "Fill containers",
-                        "duedate": "27/07/2002, 23:30",
+                        "duedate": "27/07/2026, 23:30",
                         "completion_date": null,
                         "duration": 20,
                         "subtasks": []

@@ -11,7 +11,6 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivymd.uix.expansionpanel import MDExpansionPanel
 from kivymd.uix.list import MDListItemTrailingIcon, MDListItemSupportingText, \
     MDListItemTertiaryText, MDListItemLeadingIcon
-from kivy.metrics import dp
 
 Builder.load_file("ui/widgets/task_widget.kv")
 
@@ -21,7 +20,10 @@ class ExpansionPanelTaskItem(MDExpansionPanel):
         self.task = task
         super().__init__(**kwargs)
 
-    def complete_quest(self):
+    def open_task_context(self):
+        print("Open Task Context Window")
+
+    def complete_task(self):
         print("Want to complete:\n", self.task, "\nAt ",
               datetime.datetime.now().strftime(Config.get("time_format")))
 
@@ -56,6 +58,5 @@ class TaskWidget:
             self.root.ids.header.add_widget(MDListItemTertiaryText(text=due_date_text))
 
         for subtask in self.task.subtasks:
-            subtask_widget = ExpansionPanelTaskItem(task=subtask,
-                                                    padding=(dp(12), 0, 0, 0))
+            subtask_widget = TaskWidget(subtask).root
             self.root.ids.subtask_list.add_widget(subtask_widget)

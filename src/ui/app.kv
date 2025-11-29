@@ -22,16 +22,19 @@ MDScreen:
             MDTopAppBarTitle:
                 id: app_title
                 text: "Main Quest"
-                # pos_hint: {"center_x": .5, "center_y": .5}
+                pos_hint: {"center_x": .5, "center_y": .5}
 
             MDTopAppBarTrailingButtonContainer:
                 MDActionTopAppBarButton:
                     icon: "dots-vertical"
                     on_release: app.on_more_pressed()
 
-        ScrollView:
-            MDList:
+        ScrollView:    
+            MDGridLayout:
                 id: quest_layout
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
 
         MDNavigationBar:
             id: nav_bar
