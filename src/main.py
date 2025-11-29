@@ -1,13 +1,11 @@
-from model.objective import Objective
-from model.quest import Quest
+from model.quest_log import QuestLog
+from ui.app import MainQuestApp
 
 
 if __name__ == "__main__":
-    objectives = []
+    main_log: QuestLog = QuestLog()
 
-    for i in range(10):
-        objectives.append(Objective("Objective " + str(i)))
+    main_log.import_quests("main_quest.json")
+    main_app = MainQuestApp(main_log)
 
-    q = Quest(objectives, "Test Quest")
-    o = Objective("test")
-    print(o.to_dict())
+    main_app.run()

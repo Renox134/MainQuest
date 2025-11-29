@@ -1,0 +1,57 @@
+#:kivy 2.3.0
+
+<BaseMDNavigationItem>
+    MDNavigationItemIcon:
+        icon: root.icon
+
+    MDNavigationItemLabel:
+        text: root.text
+
+MDScreen:
+    BoxLayout:
+        orientation: "vertical"
+        MDTopAppBar:
+            id: top_app_bar
+            type: "small"
+
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "menu"
+                    on_release: app.on_menu_pressed()
+
+            MDTopAppBarTitle:
+                id: app_title
+                text: "Main Quest"
+                pos_hint: {"center_x": .5, "center_y": .5}
+
+            MDTopAppBarTrailingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "dots-vertical"
+                    on_release: app.on_more_pressed()
+
+        ScrollView:    
+            MDGridLayout:
+                id: quest_layout
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+
+        MDNavigationBar:
+            id: nav_bar
+            on_switch_tabs: app.on_nav_switch(*args)
+
+            BaseMDNavigationItem:
+                icon: "trophy"
+                text: "Progress"
+                on_release: app.on_trophy_pressed()
+
+            BaseMDNavigationItem:
+                icon: "book"
+                text: "Journal"
+                active: True
+                on_release: app.on_home_pressed()
+
+            BaseMDNavigationItem:
+                icon: "calendar"
+                text: "Calendar"
+                on_release: app.on_calendar_pressed()

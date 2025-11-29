@@ -1,0 +1,31 @@
+#:kivy 2.3.0
+
+<ExpansionPanelQuestItem>:
+    MDExpansionPanelHeader:
+        MDListItem:
+            theme_bg_color: "Custom"
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
+            ripple_effect: False
+            on_release: app.tap_expansion_chevron(root, chevron)
+
+            MDListItemHeadlineText:
+                id: name_text_field
+                halign: "center"
+                text: root.text
+
+            TrailingPressedIconButton:
+                id: chevron
+                icon: "chevron-right"
+                on_release: app.tap_expansion_chevron(root, chevron)
+
+            MDIconButton:
+                icon: "dots-vertical"
+
+    MDExpansionPanelContent:
+        id: expansion_content
+        orientation: "vertical"
+        theme_bg_color: "Custom"
+        md_bg_color: self.theme_cls.surfaceContainerLowColor
+
+        MDList:
+            id: task_list

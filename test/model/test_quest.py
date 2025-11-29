@@ -28,7 +28,7 @@ class TestQuest:
     def quest_export(self, request: pytest.FixtureRequest, quest: str):
         try:
             q_1: Quest = request.getfixturevalue(quest)
-            with open("test_quest_log.json", "w", encoding="utf-8") as file:
+            with open("test/test_quest.json", "w", encoding="utf-8") as file:
 
                 json.dump(q_1.to_dict(), file, indent=4)
         except:
@@ -38,7 +38,7 @@ class TestQuest:
         try:
             q_1: Quest = request.getfixturevalue(quest)
 
-            with open("test_quest_log.json", "r", encoding="utf-8") as file:
+            with open("test/test_quest.json", "r", encoding="utf-8") as file:
                 d = json.load(file)
                 q_1_import: Quest = Quest.to_quest(d)
 
