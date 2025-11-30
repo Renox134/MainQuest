@@ -1,4 +1,4 @@
-from kivy.uix.screenmanager import Screen, ScreenManager
+from kivy.uix.screenmanager import Screen
 from kivymd.uix.navigationbar import MDNavigationItem
 from kivy.properties import StringProperty
 
@@ -20,10 +20,6 @@ class ProgressWindow(Screen):
 
 
 class CalendarWindow(Screen):
-    pass
-
-
-class WindowManager(ScreenManager):
     pass
 
 

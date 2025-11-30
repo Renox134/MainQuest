@@ -1,6 +1,7 @@
 from typing import Any
 
 from model.quest_log import QuestLog
+from model.task import Task
 from ui.widgets.quest_widget import QuestWidget
 from ui.mq_resources import MQ_Resource_Loader
 
@@ -35,7 +36,7 @@ class MainQuestApp(MDApp):
         async def add_quests():
             for quest in self.quest_log.quests:
                 await asynckivy.sleep(0)
-                quest_widget = QuestWidget(quest)
+                quest_widget = QuestWidget(quest, self.root)
                 quest_layout.add_widget(quest_widget.root)
         asynckivy.start(add_quests())
 
@@ -75,3 +76,6 @@ class MainQuestApp(MDApp):
         manager = self.root.ids.screen_manager
         manager.transition.direction = "right"
         self.root.ids.screen_manager.current = "progress_window"
+
+    def open_task_context(self, task: Task) -> None:
+        print("Test")

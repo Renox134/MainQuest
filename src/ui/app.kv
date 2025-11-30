@@ -1,55 +1,62 @@
 #:kivy 2.3.0
 
 MDScreen:
-    BoxLayout:
-        orientation: "vertical"
-        MDTopAppBar:
-            id: top_app_bar
-            type: "small"
+    id: global_root
+    MDNavigationLayout:
+        id: global_nav_layout
+        MDScreenManager:
+            id: outer_screen_manager
+            Screen:
+                name: "main_app_screen"
+                BoxLayout:
+                    orientation: "vertical"
+                    MDTopAppBar:
+                        id: top_app_bar
+                        type: "small"
 
-            MDTopAppBarLeadingButtonContainer:
-                MDActionTopAppBarButton:
-                    icon: "menu"
-                    on_release: app.on_menu_pressed()
+                        MDTopAppBarLeadingButtonContainer:
+                            MDActionTopAppBarButton:
+                                icon: "menu"
+                                on_release: app.on_menu_pressed()
 
-            MDTopAppBarTitle:
-                id: app_title
-                text: "Main Quest"
-                pos_hint: {"center_x": .5, "center_y": .5}
+                        MDTopAppBarTitle:
+                            id: app_title
+                            text: "Main Quest"
+                            pos_hint: {"center_x": .5, "center_y": .5}
 
-            MDTopAppBarTrailingButtonContainer:
-                MDActionTopAppBarButton:
-                    icon: "dots-vertical"
-                    on_release: app.on_more_pressed()
+                        MDTopAppBarTrailingButtonContainer:
+                            MDActionTopAppBarButton:
+                                icon: "dots-vertical"
+                                on_release: app.on_more_pressed()
 
-        WindowManager:
-            id: screen_manager
-            MainAppWindow:
-                ScrollView:    
-                    MDGridLayout:
-                        id: quest_layout
-                        cols: 1
-                        size_hint_y: None
-                        height: self.minimum_height
-            ProgressWindow:
-            CalendarWindow:
+                    MDScreenManager:
+                        id: screen_manager
+                        MainAppWindow:
+                            ScrollView:    
+                                MDGridLayout:
+                                    id: quest_layout
+                                    cols: 1
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                        ProgressWindow:
+                        CalendarWindow:
 
-        MDNavigationBar:
-            id: nav_bar
-            on_switch_tabs: app.on_nav_switch(*args)
+                    MDNavigationBar:
+                        id: nav_bar
+                        on_switch_tabs: app.on_nav_switch(*args)
 
-            BaseMDNavigationItem:
-                icon: "trophy"
-                text: "Progress"
-                on_release: app.on_trophy_pressed()
+                        BaseMDNavigationItem:
+                            icon: "trophy"
+                            text: "Progress"
+                            on_release: app.on_trophy_pressed()
 
-            BaseMDNavigationItem:
-                icon: "book"
-                text: "Journal"
-                active: True
-                on_release: app.on_home_pressed()
+                        BaseMDNavigationItem:
+                            icon: "book"
+                            text: "Journal"
+                            active: True
+                            on_release: app.on_home_pressed()
 
-            BaseMDNavigationItem:
-                icon: "calendar"
-                text: "Calendar"
-                on_release: app.on_calendar_pressed()
+                        BaseMDNavigationItem:
+                            icon: "calendar"
+                            text: "Calendar"
+                            on_release: app.on_calendar_pressed()
