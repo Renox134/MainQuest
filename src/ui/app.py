@@ -2,21 +2,15 @@ from typing import Any
 
 from model.quest_log import QuestLog
 from ui.widgets.quest_widget import QuestWidget
+from ui.mq_resources import MQ_Resource_Loader
 
 from kivy.core.window import Window
 from kivy.lang import Builder
 import asynckivy
 
-from kivy.properties import StringProperty
 from kivymd.app import MDApp
-from kivymd.uix.navigationbar import MDNavigationItem
 
 Window.size = (350, 650)
-
-
-class BaseMDNavigationItem(MDNavigationItem):
-    icon = StringProperty()
-    text = StringProperty()
 
 
 class MainQuestApp(MDApp):
@@ -26,6 +20,7 @@ class MainQuestApp(MDApp):
 
     def __init__(self, quest_log: QuestLog, **kwargs: Any):
         self.quest_log = quest_log
+        MQ_Resource_Loader().load_resources()
         super().__init__(**kwargs)
 
     def build(self):
