@@ -1,14 +1,12 @@
 from typing import Any
 
 from model.quest_log import QuestLog
-from ui.widgets.task_widget import TrailingPressedIconButton
-from ui.widgets.quest_widget import QuestWidget, ExpansionPanelQuestItem
+from ui.widgets.quest_widget import QuestWidget
 
 from kivy.core.window import Window
 from kivy.lang import Builder
 import asynckivy
-from kivy.metrics import dp
-from kivy.animation import Animation
+
 from kivy.properties import StringProperty
 from kivymd.app import MDApp
 from kivymd.uix.navigationbar import MDNavigationItem
@@ -68,26 +66,3 @@ class MainQuestApp(MDApp):
 
     def on_trophy_pressed(self, *args):
         print("Trophy pressed")
-
-    def tap_expansion_chevron(self, panel: ExpansionPanelQuestItem,
-                              chevron: TrailingPressedIconButton):
-        Animation(
-            padding=[0, dp(12), 0, dp(12)]
-            if not panel.is_open
-            else [0, 0, 0, 0],
-            d=0.25,
-        ).start(panel)
-        if not panel.is_open:
-            panel.bind(on_open=self._after_panel_open)
-            panel.open()
-        else:
-            panel.close()
-        panel.set_chevron_down(
-            chevron
-        ) if not panel.is_open else panel.set_chevron_up(chevron)
-
-    def _after_panel_open(self, panel):
-        panel.unbind(on_open=self._after_panel_open)
-        panel_content = panel.ids.expansion_content
-        panel_content.height = panel_content.minimum_height
-        panel_content.do_layout()

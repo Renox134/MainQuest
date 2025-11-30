@@ -6,8 +6,7 @@
         MDListItem:
             id: header
             ripple_effect: False
-            on_release: app.tap_expansion_chevron(root, chevron)
-            # on_release: root.open_task_context()
+            on_release: root.open_task_context()
 
             LeadingPressedIconButton:
                 icon: "checkbox-blank-circle"
@@ -21,7 +20,7 @@
             TrailingPressedIconButton:
                 id: chevron
                 icon: "chevron-right"
-                on_release: app.tap_expansion_chevron(root, chevron)
+                on_release: root.tap_expansion_chevron(chevron)
 
     MDExpansionPanelContent:
         id: expansion_content
