@@ -1,8 +1,23 @@
 #:kivy 2.3.0
 
-<BaseMDNavigationItem>
+<BaseMDNavigationItem>:
     MDNavigationItemIcon:
         icon: root.icon
 
     MDNavigationItemLabel:
         text: root.text
+
+<MainAppWindow>:
+    name: "main_window"
+
+<ProgressWindow>:
+    name: "progress_window"
+    MDLabel:
+        text: "Progress tracking is comming soon :)"
+        halign: "center"
+
+<CalendarWindow>:
+    name: "calendar_window"
+    MDLabel:
+        text: "Calendar is comming soon :)"
+        halign: "center"

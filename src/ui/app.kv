@@ -22,12 +22,17 @@ MDScreen:
                     icon: "dots-vertical"
                     on_release: app.on_more_pressed()
 
-        ScrollView:    
-            MDGridLayout:
-                id: quest_layout
-                cols: 1
-                size_hint_y: None
-                height: self.minimum_height
+        WindowManager:
+            id: screen_manager
+            MainAppWindow:
+                ScrollView:    
+                    MDGridLayout:
+                        id: quest_layout
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+            ProgressWindow:
+            CalendarWindow:
 
         MDNavigationBar:
             id: nav_bar

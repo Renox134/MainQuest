@@ -51,13 +51,27 @@ class MainQuestApp(MDApp):
         print("three dots pressed")
 
     def on_nav_switch(self, *args):
-        print("Called")
+        print("Nav switch")
 
     def on_calendar_pressed(self, *args):
-        print("Calendar pressed")
+        manager = self.root.ids.screen_manager
+        manager.transition.direction = "left"
+        self.root.ids.screen_manager.current = "calendar_window"
 
     def on_home_pressed(self, *args):
-        print("Home pressed")
+        manager = self.root.ids.screen_manager
+        direction = ""
+        match self.root.ids.screen_manager.current:
+            case "progress_window":
+                direction = "left"
+            case "calendar_window":
+                direction = "right"
+            case _:
+                direction = "up"
+        manager.transition.direction = direction
+        self.root.ids.screen_manager.current = "main_window"
 
     def on_trophy_pressed(self, *args):
-        print("Trophy pressed")
+        manager = self.root.ids.screen_manager
+        manager.transition.direction = "right"
+        self.root.ids.screen_manager.current = "progress_window"
