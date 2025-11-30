@@ -5,6 +5,8 @@ import datetime
 
 import asynckivy
 from kivy.lang.builder import Builder
+from kivy.metrics import dp
+from kivy.animation import Animation
 
 from kivymd.uix.behaviors import RotateBehavior
 from kivy.uix.behaviors import ButtonBehavior
@@ -12,7 +14,14 @@ from kivymd.uix.expansionpanel import MDExpansionPanel
 from kivymd.uix.list import MDListItemTrailingIcon, MDListItemSupportingText, \
     MDListItemTertiaryText, MDListItemLeadingIcon
 
+
 Builder.load_file("ui/widgets/task_widget.kv")
+
+
+class TrailingPressedIconButton(
+    ButtonBehavior, RotateBehavior, MDListItemTrailingIcon
+):
+    ...
 
 
 class ExpansionPanelTaskItem(MDExpansionPanel):
@@ -27,11 +36,27 @@ class ExpansionPanelTaskItem(MDExpansionPanel):
         print("Want to complete:\n", self.task, "\nAt ",
               datetime.datetime.now().strftime(Config.get("time_format")))
 
+    def tap_expansion_chevron(self, chevron: TrailingPressedIconButton):
+        Animation(
+            padding=[0, dp(12), 0, dp(12)]
+            if not self.is_open
+            else [0, 0, 0, 0],
+            d=0.25,
+        ).start(self)
+        if not self.is_open:
+            self.bind(on_open=self._after_panel_open)
+            self.open()
+        else:
+            self.close()
+        self.set_chevron_down(
+            chevron
+        ) if not self.is_open else self.set_chevron_up(chevron)
 
-class TrailingPressedIconButton(
-    ButtonBehavior, RotateBehavior, MDListItemTrailingIcon
-):
-    ...
+    def _after_panel_open(self, panel):
+        panel.unbind(on_open=self._after_panel_open)
+        panel_content = panel.ids.expansion_content
+        panel_content.height = panel_content.minimum_height
+        panel_content.do_layout()
 
 
 class LeadingPressedIconButton(ButtonBehavior, MDListItemLeadingIcon):

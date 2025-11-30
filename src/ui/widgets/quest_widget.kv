@@ -6,20 +6,21 @@
             theme_bg_color: "Custom"
             md_bg_color: self.theme_cls.surfaceContainerLowColor
             ripple_effect: False
-            on_release: app.tap_expansion_chevron(root, chevron)
+            on_release: root.tap_expansion_chevron(chevron)
 
             MDListItemHeadlineText:
                 id: name_text_field
-                halign: "center"
-                text: root.text
+                halign: "left"
+                text: root.quest.name
 
             TrailingPressedIconButton:
                 id: chevron
                 icon: "chevron-right"
-                on_release: app.tap_expansion_chevron(root, chevron)
+                on_release: root.tap_expansion_chevron(chevron)
 
             MDIconButton:
                 icon: "dots-vertical"
+                on_release: root.open_quest_context()
 
     MDExpansionPanelContent:
         id: expansion_content

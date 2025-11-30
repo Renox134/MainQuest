@@ -1,24 +1,16 @@
 from typing import Any
 
 from model.quest_log import QuestLog
-from ui.widgets.task_widget import TrailingPressedIconButton
-from ui.widgets.quest_widget import QuestWidget, ExpansionPanelQuestItem
+from ui.widgets.quest_widget import QuestWidget
+from ui.mq_resources import MQ_Resource_Loader
 
 from kivy.core.window import Window
 from kivy.lang import Builder
 import asynckivy
-from kivy.metrics import dp
-from kivy.animation import Animation
-from kivy.properties import StringProperty
+
 from kivymd.app import MDApp
-from kivymd.uix.navigationbar import MDNavigationItem
 
 Window.size = (350, 650)
-
-
-class BaseMDNavigationItem(MDNavigationItem):
-    icon = StringProperty()
-    text = StringProperty()
 
 
 class MainQuestApp(MDApp):
@@ -28,6 +20,7 @@ class MainQuestApp(MDApp):
 
     def __init__(self, quest_log: QuestLog, **kwargs: Any):
         self.quest_log = quest_log
+        MQ_Resource_Loader().load_resources()
         super().__init__(**kwargs)
 
     def build(self):
@@ -58,36 +51,27 @@ class MainQuestApp(MDApp):
         print("three dots pressed")
 
     def on_nav_switch(self, *args):
-        print("Called")
+        print("Nav switch")
 
     def on_calendar_pressed(self, *args):
-        print("Calendar pressed")
+        manager = self.root.ids.screen_manager
+        manager.transition.direction = "left"
+        self.root.ids.screen_manager.current = "calendar_window"
 
     def on_home_pressed(self, *args):
-        print("Home pressed")
+        manager = self.root.ids.screen_manager
+        direction = ""
+        match self.root.ids.screen_manager.current:
+            case "progress_window":
+                direction = "left"
+            case "calendar_window":
+                direction = "right"
+            case _:
+                direction = "up"
+        manager.transition.direction = direction
+        self.root.ids.screen_manager.current = "main_window"
 
     def on_trophy_pressed(self, *args):
-        print("Trophy pressed")
-
-    def tap_expansion_chevron(self, panel: ExpansionPanelQuestItem,
-                              chevron: TrailingPressedIconButton):
-        Animation(
-            padding=[0, dp(12), 0, dp(12)]
-            if not panel.is_open
-            else [0, 0, 0, 0],
-            d=0.25,
-        ).start(panel)
-        if not panel.is_open:
-            panel.bind(on_open=self._after_panel_open)
-            panel.open()
-        else:
-            panel.close()
-        panel.set_chevron_down(
-            chevron
-        ) if not panel.is_open else panel.set_chevron_up(chevron)
-
-    def _after_panel_open(self, panel):
-        panel.unbind(on_open=self._after_panel_open)
-        panel_content = panel.ids.expansion_content
-        panel_content.height = panel_content.minimum_height
-        panel_content.do_layout()
+        manager = self.root.ids.screen_manager
+        manager.transition.direction = "right"
+        self.root.ids.screen_manager.current = "progress_window"
