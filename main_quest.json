@@ -4,6 +4,7 @@
         "tasks": [
             {
                 "description": "Collect water",
+                "notes": "Water in necessary to survive",
                 "duedate": "27/07/2026, 23:59",
                 "completion_date": null,
                 "duration": 30,
