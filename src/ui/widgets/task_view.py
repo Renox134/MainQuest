@@ -1,12 +1,24 @@
 from model.task import Task
 
 from kivymd.uix.bottomsheet import MDBottomSheet
+from kivy.uix.behaviors import ButtonBehavior
+from kivymd.uix.textfield import MDTextFieldTrailingIcon, MDTextField
 from kivymd.uix.pickers import MDDockedDatePicker, MDModalInputDatePicker, MDModalDatePicker
 from kivy.metrics import dp
 from kivy.lang.builder import Builder
 
 
 Builder.load_file("ui/widgets/task_view.kv")
+
+
+class TrailingTextFieldIconButton(
+    ButtonBehavior, MDTextFieldTrailingIcon
+):
+    ...
+
+
+class DateSelectorField(MDTextField):
+    pass
 
 
 class TaskView(MDBottomSheet):
@@ -16,8 +28,8 @@ class TaskView(MDBottomSheet):
         self.bind(on_close=self.remove_widget_when_closed)
 
         # set state of the widget to task
-        if self.task.notes is not None:
-            self.ids.notes_field.text = task.notes
+        # if self.task.notes is not None:
+        #     self.ids.notes_field.text = task.notes
 
     def show_date_picker(self, focus):
         
@@ -30,10 +42,6 @@ class TaskView(MDBottomSheet):
             self.ids.date_field.center_x - date_dialog.width / 2,
             self.ids.date_field.y - (date_dialog.height - dp(320)),
         ]
-        date_dialog.open()
-
-    def show_date_picker(self):
-        date_dialog = MDModalDatePicker()
         date_dialog.open()
 
     def remove_widget_when_closed(self, widget):
