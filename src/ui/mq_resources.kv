@@ -53,30 +53,33 @@
                 cols: 5
                 adaptive_width: True
                 MDButton:
+                    on_release: root.select_date()
+
                     MDButtonText:
                         text: "Date"
                     MDButtonIcon:
                         icon: "calendar"
                 MDButton:
+                    on_release: root.select_time()
+
                     MDButtonText:
                         text: "Time"
                     MDButtonIcon:
                         icon: "clock"
                 MDButton:
+                    on_release: root.set_deadline()
+
                     MDButtonText:
                         text: "Deadline"
                     MDButtonIcon:
                         icon: "target"
                 MDButton:
+                    on_release: root.assign_priority()
+
                     MDButtonText:
-                        text: "Date"
+                        text: "Priority"
                     MDButtonIcon:
-                        icon: "calendar"
-                MDButton:
-                    MDButtonText:
-                        text: "Date"
-                    MDButtonIcon:
-                        icon: "calendar"
+                        icon: "flag"
 
 <DateSelectorField>:
     id: date_field
@@ -103,8 +106,6 @@
     MDBottomSheetDragHandle:
 
     MDGridLayout:
-        theme_bg_color: "Custom"
-        md_bg_color: "#680606ff"
         cols: 1
         rows: 5
         orientation: "tb-lr"

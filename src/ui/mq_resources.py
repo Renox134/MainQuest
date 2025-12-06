@@ -35,7 +35,23 @@ class DateSelectorField(MDTextField):
 
 
 class TaskView(MDGridLayout):
-    pass
+    
+    def select_date(self):
+        date_dialog = MDDockedDatePicker()
+        date_dialog.pos = [
+            self.center_x - date_dialog.width / 2,
+            self.y,
+        ]
+        date_dialog.open()
+
+    def select_time(self):
+        print("Select Time")
+
+    def set_deadline(self):
+        print("Set Deadline")
+
+    def assign_priority(self):
+        print("Assign priority")
 
 class TaskBottomSheet(MDBottomSheet):
     def __init__(self, *args, **kwargs):
