@@ -21,3 +21,53 @@
     MDLabel:
         text: "Calendar is comming soon :)"
         halign: "center"
+
+<DateSelectorField>:
+    id: date_field
+    mode: "filled"
+    pos_hint: {'center_x': .5, 'center_y': .85}
+    size_hint_x: .5
+
+    MDTextFieldHintText:
+        text: "Date picker"
+
+    MDTextFieldHelperText:
+        text: "DD/MM/YYYY"
+        mode: "persistent"
+
+    MDTextFieldTrailingIcon:
+        icon: "calendar"
+
+<TaskBottomSheet>:
+    id: task_bottom_sheet
+    size_hint_y: 0.7
+    size_hint_x: 0.95
+    orientation: "vertical"
+
+    MDBottomSheetDragHandle:
+
+    MDGridLayout:
+        theme_bg_color: "Custom"
+        md_bg_color: "#680606ff"
+        cols: 1
+        rows: 5
+        orientation: "tb-lr"
+
+        MDTextField:
+            id: description_field
+            mode: "filled"
+            padding: "12dp", "12dp"
+
+            MDTextFieldHintText:
+                text: "Task Description"
+
+        MDTextField:
+            id: notes_field
+            mode: "filled"
+            padding: "12dp", "12dp"
+
+            MDTextFieldHintText:
+                text: "Notes"
+
+        DateSelectorField:
+            on_focus: task_bottom_sheet.show_date_picker(self.focus)

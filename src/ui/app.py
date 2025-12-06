@@ -3,7 +3,7 @@ from typing import Any
 from model.quest_log import QuestLog
 from model.task import Task
 from ui.widgets.quest_widget import QuestWidget
-from ui.mq_resources import MQ_Resource_Loader
+from ui.mq_resources import MQ_Resource_Loader, TaskBottomSheet
 
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -79,3 +79,16 @@ class MainQuestApp(MDApp):
 
     def open_task_context(self, task: Task) -> None:
         print("Test")
+
+    def show_date_picker(self, focus):
+        from kivymd.uix.pickers import MDDockedDatePicker
+        from kivy.metrics import dp
+        if not focus:
+            return
+
+        date_dialog = MDDockedDatePicker()
+        date_dialog.pos = [
+            self.center_x - date_dialog.width / 2,
+            self.y - (date_dialog.height - dp(320)),
+        ]
+        date_dialog.open()
