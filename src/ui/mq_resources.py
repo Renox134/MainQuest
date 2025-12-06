@@ -4,8 +4,8 @@ from kivy.properties import StringProperty
 from model.task import Task
 
 from kivymd.uix.bottomsheet import MDBottomSheet
-from kivy.uix.behaviors import ButtonBehavior
-from kivymd.uix.textfield import MDTextFieldTrailingIcon, MDTextField
+from kivymd.uix.gridlayout import MDGridLayout
+from kivymd.uix.textfield import  MDTextField
 from kivymd.uix.pickers import MDDockedDatePicker, MDModalInputDatePicker, MDModalDatePicker
 from kivy.metrics import dp
 
@@ -33,6 +33,9 @@ class DateSelectorField(MDTextField):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+
+class TaskView(MDGridLayout):
+    pass
 
 class TaskBottomSheet(MDBottomSheet):
     def __init__(self, *args, **kwargs):

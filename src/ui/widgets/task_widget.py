@@ -1,8 +1,6 @@
 from model.task import Task
 from config_reader import Config
 
-from ui.widgets.task_view import TaskView
-
 import datetime
 
 import asynckivy
@@ -20,39 +18,6 @@ from kivymd.uix.list import MDListItemTrailingIcon, MDListItemSupportingText, \
 
 Builder.load_file("ui/widgets/task_widget.kv")
 
-KV="""
-MDBottomSheet:
-    size_hint_y: 0.5
-
-    MDBottomSheetDragHandle:
-
-    MDGridLayout:
-        theme_bg_color: "Custom"
-        md_bg_color: "#680606ff"
-        cols: 1
-        rows: 5
-        orientation: "tb-lr"
-
-        MDTextField:
-            mode: "filled"
-
-            MDTextFieldLeadingIcon:
-                icon: "account"
-
-            MDTextFieldHintText:
-                text: "Test"
-
-            MDTextFieldHelperText:
-                text: "Helper text"
-                mode: "persistent"
-
-            MDTextFieldTrailingIcon:
-                icon: "information"
-
-            MDTextFieldMaxLengthText:
-                max_text_length: 10
-"""
-
 
 class TrailingPressedIconButton(
     ButtonBehavior, RotateBehavior, MDListItemTrailingIcon
@@ -69,10 +34,8 @@ class ExpansionPanelTaskItem(MDExpansionPanel):
 
     def open_task_context(self):
         print("Open Task Context Window")
-        nav = self.global_root.ids.global_nav_layout
-        bottom_sheet = Builder.load_string(KV) #  TaskView(self.task, id="task_view")
-        nav.add_widget(bottom_sheet)
-        bottom_sheet.set_state("toggle")
+        self.global_root.ids.task_bottom_sheet.set_state("toggle")
+
 
     def complete_task(self):
         print("Want to complete:\n", self.task, "\nAt ",

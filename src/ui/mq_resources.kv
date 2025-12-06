@@ -22,6 +22,62 @@
         text: "Calendar is comming soon :)"
         halign: "center"
 
+<TaskView>:
+    rows: 3
+    cols: 1
+
+    MDTextField:
+        id: description_field
+        mode: "filled"
+
+        MDTextFieldHintText:
+            text: "Task Description"
+
+    MDTextField:
+        id: notes_field
+        mode: "filled"
+
+        MDTextFieldHintText:
+            text: "Notes"
+
+    MDGridLayout:
+        rows: 1
+        cols: 1
+        padding: "0dp", "12dp"
+
+        ScrollView:
+            do_scroll_x: True
+            do_scroll_y: False
+            MDGridLayout:
+                rows: 1
+                cols: 5
+                adaptive_width: True
+                MDButton:
+                    MDButtonText:
+                        text: "Date"
+                    MDButtonIcon:
+                        icon: "calendar"
+                MDButton:
+                    MDButtonText:
+                        text: "Time"
+                    MDButtonIcon:
+                        icon: "clock"
+                MDButton:
+                    MDButtonText:
+                        text: "Deadline"
+                    MDButtonIcon:
+                        icon: "target"
+                MDButton:
+                    MDButtonText:
+                        text: "Date"
+                    MDButtonIcon:
+                        icon: "calendar"
+                MDButton:
+                    MDButtonText:
+                        text: "Date"
+                    MDButtonIcon:
+                        icon: "calendar"
+
 <DateSelectorField>:
     id: date_field
     mode: "filled"
@@ -53,21 +109,7 @@
         rows: 5
         orientation: "tb-lr"
 
-        MDTextField:
-            id: description_field
-            mode: "filled"
-            padding: "12dp", "12dp"
+        TaskView:
 
-            MDTextFieldHintText:
-                text: "Task Description"
-
-        MDTextField:
-            id: notes_field
-            mode: "filled"
-            padding: "12dp", "12dp"
-
-            MDTextFieldHintText:
-                text: "Notes"
-
-        DateSelectorField:
-            on_focus: task_bottom_sheet.show_date_picker(self.focus)
+        # DateSelectorField:
+        #     on_focus: task_bottom_sheet.show_date_picker(self.focus)
