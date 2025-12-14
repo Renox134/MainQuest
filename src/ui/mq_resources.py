@@ -37,7 +37,7 @@ class DateSelectorField(MDTextField):
 class TaskView(MDGridLayout):
     
     def select_date(self):
-        date_dialog = MDDockedDatePicker()
+        date_dialog = MDModalDatePicker()
         date_dialog.pos = [
             self.center_x - date_dialog.width / 2,
             self.y,
@@ -55,8 +55,12 @@ class TaskView(MDGridLayout):
 
 class TaskBottomSheet(MDBottomSheet):
     def __init__(self, *args, **kwargs):
+        def tmp(*args):
+            print("D")
+            return True
         super().__init__(*args, **kwargs)
         self.bind(on_close=self.remove_widget_when_closed)
+        self.bind(on_dismiss=tmp)
 
     def remove_widget_when_closed(self, widget):
         """Removes the widget when closed, such that it doesn't stay around.
@@ -64,18 +68,8 @@ class TaskBottomSheet(MDBottomSheet):
         Args:
             widget (_type_): The task view widget to remove.
         """
+        return False
         widget.parent.remove_widget(widget)
-
-    def show_date_picker(self, focus):
-        if not focus:
-            return
-
-        date_dialog = MDDockedDatePicker()
-        date_dialog.pos = [
-            self.center_x - date_dialog.width / 2,
-            self.y,
-        ]
-        date_dialog.open()
 
 
 class MQ_Resource_Loader():
