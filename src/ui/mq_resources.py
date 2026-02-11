@@ -1,13 +1,10 @@
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.navigationbar import MDNavigationItem
 from kivy.properties import StringProperty
-from model.task import Task
 
-from kivymd.uix.bottomsheet import MDBottomSheet
 from kivymd.uix.gridlayout import MDGridLayout
-from kivymd.uix.textfield import  MDTextField
-from kivymd.uix.pickers import MDDockedDatePicker, MDModalInputDatePicker, MDModalDatePicker
-from kivy.metrics import dp
+from kivymd.uix.textfield import MDTextField
+from kivymd.uix.pickers import MDModalDatePicker
 
 from kivy.lang import Builder
 
@@ -35,7 +32,7 @@ class DateSelectorField(MDTextField):
 
 
 class TaskView(MDGridLayout):
-    
+
     def select_date(self):
         date_dialog = MDModalDatePicker()
         date_dialog.pos = [
@@ -52,24 +49,6 @@ class TaskView(MDGridLayout):
 
     def assign_priority(self):
         print("Assign priority")
-
-class TaskBottomSheet(MDBottomSheet):
-    def __init__(self, *args, **kwargs):
-        def tmp(*args):
-            print("D")
-            return True
-        super().__init__(*args, **kwargs)
-        self.bind(on_close=self.remove_widget_when_closed)
-        self.bind(on_dismiss=tmp)
-
-    def remove_widget_when_closed(self, widget):
-        """Removes the widget when closed, such that it doesn't stay around.
-
-        Args:
-            widget (_type_): The task view widget to remove.
-        """
-        return False
-        widget.parent.remove_widget(widget)
 
 
 class MQ_Resource_Loader():

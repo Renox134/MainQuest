@@ -1,30 +1,15 @@
 #:kivy 2.3.0
 
-<ExpansionPanelTaskItem>:
-    id: ExpansionPanelTaskItem
-    MDExpansionPanelHeader:
-        MDListItem:
-            id: header
-            ripple_effect: False
-            on_release: root.open_task_context()
+<ListTaskItem>:
+    id: header
+    ripple_effect: False
+    on_release: root.open_task_context()
 
-            LeadingPressedIconButton:
-                icon: "checkbox-blank-circle"
-                on_release: root.complete_task()
+    LeadingPressedIconButton:
+        icon: "checkbox-blank-circle"
+        on_release: root.complete_task()
 
-            MDListItemHeadlineText:
-                id: name_text_field
-                halign: "left"
-                text: root.task.description
-
-            TrailingPressedIconButton:
-                id: chevron
-                icon: "chevron-right"
-                on_release: root.tap_expansion_chevron(chevron)
-
-    MDExpansionPanelContent:
-        id: expansion_content
-        orientation: "vertical"
-
-        MDList:
-            id: subtask_list
+    MDListItemHeadlineText:
+        id: name_text_field
+        halign: "left"
+        text: root.task.description
