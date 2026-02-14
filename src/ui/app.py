@@ -3,7 +3,7 @@ from typing import Any
 from model.quest_log import QuestLog
 from model.task import Task
 from ui.widgets.quest_widget import QuestWidget
-from ui.mq_resources import MQ_Resource_Loader
+from ui.mq_resources import MQ_Resource_Loader, TaskView
 
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -77,8 +77,18 @@ class MainQuestApp(MDApp):
         manager.transition.direction = "right"
         self.root.ids.screen_manager.current = "progress_window"
 
-    def open_task_context(self, task: Task) -> None:
-        print("Test")
+    def open_task_screen(self, task: Task) -> None:
+        manager = self.root.ids.outer_screen_manager
+        manager.transition.direction = "left"
+        self.root.ids.task_screen_root.clear_widgets()
+        self.root.ids.task_screen_root.add_widget(TaskView(task))
+        self.root.ids.outer_screen_manager.current = "task_screen"
+
+    def close_task_screen(self) -> None:
+        manager = self.root.ids.outer_screen_manager
+        manager.transition.direction = "right"
+        self.root.ids.task_screen_root.clear_widgets()
+        self.root.ids.outer_screen_manager.current = "main_app_screen"
 
     def show_date_picker(self, focus):
         from kivymd.uix.pickers import MDDockedDatePicker

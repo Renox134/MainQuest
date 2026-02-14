@@ -52,7 +52,7 @@ class Task:
         )
 
     def __init__(self,
-                 description: str,
+                 description: str = "",
                  subtasks: Optional[List["Task"]] = None,
                  notes: Optional[str] = None,
                  duedate: Optional[datetime.datetime] = None,

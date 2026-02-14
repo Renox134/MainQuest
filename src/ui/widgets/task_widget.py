@@ -1,7 +1,6 @@
 from model.task import Task
+from ui.mq_resources import ListTaskItem
 from config_reader import Config
-
-import datetime
 
 import asynckivy
 from kivy.lang.builder import Builder
@@ -12,20 +11,7 @@ from kivymd.uix.list import MDListItemSupportingText, MDListItemTertiaryText, \
     MDListItemLeadingIcon, MDListItem
 
 
-Builder.load_file("ui/widgets/task_widget.kv")
-
-
-class ListTaskItem(MDListItem):
-    def __init__(self, task: Task = Task(description=""), **kwargs):
-        self.task = task
-        super().__init__(**kwargs)
-
-    def open_task_context(self):
-        print("Open Task Context Window")
-
-    def complete_task(self):
-        print("Want to complete:\n", self.task, "\nAt ",
-              datetime.datetime.now().strftime(Config.get("time_format")))
+# Builder.load_file("ui/widgets/task_widget.kv")
 
 
 class LeadingPressedIconButton(ButtonBehavior, MDListItemLeadingIcon):

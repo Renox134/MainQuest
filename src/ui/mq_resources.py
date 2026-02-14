@@ -1,9 +1,15 @@
+from model.task import Task
+from config_reader import Config
+
+import datetime
+
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.navigationbar import MDNavigationItem
 from kivy.properties import StringProperty
 
-from kivymd.uix.gridlayout import MDGridLayout
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.textfield import MDTextField
+from kivymd.uix.list import MDListItem
 from kivymd.uix.pickers import MDModalDatePicker
 
 from kivy.lang import Builder
@@ -31,7 +37,45 @@ class DateSelectorField(MDTextField):
         super().__init__(*args, **kwargs)
 
 
-class TaskView(MDGridLayout):
+class ListTaskItem(MDListItem):
+    def __init__(self, task: Task = Task(), **kwargs):
+        self.task = task
+        super().__init__(**kwargs)
+
+    def open_task_context(self):
+        print("Open Task Context Window")
+        print(self.parent.parent.parent.parent.parent.parent.parent)
+
+    def complete_task(self):
+        print("Want to complete:\n", self.task, "\nAt ",
+              datetime.datetime.now().strftime(Config.get("time_format")))
+
+
+class TaskView(MDBoxLayout):
+
+    def __init__(self, task: Task, *args, **kwargs):
+        self.task: Task = task
+        super().__init__(*args, **kwargs)
+        self.fill_widgets()
+
+    def fill_widgets(self) -> None:
+        self.ids.description_field.text = self.task.description
+
+        if self.task.notes:
+            self.ids.notes_field.text = self.task.notes
+        if self.task.duedate:
+            self.ids.date_button_text.text = self.task.duedate.date().strftime("%d/%m")
+        if self.task.duration:
+            if self.task.duration < 60:
+                self.ids.duration_button_text.text = f"{self.task.duration} Min"
+            else:
+                q, r = divmod(self.task.duration, 60)
+                if r != 0:
+                    self.ids.duration_button_text.text = f"{q}h {r}m"
+                else:
+                    self.ids.duration_button_text.text = f"{q}h"
+        for subtask in self.task.subtasks:
+            self.ids.subtask_list.add_widget(ListTaskItem(subtask))
 
     def select_date(self):
         date_dialog = MDModalDatePicker()
