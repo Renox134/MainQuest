@@ -27,7 +27,6 @@
     ripple_effect: False
     on_release: app.open_task_screen(self.task)
 
-
     LeadingPressedIconButton:
         icon: "checkbox-blank-circle"
         on_release: root.complete_task()
@@ -37,101 +36,102 @@
         halign: "left"
         text: root.task.description
 
-<TaskView>:
-    id: task_layout_root
-    orientation: "vertical"
-    MDTopAppBar:
-        id: top_app_bar
-        type: "small"
+<TaskScreen>:
+    MDBoxLayout:
+        id: task_layout_root
+        orientation: "vertical"
+        MDTopAppBar:
+            id: top_app_bar
+            type: "small"
 
-        MDTopAppBarLeadingButtonContainer:
-            MDActionTopAppBarButton:
-                icon: "chevron-left"
-                on_release: app.close_task_screen()
-    MDGridLayout:
-        rows: 5
-        cols: 1
-
-        MDTextField:
-            id: description_field
-            mode: "filled"
-
-            MDTextFieldHintText:
-                text: "Task Description"
-
-        MDTextField:
-            id: notes_field
-            mode: "filled"
-
-            MDTextFieldHintText:
-                text: "Notes"
-
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "chevron-left"
+                    on_release: app.close_task_screen(root)
         MDGridLayout:
-            rows: 1
-            cols: 1
-            padding: "0dp", "6dp"
-            size_hint_y: None
-            height: "60dp"
-
-            ScrollView:
-                do_scroll_x: True
-                do_scroll_y: False
-                adaptive_height: True
-                MDGridLayout:
-                    rows: 1
-                    cols: 5
-                    adaptive_width: True
-                    MDButton:
-                        on_release: root.select_date()
-
-                        MDButtonText:
-                            id: date_button_text
-                            text: "Date"
-                        MDButtonIcon:
-                            icon: "calendar"
-                    MDButton:
-                        on_release: root.select_time()
-
-                        MDButtonText:
-                            text: "Time"
-                        MDButtonIcon:
-                            icon: "clock"
-                    MDButton:
-                        on_release: root.select_time()
-
-                        MDButtonText:
-                            id: duration_button_text
-                            text: "Duration"
-                        MDButtonIcon:
-                            icon: "timer-stop"
-                    MDButton:
-                        on_release: root.set_deadline()
-
-                        MDButtonText:
-                            text: "Deadline"
-                        MDButtonIcon:
-                            icon: "target"
-                    MDButton:
-                        on_release: root.assign_priority()
-
-                        MDButtonText:
-                            text: "Priority"
-                        MDButtonIcon:
-                            icon: "flag"
-        MDGridLayout:
-            rows: 1
+            rows: 5
             cols: 1
 
-            ScrollView:
-                do_scroll_x: False
-                do_scroll_y: True
+            MDTextField:
+                id: description_field
+                mode: "filled"
 
-                MDGridLayout:
-                    rows: 1
-                    cols: 1
+                MDTextFieldHintText:
+                    text: "Task Description"
+
+            MDTextField:
+                id: notes_field
+                mode: "filled"
+
+                MDTextFieldHintText:
+                    text: "Notes"
+
+            MDGridLayout:
+                rows: 1
+                cols: 1
+                padding: "0dp", "6dp"
+                size_hint_y: None
+                height: "60dp"
+
+                ScrollView:
+                    do_scroll_x: True
+                    do_scroll_y: False
                     adaptive_height: True
-                    MDList:
-                        id: subtask_list
+                    MDGridLayout:
+                        rows: 1
+                        cols: 5
+                        adaptive_width: True
+                        MDButton:
+                            on_release: root.select_date()
+
+                            MDButtonText:
+                                id: date_button_text
+                                text: "Date"
+                            MDButtonIcon:
+                                icon: "calendar"
+                        MDButton:
+                            on_release: root.select_time()
+
+                            MDButtonText:
+                                text: "Time"
+                            MDButtonIcon:
+                                icon: "clock"
+                        MDButton:
+                            on_release: root.select_time()
+
+                            MDButtonText:
+                                id: duration_button_text
+                                text: "Duration"
+                            MDButtonIcon:
+                                icon: "timer-stop"
+                        MDButton:
+                            on_release: root.set_deadline()
+
+                            MDButtonText:
+                                text: "Deadline"
+                            MDButtonIcon:
+                                icon: "target"
+                        MDButton:
+                            on_release: root.assign_priority()
+
+                            MDButtonText:
+                                text: "Priority"
+                            MDButtonIcon:
+                                icon: "flag"
+            MDGridLayout:
+                rows: 1
+                cols: 1
+
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+
+                    MDGridLayout:
+                        rows: 1
+                        cols: 1
+                        adaptive_height: True
+                        MDList:
+                            id: subtask_list
 
 <DateSelectorField>:
     id: date_field

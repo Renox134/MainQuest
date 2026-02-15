@@ -6,7 +6,7 @@ MDScreen:
         id: global_nav_layout
         MDScreenManager:
             id: outer_screen_manager
-            Screen:
+            MDScreen:
                 name: "main_app_screen"
                 BoxLayout:
                     orientation: "vertical"
@@ -60,8 +60,3 @@ MDScreen:
                             icon: "calendar"
                             text: "Calendar"
                             on_release: app.on_calendar_pressed()
-            Screen:
-                name: "task_screen"
-
-                MDBoxLayout:
-                    id: task_screen_root

@@ -7,10 +7,10 @@ from kivy.uix.screenmanager import Screen
 from kivymd.uix.navigationbar import MDNavigationItem
 from kivy.properties import StringProperty
 
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.list import MDListItem
 from kivymd.uix.pickers import MDModalDatePicker
+from kivymd.uix.screen import MDScreen
 
 from kivy.lang import Builder
 
@@ -42,18 +42,15 @@ class ListTaskItem(MDListItem):
         self.task = task
         super().__init__(**kwargs)
 
-    def open_task_context(self):
-        print("Open Task Context Window")
-        print(self.parent.parent.parent.parent.parent.parent.parent)
-
     def complete_task(self):
         print("Want to complete:\n", self.task, "\nAt ",
               datetime.datetime.now().strftime(Config.get("time_format")))
 
 
-class TaskView(MDBoxLayout):
+class TaskScreen(MDScreen):
 
-    def __init__(self, task: Task, *args, **kwargs):
+    def __init__(self, task: Task, screen_id: int, *args, **kwargs):
+        self.name = f"task_screen_{str(screen_id)}"
         self.task: Task = task
         super().__init__(*args, **kwargs)
         self.fill_widgets()

@@ -3,9 +3,10 @@ from typing import Any
 from model.quest_log import QuestLog
 from model.task import Task
 from ui.widgets.quest_widget import QuestWidget
-from ui.mq_resources import MQ_Resource_Loader, TaskView
+from ui.mq_resources import MQ_Resource_Loader, TaskScreen
 
 from kivy.core.window import Window
+from kivymd.uix.screenmanager import MDScreenManager
 from kivy.lang import Builder
 import asynckivy
 
@@ -21,6 +22,7 @@ class MainQuestApp(MDApp):
 
     def __init__(self, quest_log: QuestLog, **kwargs: Any):
         self.quest_log = quest_log
+        self.open_task_screens: int = 0
         MQ_Resource_Loader().load_resources()
         super().__init__(**kwargs)
 
@@ -78,17 +80,21 @@ class MainQuestApp(MDApp):
         self.root.ids.screen_manager.current = "progress_window"
 
     def open_task_screen(self, task: Task) -> None:
-        manager = self.root.ids.outer_screen_manager
+        manager: MDScreenManager = self.root.ids.outer_screen_manager
+        manager.add_widget(TaskScreen(task, self.open_task_screens))
         manager.transition.direction = "left"
-        self.root.ids.task_screen_root.clear_widgets()
-        self.root.ids.task_screen_root.add_widget(TaskView(task))
-        self.root.ids.outer_screen_manager.current = "task_screen"
+        manager.current = f"task_screen_{str(self.open_task_screens)}"
+        self.open_task_screens += 1
 
-    def close_task_screen(self) -> None:
-        manager = self.root.ids.outer_screen_manager
+    def close_task_screen(self, task_screen: TaskScreen) -> None:
+        manager: MDScreenManager = self.root.ids.outer_screen_manager
         manager.transition.direction = "right"
-        self.root.ids.task_screen_root.clear_widgets()
-        self.root.ids.outer_screen_manager.current = "main_app_screen"
+        self.open_task_screens -= 1
+        if self.open_task_screens == 0:
+            manager.current = "main_app_screen"
+        else:
+            manager.current = f"task_screen_{str(self.open_task_screens - 1)}"
+        manager.remove_widget(task_screen)
 
     def show_date_picker(self, focus):
         from kivymd.uix.pickers import MDDockedDatePicker

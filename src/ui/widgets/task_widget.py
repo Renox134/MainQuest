@@ -3,15 +3,10 @@ from ui.mq_resources import ListTaskItem
 from config_reader import Config
 
 import asynckivy
-from kivy.lang.builder import Builder
-
 
 from kivy.uix.behaviors import ButtonBehavior
 from kivymd.uix.list import MDListItemSupportingText, MDListItemTertiaryText, \
-    MDListItemLeadingIcon, MDListItem
-
-
-# Builder.load_file("ui/widgets/task_widget.kv")
+    MDListItemLeadingIcon
 
 
 class LeadingPressedIconButton(ButtonBehavior, MDListItemLeadingIcon):
