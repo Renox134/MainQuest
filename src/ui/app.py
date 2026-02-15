@@ -1,9 +1,10 @@
-from typing import Any
+from typing import Any, List
 
 from model.quest_log import QuestLog
 from model.task import Task
 from ui.widgets.quest_widget import QuestWidget
-from ui.mq_resources import MQ_Resource_Loader, TaskScreen
+from ui.widgets.task_screen import TaskScreen
+from ui.mq_resources import MQ_Resource_Loader
 
 from kivy.core.window import Window
 from kivymd.uix.screenmanager import MDScreenManager
@@ -22,6 +23,7 @@ class MainQuestApp(MDApp):
 
     def __init__(self, quest_log: QuestLog, **kwargs: Any):
         self.quest_log = quest_log
+        self.quest_widgets: List[QuestWidget] = []
         self.open_task_screens: int = 0
         MQ_Resource_Loader().load_resources()
         super().__init__(**kwargs)
@@ -40,6 +42,7 @@ class MainQuestApp(MDApp):
                 await asynckivy.sleep(0)
                 quest_widget = QuestWidget(quest)
                 quest_layout.add_widget(quest_widget.root)
+                self.quest_widgets.append(quest_widget)
         asynckivy.start(add_quests())
 
         # fix header
@@ -92,8 +95,11 @@ class MainQuestApp(MDApp):
         self.open_task_screens -= 1
         if self.open_task_screens == 0:
             manager.current = "main_app_screen"
+            for quest_widget in self.quest_widgets:
+                quest_widget.update_widgets()
         else:
             manager.current = f"task_screen_{str(self.open_task_screens - 1)}"
+            manager.current_screen.update_widgets()
         manager.remove_widget(task_screen)
 
     def show_date_picker(self, focus):
