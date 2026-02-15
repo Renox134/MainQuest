@@ -19,7 +19,6 @@ class TaskScreen(MDScreen):
         self.update_widgets()
 
     def update_widgets(self) -> None:
-        print(self.task)
         self.ids.description_field.text = self.task.description
 
         if self.task.notes:

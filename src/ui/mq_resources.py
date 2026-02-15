@@ -1,8 +1,6 @@
 from model.task import Task
 from config_reader import Config
 
-import asynckivy
-
 import datetime
 
 from kivymd.uix.navigationbar import MDNavigationItem
