@@ -1,14 +1,22 @@
 from model.quest import Quest
-from ui.widgets.task_widget import TaskWidget, TrailingPressedIconButton
+from ui.mq_resources import ListTaskItem
 
-import asynckivy
 from kivy.lang.builder import Builder
 from kivymd.uix.expansionpanel import MDExpansionPanel
+from kivy.uix.behaviors import ButtonBehavior
+from kivymd.uix.behaviors import RotateBehavior
+from kivymd.uix.list import MDListItemTrailingIcon
 from kivy.metrics import dp
 from kivy.animation import Animation
 
 
 Builder.load_file("ui/widgets/quest_widget.kv")
+
+
+class TrailingPressedIconButton(
+    ButtonBehavior, RotateBehavior, MDListItemTrailingIcon
+):
+    ...
 
 
 class ExpansionPanelQuestItem(MDExpansionPanel):
@@ -50,13 +58,11 @@ class QuestWidget:
     def __init__(self, quest: Quest):
         self.quest = quest
         self.root = ExpansionPanelQuestItem(quest)
-        asynckivy.start(self.add_widgets())
+        self.update_widgets()
 
-    async def add_widgets(self) -> None:
+    def update_widgets(self) -> None:
         self.root.text = self.quest.name
-        task_list = self.root.ids.task_list
 
+        self.root.ids.task_list.clear_widgets()
         for task in self.quest.tasks:
-            await asynckivy.sleep(0)
-            task_widget = TaskWidget(task)
-            task_list.add_widget(task_widget.root)
+            self.root.ids.task_list.add_widget(ListTaskItem(task))
