@@ -3,9 +3,11 @@ from ui.mq_resources import ListTaskItem
 
 import datetime
 
-from kivymd.uix.pickers import MDModalDatePicker
+from kivymd.uix.pickers import MDModalDatePicker, MDTimePickerDialVertical
 from kivymd.uix.screen import MDScreen
+from kivymd.uix.snackbar.snackbar import MDSnackbar, MDSnackbarText
 
+from kivy.metrics import dp
 from kivy.lang import Builder
 Builder.load_file("ui/widgets/task_screen.kv")
 
@@ -23,14 +25,24 @@ class TaskScreen(MDScreen):
 
         if self.task.notes:
             self.ids.notes_field.text = self.task.notes
+
+        # setup the date and time choosers
         if self.task.duedate:
-            self.ids.date_button_text.text = self.task.duedate.date().strftime("%d/%m")
+            self.ids.date_button_text.text = self.task.duedate.strftime("%d/%m")
+            self.ids.time_button_text.text = self.task.duedate.strftime("%H:%M")
             self.date_dialog = MDModalDatePicker(year=self.task.duedate.year,
                                                  month=self.task.duedate.month,
                                                  day=self.task.duedate.day)
+            self.time_dialog = MDTimePickerDialVertical(hour=str(self.task.duedate.hour),
+                                                        minute=str(self.task.duedate.minute))
         else:
             self.date_dialog = MDModalDatePicker()
+            self.time_dialog = MDTimePickerDialVertical()
+
         self.date_dialog.bind(on_ok=self.confirm_date_selection)
+        self.date_dialog.bind(on_cancel=self.date_dialog.dismiss)
+        self.time_dialog.bind(on_ok=self.confirm_time_selection)
+        self.time_dialog.bind(on_cancel=self.time_dialog.dismiss)
         if self.task.duration:
             if self.task.duration < 60:
                 self.ids.duration_button_text.text = f"{self.task.duration} Min"
@@ -51,7 +63,24 @@ class TaskScreen(MDScreen):
         ]
         self.date_dialog.open()
 
-    def confirm_date_selection(self, date_dialog: MDModalDatePicker):
+    def open_time_selector(self):
+        if self.task.duedate is None:
+            MDSnackbar(
+                MDSnackbarText(
+                    text="You must select a date first.",
+                ),
+                y=dp(24),
+                pos_hint={"center_x": 0.5},
+                size_hint_x=0.7,
+            ).open()
+            return
+        self.time_dialog.pos = [
+            self.center_x - self.time_dialog.width / 2,
+            self.y,
+        ]
+        self.time_dialog.open()
+
+    def confirm_date_selection(self, date_dialog: MDModalDatePicker) -> None:
         if self.task.duedate is None:
             self.task.duedate = datetime.datetime(date_dialog.get_date()[0].year,
                                                   date_dialog.get_date()[0].month,
@@ -62,6 +91,21 @@ class TaskScreen(MDScreen):
                                                           date_dialog.get_date()[0].day)
         self.update_widgets()
         date_dialog.dismiss()
+
+    def confirm_time_selection(self, time_dialog: MDTimePickerDialVertical) -> None:
+        hour: int = int(time_dialog.hour)
+        if time_dialog.am_pm == "pm":
+            hour = (hour + 12) % 24 if hour > 0 else 0
+        minute: int = int(time_dialog.minute)
+        self.task.duedate = self.task.duedate.replace(hour=hour, minute=minute)
+        self.update_widgets()
+        time_dialog.dismiss()
+
+    def update_description(self):
+        self.task.description = self.ids.description_field.text
+
+    def update_notes(self):
+        self.task.notes = self.ids.notes_field.text
 
     def select_time(self):
         print("Select Time")

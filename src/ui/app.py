@@ -93,10 +93,12 @@ class MainQuestApp(MDApp):
         manager: MDScreenManager = self.root.ids.outer_screen_manager
         manager.transition.direction = "right"
         self.open_task_screens -= 1
+        # if there is no other open task screen , go back to the main page and update quest widgets
         if self.open_task_screens == 0:
             manager.current = "main_app_screen"
             for quest_widget in self.quest_widgets:
                 quest_widget.update_widgets()
+        # if there is another task screen that was opened, go back to that
         else:
             manager.current = f"task_screen_{str(self.open_task_screens - 1)}"
             manager.current_screen.update_widgets()
