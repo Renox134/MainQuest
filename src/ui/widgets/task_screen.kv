@@ -19,6 +19,7 @@
             MDTextField:
                 id: description_field
                 mode: "filled"
+                on_focus: root.update_description()
 
                 MDTextFieldHintText:
                     text: "Task Description"
@@ -26,6 +27,7 @@
             MDTextField:
                 id: notes_field
                 mode: "filled"
+                on_focus: root.update_notes()
 
                 MDTextFieldHintText:
                     text: "Notes"
@@ -54,9 +56,10 @@
                             MDButtonIcon:
                                 icon: "calendar"
                         MDButton:
-                            on_release: root.select_time()
+                            on_release: on_release: root.open_time_selector()
 
                             MDButtonText:
+                                id: time_button_text
                                 text: "Time"
                             MDButtonIcon:
                                 icon: "clock"
