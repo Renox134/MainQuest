@@ -94,18 +94,53 @@ class TaskScreen(MDScreen):
         )
 
         # add options to layout
-        for i in range(1, 5):
-            option = MDListItem(
-                MDListItemHeadlineText(
-                    text=f"{i*5} Minutes"
-                ),
-            )
-            layout.add_widget(option)
+        option_1 = MDListItem(
+            MDListItemHeadlineText(
+                id="option_1_text",
+                text=f"{10} Minutes"
+            ),
+            on_release=lambda x: self.update_duration(10)
+        )
+        layout.add_widget(option_1)
+        option_2 = MDListItem(
+            MDListItemHeadlineText(
+                text=f"{15} Minutes"
+            ),
+            on_release=lambda x: self.update_duration(15)
+        )
+        layout.add_widget(option_2)
+        option_3 = MDListItem(
+            MDListItemHeadlineText(
+                text=f"{30} Minutes"
+            ),
+            on_release=lambda x: self.update_duration(30)
+        )
+        layout.add_widget(option_3)
+        option_4 = MDListItem(
+            MDListItemHeadlineText(
+                text=f"{1} Hour"
+            ),
+            on_release=lambda x: self.update_duration(60)
+        )
+        layout.add_widget(option_4)
+        option_5 = MDListItem(
+            MDListItemHeadlineText(
+                text=f"{1.5} Hours"
+            ),
+            on_release=lambda x: self.update_duration(90)
+        )
+        layout.add_widget(option_5)
+        option_6 = MDListItem(
+            MDListItemHeadlineText(
+                text=f"Custom"
+            ),
+        )
+        layout.add_widget(option_6)
 
         sv = ScrollView(size_hint_y=None, height=200)
         sv.add_widget(layout)
 
-        dialog = MDDialog(
+        self.dialog = MDDialog(
             MDDialogHeadlineText(
                 text="Select Duration"
             ),
@@ -114,9 +149,12 @@ class TaskScreen(MDScreen):
             )
         )
 
-        dialog.size_hint_y = 0.6
-        dialog.update_width()
-        dialog.open()
+        self.dialog.size_hint_y = 0.6
+        self.dialog.update_width()
+        self.dialog.open()
+
+    def open_custom_duration_selector(self):
+        return
 
     def confirm_date_selection(self, date_dialog: MDModalDatePicker) -> None:
         if self.task.duedate is None:
@@ -144,6 +182,11 @@ class TaskScreen(MDScreen):
 
     def update_notes(self):
         self.task.notes = self.ids.notes_field.text
+
+    def update_duration(self, duration: int) -> None:
+        self.task.duration = duration
+        self.update_widgets()
+        self.dialog.dismiss()
 
     def select_time(self):
         print("Select Time")
