@@ -7,8 +7,7 @@ from kivymd.uix.navigationbar import MDNavigationItem
 from kivy.properties import StringProperty
 
 from kivy.uix.behaviors import ButtonBehavior
-from kivymd.uix.list import MDListItem
-from kivymd.uix.list import MDListItemSupportingText, MDListItemTertiaryText, MDListItemLeadingIcon
+from kivymd.uix.list import MDListItem, MDListItemSupportingText, MDListItemTertiaryText, MDListItemLeadingIcon
 from kivymd.uix.screen import MDScreen
 
 from kivy.lang import Builder

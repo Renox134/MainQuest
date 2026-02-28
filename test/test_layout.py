@@ -1,41 +1,96 @@
 from kivy.lang import Builder
-from kivy.core.window import Window
-
+from kivy.uix.widget import Widget
 
 from kivymd.app import MDApp
-from kivymd.uix.list import MDListItem, MDListItemHeadlineText
-
-
-Window.size = (350, 650)
+from kivymd.uix.button import MDButton, MDButtonText
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.dialog import (
+    MDDialog,
+    MDDialogIcon,
+    MDDialogHeadlineText,
+    MDDialogSupportingText,
+    MDDialogButtonContainer,
+    MDDialogContentContainer,
+)
+from kivymd.uix.divider import MDDivider
+from kivymd.uix.list import (
+    MDListItem,
+    MDListItemLeadingIcon,
+    MDListItemSupportingText,
+)
+from kivymd.uix.scrollview import ScrollView
 
 KV = '''
 MDScreen:
-    id: global_root
-    MDNavigationLayout:
-        id: global_nav_layout
-        MDScreenManager:
-            id: outer_screen_manager
-            MDScreen:
-                md_bg_color: self.theme_cls.backgroundColor
+    md_bg_color: self.theme_cls.backgroundColor
 
-                MDList:
-                    id: main_list
-                    MDListItem:
-                        MDListItemHeadlineText:
-                            text: "origin_test"
+    MDButton:
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        on_release: app.show_alert_dialog()
+
+        MDButtonText:
+            text: "Show dialog"         
 '''
 
 
 class Example(MDApp):
     def build(self):
-        self.theme_cls.theme_style = "Dark"
-        self.theme_cls.primary_palette = "Olive"
         return Builder.load_string(KV)
-    
-    def on_start(self):
-        lst = self.root.ids.main_list
-        for i in range(2):
-            lst.add_widget(MDListItem(MDListItemHeadlineText(text="from_base_class")))
+
+    def show_alert_dialog(self):
+        items = [MDListItem(
+                    MDListItemLeadingIcon(
+                        icon="gmail",
+                    ),
+                    MDListItemSupportingText(
+                        text=f"Item number {i}",
+                    ),
+                    theme_bg_color="Custom",
+                    md_bg_color=self.theme_cls.transparentColor,
+                ) for i in range(10)]
+        sv = ScrollView(size_hint_y=None, height=200)
+        layout = MDBoxLayout(orientation='vertical', adaptive_height=True)
+        sv.add_widget(layout)
+        for item in items:
+            layout.add_widget(item)
+
+        MDDialog(
+            # ----------------------------Icon-----------------------------
+            MDDialogIcon(
+                icon="refresh",
+            ),
+            # -----------------------Headline text-------------------------
+            MDDialogHeadlineText(
+                text="Reset settings?",
+            ),
+            # -----------------------Supporting text-----------------------
+            MDDialogSupportingText(
+                text="This will reset your app preferences back to their "
+                "default settings. The following accounts will also "
+                "be signed out:",
+            ),
+            # -----------------------Custom content------------------------
+            MDDialogContentContainer(
+                MDDivider(),
+                sv,  # add the ScrollView to the dialog content container...
+                MDDivider(),
+                orientation="vertical",
+            ),
+            # ---------------------Button container------------------------
+            MDDialogButtonContainer(
+                Widget(),
+                MDButton(
+                    MDButtonText(text="Cancel"),
+                    style="text",
+                ),
+                MDButton(
+                    MDButtonText(text="Accept"),
+                    style="text",
+                ),
+                spacing="8dp",
+            ),
+            # -------------------------------------------------------------
+        ).open()
 
 
 Example().run()
