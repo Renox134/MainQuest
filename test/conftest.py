@@ -1,6 +1,6 @@
 from typing import List
 import pytest
-import datetime
+from datetime import date, time
 
 from model.task import Task
 from model.quest import Quest
@@ -12,18 +12,19 @@ def test_tasks() -> List[Task]:
     return [
         Task(
             description="Collect water",
-            duedate=datetime.datetime(2002, 7, 27, 23, 59),
-            duration=30
+            date=date(2002, 7, 27),
+            start_time=time(6),
+            end_time=(time(8)),
         ),
         Task(
             description="Gather food",
-            duedate=datetime.datetime(2003, 8, 28, 0, 0),
-            duration=45
+            date=date(2003, 8, 28),
+            start_time=time(6),
+            end_time=(time(8)),
         ),
         Task(
             description="Build shelter",
-            duedate=None,
-            duration=120
+            date=None,
         )
     ]
 
@@ -48,8 +49,7 @@ def quest_with_time(test_tasks: List[Task]) -> Quest:
     adjusted_tasks = [
         Task(
             description=o.description + " (timed)",
-            duedate=datetime.datetime(2027, 8, 13, 11, 55),
-            duration=o.duration
+            date=date(2027, 8, 13),
         )
         for o in test_tasks
     ]

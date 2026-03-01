@@ -1,5 +1,5 @@
 from typing import Dict, Any, List, Optional
-import datetime
+from datetime import datetime, date, time
 
 from config_reader import Config
 
@@ -10,13 +10,14 @@ class Task:
 
     Attributes:
         description(str): The description of what the task is.
+        notes(str): Some additional notes to the task.
         subtasks(List[Task]): The list of subtasks that are associated
             with this task.
-        duedate(datetime.datetime): The time and date of when
-            this task should be completed.
-        completion_date(datetime.datetime): Time time and date at which
+        date(datetime): The date of when this task should be completed.
+        start_time(time): The time at which the task starts.
+        end_time(time): The time at which the task ends.
+        completion_date(datetime): Time time and date at which
             the task was completed.
-        duration(int): The duration (in minutes) how long the task is
             estimated to take.
     """
 
@@ -26,17 +27,32 @@ class Task:
         Creates a Task instance from a compatible dictionary.
         """
 
-        # Parse due date
-        duedate_str = data.get("duedate")
+        # Parse date
+        date_str = data.get("date")
         duedate = None
-        if duedate_str:
-            duedate = datetime.datetime.strptime(duedate_str, Config.get("time_format"))
+        if date_str:
+            tmp = datetime.strptime(date_str, Config.get("date_format"))
+            duedate = date(tmp.year, tmp.month, tmp.day)
+
+        # parse start time
+        start_time_str = data.get("start_time")
+        start_time = None
+        if start_time_str:
+            start_time = time(datetime.strptime(start_time_str, Config.get("time_format")).hour,
+                              datetime.strptime(start_time_str, Config.get("time_format")).minute)
+
+        # parse start time
+        end_time_str = data.get("end_time")
+        end_time = None
+        if end_time_str:
+            end_time = time(datetime.strptime(end_time_str, Config.get("time_format")).hour,
+                            datetime.strptime(end_time_str, Config.get("time_format")).minute)
 
         # Parse completion date
         completion_str = data.get("completion_date")
         completion_date = None
         if completion_str:
-            completion_date = datetime.datetime.strptime(completion_str, Config.get("time_format"))
+            completion_date = datetime.strptime(completion_str, Config.get("datetime_format"))
 
         # Parse subtasks (recursively)
         subtasks_data = data.get("subtasks", [])
@@ -46,38 +62,66 @@ class Task:
             description=data.get("description", ""),
             subtasks=subtasks,
             notes=data.get("notes", ""),
-            duedate=duedate,
-            completion_date=completion_date,
-            duration=data.get("duration")
-        )
+            date=duedate,
+            start_time=start_time,
+            end_time=end_time,
+            completion_date=completion_date
+            )
 
     def __init__(self,
                  description: str = "",
                  subtasks: Optional[List["Task"]] = None,
                  notes: Optional[str] = None,
-                 duedate: Optional[datetime.datetime] = None,
-                 completion_date: Optional[datetime.datetime] = None,
-                 duration: Optional[int] = None):
+                 date: Optional[date] = None,
+                 start_time: Optional[time] = None,
+                 end_time: Optional[time] = None,
+                 completion_date: Optional[datetime] = None):
         """
         Initializes a task.
         """
         self.description = description
         self.subtasks = subtasks if subtasks is not None else []
         self.notes = notes if notes is not None else ""
-        self.duedate = duedate
+        self.date = date
+        self.start_time = start_time
+        self.end_time = end_time
         self.completion_date = completion_date
-        self.duration = duration
+
+    def to_dict(self) -> Dict[str, Any]:
+        """
+        Convert the Task to a dictionary (serializable form).
+        """
+        date_str = self.date.strftime(Config.get("date_format")) if self.date else None
+        start_time_str =\
+            self.start_time.strftime(Config.get("time_format")) if self.start_time else None
+        end_time_str =\
+            self.end_time.strftime(Config.get("time_format")) if self.end_time else None
+        completion_str: None | str =\
+            self.completion_date.strftime(Config.get("datetime_format")
+                                          ) if self.completion_date else None
+
+        return {
+            "description": self.description,
+            "date": date_str,
+            "start_time": start_time_str,
+            "end_time": end_time_str,
+            "completion_date": completion_str,
+            "subtasks": [s.to_dict() for s in self.subtasks]
+        }
 
     def __str__(self) -> str:
         out = [f"Description:\t{self.description}"]
 
-        if self.duedate:
-            out.append(f"Duedate:\t{self.duedate.strftime(Config.get("time_format"))}")
+        if self.date:
+            out.append(f"Date:\t{self.date.strftime(Config.get("date_format"))}")
+        if self.start_time:
+            out.append(f"Start time: {self.start_time.strftime(Config.get("time_format"))}")
+        if self.end_time:
+            out.append(f"End time: {self.end_time.strftime(Config.get("time_format"))}")
         if self.completion_date:
-            out.append(f"Completed:\t{self.completion_date.strftime(Config.get("time_format"))}")
-        if self.duration is not None:
-            out.append(f"Duration:\t{self.duration} minutes")
-
+            out.append("Completed:\t" +
+                       f"{self.completion_date.strftime(Config.get("datetime_format"))}"
+                       )
         if self.subtasks:
             out.append(f"Subtasks ({len(self.subtasks)}):")
             for sub in self.subtasks:
@@ -85,33 +129,14 @@ class Task:
 
         return "\n".join(out)
 
-    def to_dict(self) -> Dict[str, Any]:
-        """
-        Convert the Task to a dictionary (serializable form).
-        """
-        duedate_str = self.duedate.strftime(Config.get("time_format")) if self.duedate else None
-
-        completion_str: None | str
-        if self.completion_date is None:
-            completion_str = None
-        else:
-            completion_str = self.completion_date.strftime(Config.get("time_format"))
-
-        return {
-            "description": self.description,
-            "duedate": duedate_str,
-            "completion_date": completion_str,
-            "duration": self.duration,
-            "subtasks": [s.to_dict() for s in self.subtasks]
-        }
-
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, Task):
             return NotImplemented
         return (
             self.description == other.description and
-            self.duedate == other.duedate and
+            self.date == other.date and
+            self.start_time == other.start_time and
+            self.end_time == other.end_time and
             self.completion_date == other.completion_date and
-            self.duration == other.duration and
             self.subtasks == other.subtasks
         )

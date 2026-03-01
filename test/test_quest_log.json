@@ -4,23 +4,26 @@
         "tasks": [
             {
                 "description": "Collect water (timed)",
-                "duedate": "13/08/2027, 11:55",
+                "date": "13/08/2027",
+                "start_time": null,
+                "end_time": null,
                 "completion_date": null,
-                "duration": 30,
                 "subtasks": []
             },
             {
                 "description": "Gather food (timed)",
-                "duedate": "13/08/2027, 11:55",
+                "date": "13/08/2027",
+                "start_time": null,
+                "end_time": null,
                 "completion_date": null,
-                "duration": 45,
                 "subtasks": []
             },
             {
                 "description": "Build shelter (timed)",
-                "duedate": "13/08/2027, 11:55",
+                "date": "13/08/2027",
+                "start_time": null,
+                "end_time": null,
                 "completion_date": null,
-                "duration": 120,
                 "subtasks": []
             }
         ],
@@ -31,23 +34,26 @@
         "tasks": [
             {
                 "description": "Collect water",
-                "duedate": "27/07/2002, 23:59",
+                "date": "27/07/2002",
+                "start_time": "06:00",
+                "end_time": "08:00",
                 "completion_date": null,
-                "duration": 30,
                 "subtasks": []
             },
             {
                 "description": "Gather food",
-                "duedate": "28/08/2003, 00:00",
+                "date": "28/08/2003",
+                "start_time": "06:00",
+                "end_time": "08:00",
                 "completion_date": null,
-                "duration": 45,
                 "subtasks": []
             },
             {
                 "description": "Build shelter",
-                "duedate": null,
+                "date": null,
+                "start_time": null,
+                "end_time": null,
                 "completion_date": null,
-                "duration": 120,
                 "subtasks": []
             }
         ],
@@ -58,23 +64,26 @@
         "tasks": [
             {
                 "description": "Build shelter",
-                "duedate": null,
+                "date": null,
+                "start_time": null,
+                "end_time": null,
                 "completion_date": null,
-                "duration": 120,
                 "subtasks": []
             },
             {
                 "description": "Gather food",
-                "duedate": "28/08/2003, 00:00",
+                "date": "28/08/2003",
+                "start_time": "06:00",
+                "end_time": "08:00",
                 "completion_date": null,
-                "duration": 45,
                 "subtasks": []
             },
             {
                 "description": "Collect water",
-                "duedate": "27/07/2002, 23:59",
+                "date": "27/07/2002",
+                "start_time": "06:00",
+                "end_time": "08:00",
                 "completion_date": null,
-                "duration": 30,
                 "subtasks": []
             }
         ],
