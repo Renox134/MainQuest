@@ -56,7 +56,7 @@
                             MDButtonIcon:
                                 icon: "calendar"
                         MDButton:
-                            on_release: on_release: root.open_start_time_selector()
+                            on_release: on_release: root.open_time_selector(0)
 
                             MDButtonText:
                                 id: start_time_button_text
@@ -64,7 +64,7 @@
                             MDButtonIcon:
                                 icon: "clock"
                         MDButton:
-                            on_release: on_release: root.assign_priority()
+                            on_release: on_release: root.open_time_selector(1)
 
                             MDButtonText:
                                 id: end_time_button_text
