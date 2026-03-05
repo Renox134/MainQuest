@@ -72,19 +72,19 @@
                             MDButtonIcon:
                                 icon: "clock"
                         MDButton:
-                            on_release: root.set_deadline()
-
-                            MDButtonText:
-                                text: "Deadline"
-                            MDButtonIcon:
-                                icon: "target"
-                        MDButton:
                             on_release: root.assign_priority()
 
                             MDButtonText:
                                 text: "Priority"
                             MDButtonIcon:
                                 icon: "flag"
+                        MDButton:
+                            on_release: root.set_deadline()
+
+                            MDButtonText:
+                                text: "Deadline"
+                            MDButtonIcon:
+                                icon: "target"
             MDGridLayout:
                 rows: 1
                 cols: 1
