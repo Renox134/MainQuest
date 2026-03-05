@@ -1,11 +1,12 @@
 from model.task import Task
+from config_reader import Config
 from ui.mq_resources import ListTaskItem
 
-import datetime
+from datetime import datetime, time
 
+from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 from kivymd.uix.pickers import MDModalDatePicker, MDTimePickerDialVertical
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.snackbar.snackbar import MDSnackbar, MDSnackbarText
 
 from kivy.metrics import dp
 from kivy.lang import Builder
@@ -26,32 +27,40 @@ class TaskScreen(MDScreen):
         if self.task.notes:
             self.ids.notes_field.text = self.task.notes
 
-        # setup the date and time choosers
-        if self.task.duedate:
-            self.ids.date_button_text.text = self.task.duedate.strftime("%d/%m")
-            self.ids.time_button_text.text = self.task.duedate.strftime("%H:%M")
-            self.date_dialog = MDModalDatePicker(year=self.task.duedate.year,
-                                                 month=self.task.duedate.month,
-                                                 day=self.task.duedate.day)
-            self.time_dialog = MDTimePickerDialVertical(hour=str(self.task.duedate.hour),
-                                                        minute=str(self.task.duedate.minute))
+        # setup the date chooser
+        if self.task.date:
+            self.ids.date_button_text.text = self.task.date.strftime(Config.get("date_format"))
+            self.date_dialog = MDModalDatePicker(year=self.task.date.year,
+                                                 month=self.task.date.month,
+                                                 day=self.task.date.day)
         else:
             self.date_dialog = MDModalDatePicker()
-            self.time_dialog = MDTimePickerDialVertical()
+        # setup time choosers
+        if self.task.start_time:
+            self.ids.start_time_button_text.text =\
+                "Start: " + self.task.start_time.strftime(Config.get("time_format"))
+            self.start_time_dialog =\
+                MDTimePickerDialVertical(hour=str(self.task.start_time.hour),
+                                         minute=str(self.task.start_time.minute))
+        else:
+            self.start_time_dialog = MDTimePickerDialVertical()
+        if self.task.end_time:
+            self.ids.end_time_button_text.text =\
+                "End: " + self.task.end_time.strftime(Config.get("time_format"))
+            self.end_time_dialog =\
+                MDTimePickerDialVertical(hour=str(self.task.end_time.hour),
+                                         minute=str(self.task.end_time.minute))
+        else:
+            self.end_time_dialog = MDTimePickerDialVertical()
 
         self.date_dialog.bind(on_ok=self.confirm_date_selection)
         self.date_dialog.bind(on_cancel=self.date_dialog.dismiss)
-        self.time_dialog.bind(on_ok=self.confirm_time_selection)
-        self.time_dialog.bind(on_cancel=self.time_dialog.dismiss)
-        if self.task.duration:
-            if self.task.duration < 60:
-                self.ids.duration_button_text.text = f"{self.task.duration} Min"
-            else:
-                q, r = divmod(self.task.duration, 60)
-                if r != 0:
-                    self.ids.duration_button_text.text = f"{q}h {r}m"
-                else:
-                    self.ids.duration_button_text.text = f"{q}h"
+        self.start_time_dialog.bind(on_ok=self.confirm_time_selection)
+        self.start_time_dialog.bind(on_cancel=self.start_time_dialog.dismiss)
+        self.end_time_dialog.bind(on_ok=self.confirm_time_selection)
+        self.end_time_dialog.bind(on_cancel=self.start_time_dialog.dismiss)
+
+        # setup subtasks
         self.ids.subtask_list.clear_widgets()
         for subtask in self.task.subtasks:
             self.ids.subtask_list.add_widget(ListTaskItem(subtask))
@@ -63,32 +72,29 @@ class TaskScreen(MDScreen):
         ]
         self.date_dialog.open()
 
-    def open_time_selector(self):
-        if self.task.duedate is None:
-            MDSnackbar(
-                MDSnackbarText(
-                    text="You must select a date first.",
-                ),
-                y=dp(24),
-                pos_hint={"center_x": 0.5},
-                size_hint_x=0.7,
-            ).open()
-            return
-        self.time_dialog.pos = [
-            self.center_x - self.time_dialog.width / 2,
-            self.y,
-        ]
-        self.time_dialog.open()
+    def open_time_selector(self, idx: int) -> None:
+        if idx == 0:
+            self.start_time_dialog.pos = [
+                self.center_x - self.start_time_dialog.width / 2,
+                self.y,
+            ]
+            self.start_time_dialog.open()
+        elif idx == 1:
+            self.end_time_dialog.pos = [
+                self.center_x - self.end_time_dialog.width / 2,
+                self.y,
+            ]
+            self.end_time_dialog.open()
 
     def confirm_date_selection(self, date_dialog: MDModalDatePicker) -> None:
-        if self.task.duedate is None:
-            self.task.duedate = datetime.datetime(date_dialog.get_date()[0].year,
-                                                  date_dialog.get_date()[0].month,
-                                                  date_dialog.get_date()[0].day)
+        if self.task.date is None:
+            self.task.date = datetime(date_dialog.get_date()[0].year,
+                                      date_dialog.get_date()[0].month,
+                                      date_dialog.get_date()[0].day)
         else:
-            self.task.duedate = self.task.duedate.replace(date_dialog.get_date()[0].year,
-                                                          date_dialog.get_date()[0].month,
-                                                          date_dialog.get_date()[0].day)
+            self.task.date = self.task.date.replace(date_dialog.get_date()[0].year,
+                                                    date_dialog.get_date()[0].month,
+                                                    date_dialog.get_date()[0].day)
         self.update_widgets()
         date_dialog.dismiss()
 
@@ -97,9 +103,32 @@ class TaskScreen(MDScreen):
         if time_dialog.am_pm == "pm":
             hour = (hour + 12) % 24 if hour > 0 else 0
         minute: int = int(time_dialog.minute)
-        self.task.duedate = self.task.duedate.replace(hour=hour, minute=minute)
-        self.update_widgets()
-        time_dialog.dismiss()
+
+        if time_dialog == self.start_time_dialog:
+            self.task.start_time = time(hour, minute)
+
+            # if there is no endtime yet, set it to one hour later
+            if self.task.end_time is None:
+                if hour < 23:
+                    self.task.end_time = time(hour + 1, minute)
+                else:
+                    self.task.end_time = time(23, 59)
+            self.update_widgets()
+            time_dialog.dismiss()
+        else:
+            if self.task.start_time <= time(hour, minute):
+                self.task.end_time = time(hour, minute)
+                self.update_widgets()
+                time_dialog.dismiss()
+            else:
+                MDSnackbar(
+                    MDSnackbarText(
+                        text="The task can't end before it began.",
+                    ),
+                    y=dp(24),
+                    pos_hint={"center_x": 0.5},
+                    size_hint_x=0.9,
+                ).open()
 
     def update_description(self):
         self.task.description = self.ids.description_field.text

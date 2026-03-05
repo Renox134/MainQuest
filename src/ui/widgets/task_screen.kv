@@ -56,28 +56,21 @@
                             MDButtonIcon:
                                 icon: "calendar"
                         MDButton:
-                            on_release: on_release: root.open_time_selector()
+                            on_release: on_release: root.open_time_selector(0)
 
                             MDButtonText:
-                                id: time_button_text
-                                text: "Time"
+                                id: start_time_button_text
+                                text: "Start Time"
                             MDButtonIcon:
                                 icon: "clock"
                         MDButton:
-                            on_release: root.select_time()
+                            on_release: on_release: root.open_time_selector(1)
 
                             MDButtonText:
-                                id: duration_button_text
-                                text: "Duration"
+                                id: end_time_button_text
+                                text: "End Time"
                             MDButtonIcon:
-                                icon: "timer-stop"
-                        MDButton:
-                            on_release: root.set_deadline()
-
-                            MDButtonText:
-                                text: "Deadline"
-                            MDButtonIcon:
-                                icon: "target"
+                                icon: "clock"
                         MDButton:
                             on_release: root.assign_priority()
 
@@ -85,6 +78,13 @@
                                 text: "Priority"
                             MDButtonIcon:
                                 icon: "flag"
+                        MDButton:
+                            on_release: root.set_deadline()
+
+                            MDButtonText:
+                                text: "Deadline"
+                            MDButtonIcon:
+                                icon: "target"
             MDGridLayout:
                 rows: 1
                 cols: 1

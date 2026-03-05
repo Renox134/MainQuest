@@ -1,14 +1,14 @@
 from model.task import Task
 from config_reader import Config
 
-import datetime
+from datetime import datetime
 
 from kivymd.uix.navigationbar import MDNavigationItem
 from kivy.properties import StringProperty
 
 from kivy.uix.behaviors import ButtonBehavior
-from kivymd.uix.list import MDListItem
-from kivymd.uix.list import MDListItemSupportingText, MDListItemTertiaryText, MDListItemLeadingIcon
+from kivymd.uix.list import MDListItem, MDListItemSupportingText, MDListItemTertiaryText, \
+    MDListItemLeadingIcon
 from kivymd.uix.screen import MDScreen
 
 from kivy.lang import Builder
@@ -45,13 +45,15 @@ class ListTaskItem(MDListItem):
     def update_widget(self) -> None:
         if self.task.notes != "":
             self.add_widget(MDListItemSupportingText(text=self.task.notes))
-        if self.task.duedate is not None:
-            due_date_text = "Due: " + self.task.duedate.strftime(Config.get("time_format"))
+        if self.task.date is not None:
+            due_date_text = "Due: " + self.task.date.strftime(Config.get("date_format"))
+        if self.task.start_time is not None:
+            due_date_text += f", {self.task.start_time.strftime(Config.get("time_format"))}"
             self.add_widget(MDListItemTertiaryText(text=due_date_text))
 
     def complete_task(self):
         print("Want to complete:\n", self.task, "\nAt ",
-              datetime.datetime.now().strftime(Config.get("time_format")))
+              datetime.now().strftime(Config.get("datetime_format")))
 
 
 class MQ_Resource_Loader():

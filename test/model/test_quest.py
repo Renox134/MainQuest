@@ -36,13 +36,18 @@ class TestQuest:
 
     def quest_import(self, request: pytest.FixtureRequest, quest: str):
         try:
-            q_1: Quest = request.getfixturevalue(quest)
+            q: Quest = request.getfixturevalue(quest)
 
             with open("test/test_quest.json", "r", encoding="utf-8") as file:
                 d = json.load(file)
-                q_1_import: Quest = Quest.to_quest(d)
+                q_import: Quest = Quest.to_quest(d)
 
-            assert q_1 == q_1_import
+            if not q == q_import:
+                print("Expected:")
+                print(q)
+                print("Actual:")
+                print(q_import)
+            assert q == q_import
 
         except:
             assert False

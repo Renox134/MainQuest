@@ -1,3 +1,5 @@
 {
-    "time_format": "%d/%m/%Y, %H:%M"
+    "time_format": "%H:%M",
+    "date_format": "%d/%m/%Y",
+    "datetime_format": "%d/%m/%Y, %H:%M"
 }
