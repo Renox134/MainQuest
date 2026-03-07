@@ -4,9 +4,9 @@ from typing import List
 from model.quest import Quest
 
 
-class QuestLog:
+class Controller:
     """
-    A class that can hold and manage quests.
+    A class that can hold and manage quests and goals.
     """
     def __init__(self, quests: List[Quest] = []):
         self.quests = quests

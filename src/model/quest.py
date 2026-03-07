@@ -1,5 +1,7 @@
 from typing import List, Dict, Any, Optional
 
+from datetime import datetime
+
 from model.task import Task
 
 
@@ -50,6 +52,56 @@ class Quest:
         self.name: str = name
         self.tasks: List[Task] = tasks
         self.completed_tasks: List[Task] = completed_tasks if completed_tasks is not None else []
+
+    def add_task(self, task: Task) -> None:
+        """
+        Adds the given task to the task list of this quest.
+
+        Args:
+            task (Task): The task to add to the task list.
+        """
+        self.tasks.append(task)
+
+    def remove_task(self, task: Task) -> Task | None:
+        """
+        Removes the given task from the task list of this quest.
+
+        Args:
+            task (Task): The task to remove.
+
+        Returns:
+            Task | None: The task that was removed or none if it wasn't found.
+        """
+        if task in self.tasks:
+            idx = self.tasks.index(task)
+            return self.tasks.pop(idx)
+        else:
+            return None
+
+    def update_completed_tasks(self) -> None:
+        """
+        Updates which tasks are completed and which aren't.
+        """
+        uncompleted_in_complete: List[Task] =\
+            [t for t in self.completed_tasks if t.completion_date is None]
+        
+        completed_in_normal: List[Task] =\
+            [t for t in self.tasks if t.completion_date <= datetime.now()]
+        
+        self.tasks = [t for t in self.tasks if t.completion_date is None]
+        self.tasks.extend(uncompleted_in_complete)
+
+        self.completed_tasks = [t for t in self.completed_tasks if t.completion_date is not None]
+        self.completed_tasks.extend(completed_in_normal)
+        
+        # ensure the completed task list is still sorted correctly
+        self.__sort_completed_tasks_by_completion_date()
+
+    def __sort_completed_tasks_by_completion_date(self) -> None:
+        """
+        Sorts the completed task list, such that it is ascendingly by date of completion.
+        """
+        self.completed_tasks.sort(key= lambda x: x.completion_date)
 
     def __str__(self) -> str:
         name = "Name: \t\t" + self.name + "\n"

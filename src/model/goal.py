@@ -10,13 +10,13 @@ class Goal:
 
     @staticmethod
     def to_goal(data: Dict[str, Any]) -> "Goal":
-        return Goal(data.get("title", ""))
+        return Goal(data.get("name", ""))
 
-    def __init__(self, title: str = ""):
+    def __init__(self, name: str = ""):
         """
         Initializes a goal object.
         """
-        self.title = title
+        self.name = name
         self.associated_quests: List[Quest] = []
 
     def add_quest(self, quest: Quest) -> None:
@@ -31,5 +31,5 @@ class Goal:
 
     def to_dict(self) -> Dict[str, Any]:
         return {
-            "title": self.title
+            "name": self.name
         }

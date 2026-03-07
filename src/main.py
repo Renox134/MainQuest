@@ -1,11 +1,10 @@
-from model.quest_log import QuestLog
+from controller import Controller
 from ui.app import MainQuestApp
 
-
 if __name__ == "__main__":
-    main_log: QuestLog = QuestLog()
+    controller: Controller = Controller()
 
-    main_log.import_quests("main_quest.json")
-    main_app = MainQuestApp(main_log)
+    controller.import_quests("main_quest.json")
+    main_app = MainQuestApp(controller)
 
     main_app.run()
