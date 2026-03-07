@@ -1,6 +1,7 @@
 from typing import List, Dict, Any
 
 from model.quest import Quest
+from object_parser import ObjectParser
 
 
 class Goal:
@@ -10,14 +11,20 @@ class Goal:
 
     @staticmethod
     def to_goal(data: Dict[str, Any]) -> "Goal":
-        return Goal(data.get("name", ""))
+        quest_names: List[str] = data.get("quest_names", [])
+        quests: List[Quest] = []
+        for q_n in quest_names:
+            to_add = ObjectParser.parse_quest(q_n)
+            if isinstance(to_add, Quest):
+                quests.append(to_add)
+        return Goal(data.get("name", ""), quests)
 
-    def __init__(self, name: str = ""):
+    def __init__(self, name: str = "", associated_quests: List[Quest] = []):
         """
         Initializes a goal object.
         """
         self.name = name
-        self.associated_quests: List[Quest] = []
+        self.associated_quests: List[Quest] = associated_quests
 
     def add_quest(self, quest: Quest) -> None:
         if quest not in self.associated_quests:
@@ -31,5 +38,6 @@ class Goal:
 
     def to_dict(self) -> Dict[str, Any]:
         return {
-            "name": self.name
+            "name": self.name,
+            "quest_names": [q.name for q in self.associated_quests]
         }

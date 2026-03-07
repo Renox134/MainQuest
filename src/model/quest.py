@@ -84,16 +84,19 @@ class Quest:
         """
         uncompleted_in_complete: List[Task] =\
             [t for t in self.completed_tasks if t.completion_date is None]
-        
-        completed_in_normal: List[Task] =\
-            [t for t in self.tasks if t.completion_date <= datetime.now()]
-        
+
+        completed_in_normal: List[Task] = []
+        for t in self.tasks:
+            if t.completion_date is not None:
+                if t.completion_date <= datetime.now():
+                    completed_in_normal.append(t)
+
         self.tasks = [t for t in self.tasks if t.completion_date is None]
         self.tasks.extend(uncompleted_in_complete)
 
         self.completed_tasks = [t for t in self.completed_tasks if t.completion_date is not None]
         self.completed_tasks.extend(completed_in_normal)
-        
+
         # ensure the completed task list is still sorted correctly
         self.__sort_completed_tasks_by_completion_date()
 
@@ -101,7 +104,9 @@ class Quest:
         """
         Sorts the completed task list, such that it is ascendingly by date of completion.
         """
-        self.completed_tasks.sort(key= lambda x: x.completion_date)
+        self.completed_tasks.sort(key=lambda x:
+                                  x.completion_date if x.completion_date is not None
+                                  else datetime.now())
 
     def __str__(self) -> str:
         name = "Name: \t\t" + self.name + "\n"
