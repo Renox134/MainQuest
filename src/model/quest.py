@@ -77,6 +77,27 @@ class Quest:
             return self.tasks.pop(idx)
         else:
             return None
+        
+    def get_all_tasks(self) -> List[Task]:
+        """Returns a list of all tasks (including nested ones) that are assigned to this quest.
+
+        Returns:
+            List[Task]: The list of all tasks assigned to this quest (including nested ones).
+        """
+        all_tasks: List[Task] = []
+        self.__collect_tasks_recursively(all_tasks, None)
+
+        return all_tasks
+
+    def __collect_tasks_recursively(self, task_list: List[Task], current: Task | None) -> None:
+        if current is None:
+            for task in self.tasks:
+                self.__collect_tasks_recursively(task_list, task)
+        else:
+            task_list.append(current)
+            for subtask in current.subtasks:
+                self.__collect_tasks_recursively(task_list, subtask)
+        return
 
     def update_completed_tasks(self) -> None:
         """
