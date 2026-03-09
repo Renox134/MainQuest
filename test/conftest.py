@@ -4,6 +4,7 @@ from datetime import date, time, datetime
 
 from model.task import Task
 from model.quest import Quest
+from model.goal import Goal
 
 
 @pytest.fixture
@@ -117,6 +118,13 @@ def quest_2(test_tasks: List[Task]) -> Quest:
 def quest_3(completed_test_tasks: List[Task]) -> Quest:
     """A quest with the same tasks in reverse order."""
     return Quest(name="Test Quest 3", tasks=completed_test_tasks)
+
+
+@pytest.fixture
+def goal_1(quest_1: Quest, quest_2: Quest, formated_progress_dict,
+           lower_bound, daily_border) -> Goal:
+    return Goal("Goal_1", [quest_1, quest_2], formated_progress_dict, {}, lower_bound,
+                daily_border)
 
 
 @pytest.fixture

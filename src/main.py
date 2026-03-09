@@ -1,9 +1,9 @@
-from controller import Controller
+from journal import Journal
 from object_parser import ObjectParser
 from ui.app import MainQuestApp
 
 if __name__ == "__main__":
-    controller: Controller = Controller()
+    controller: Journal = Journal()
     parser: ObjectParser = ObjectParser()
 
     controller.import_quests("main_quest.json")

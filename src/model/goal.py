@@ -17,6 +17,7 @@ class Goal:
         quest_names: List[str] = data.get("quest_names", [])
         quests: List[Quest] = []
         progress_dict = {}
+        milestones = {}
 
         # fill quest list
         for q_n in quest_names:
@@ -25,14 +26,15 @@ class Goal:
                 quests.append(to_add)
 
         # fill progress dict
-        for key, val in data.get("progress_dict", {}):
+
+        for key, val in data.get("progress_dict", {}).items():
             progress_dict[datetime.strptime(key, Config.get("datetime_format"))] = val
 
         # fill milestones
-        for key, val in data.get("milestones", {}):
-            progress_dict[datetime.strptime(key, Config.get("datetime_format"))] = val
+        for key, val in data.get("milestones", {}).items():
+            milestones[datetime.strptime(key, Config.get("datetime_format"))] = val
 
-        return Goal(data.get("name", ""), quests, progress_dict)
+        return Goal(data.get("name", ""), quests, progress_dict, milestones)
 
     @staticmethod
     def format_progress_dict(base: Dict[datetime, int],

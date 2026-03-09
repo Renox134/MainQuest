@@ -1,6 +1,6 @@
 from typing import Any, List
 
-from controller import Controller
+from journal import Journal
 from model.task import Task
 from ui.widgets.quest_widget import QuestWidget
 from ui.widgets.task_screen import TaskScreen
@@ -21,7 +21,7 @@ class MainQuestApp(MDApp):
     The main app.
     """
 
-    def __init__(self, controller: Controller, **kwargs: Any):
+    def __init__(self, controller: Journal, **kwargs: Any):
         self.controller = controller
         self.quest_widgets: List[QuestWidget] = []
         self.open_task_screens: int = 0
