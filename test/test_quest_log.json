@@ -1,26 +1,60 @@
 [
     {
-        "name": "Test Quest with time",
+        "name": "Test Quest 3",
         "tasks": [
             {
-                "description": "Collect water (timed)",
-                "date": "13/08/2027",
-                "start_time": null,
-                "end_time": null,
-                "completion_date": null,
+                "description": "Collect water",
+                "date": "27/02/2024",
+                "start_time": "06:00",
+                "end_time": "18:00",
+                "completion_date": "27/02/2024, 17:50",
+                "subtasks": [
+                    {
+                        "description": "Build rain collector",
+                        "date": "27/02/2024",
+                        "start_time": "09:00",
+                        "end_time": "10:00",
+                        "completion_date": "27/02/2024, 09:50",
+                        "subtasks": []
+                    },
+                    {
+                        "description": "Build container for collected water.",
+                        "date": "27/02/2024",
+                        "start_time": "06:00",
+                        "end_time": "08:00",
+                        "completion_date": "27/02/2024, 06:50",
+                        "subtasks": [
+                            {
+                                "description": "Look for big leafs.",
+                                "date": null,
+                                "start_time": null,
+                                "end_time": null,
+                                "completion_date": "27/02/2024, 06:45",
+                                "subtasks": []
+                            },
+                            {
+                                "description": "Look for useful wood.",
+                                "date": null,
+                                "start_time": null,
+                                "end_time": null,
+                                "completion_date": "27/02/2024, 06:45",
+                                "subtasks": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "description": "Gather food",
+                "date": "22/02/2024",
+                "start_time": "06:00",
+                "end_time": "08:00",
+                "completion_date": "22/02/2024, 06:50",
                 "subtasks": []
             },
             {
-                "description": "Gather food (timed)",
-                "date": "13/08/2027",
-                "start_time": null,
-                "end_time": null,
-                "completion_date": null,
-                "subtasks": []
-            },
-            {
-                "description": "Build shelter (timed)",
-                "date": "13/08/2027",
+                "description": "Build shelter",
+                "date": null,
                 "start_time": null,
                 "end_time": null,
                 "completion_date": null,
@@ -34,15 +68,49 @@
         "tasks": [
             {
                 "description": "Collect water",
-                "date": "27/07/2002",
+                "date": "27/02/2024",
                 "start_time": "06:00",
-                "end_time": "08:00",
+                "end_time": "18:00",
                 "completion_date": null,
-                "subtasks": []
+                "subtasks": [
+                    {
+                        "description": "Build rain collector",
+                        "date": "27/02/2024",
+                        "start_time": "09:00",
+                        "end_time": "10:00",
+                        "completion_date": null,
+                        "subtasks": []
+                    },
+                    {
+                        "description": "Build container for collected water.",
+                        "date": "27/02/2024",
+                        "start_time": "06:00",
+                        "end_time": "08:00",
+                        "completion_date": null,
+                        "subtasks": [
+                            {
+                                "description": "Look for big leafs.",
+                                "date": null,
+                                "start_time": null,
+                                "end_time": null,
+                                "completion_date": null,
+                                "subtasks": []
+                            },
+                            {
+                                "description": "Look for useful wood.",
+                                "date": null,
+                                "start_time": null,
+                                "end_time": null,
+                                "completion_date": null,
+                                "subtasks": []
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "description": "Gather food",
-                "date": "28/08/2003",
+                "date": "28/08/2023",
                 "start_time": "06:00",
                 "end_time": "08:00",
                 "completion_date": null,
@@ -72,7 +140,7 @@
             },
             {
                 "description": "Gather food",
-                "date": "28/08/2003",
+                "date": "28/08/2023",
                 "start_time": "06:00",
                 "end_time": "08:00",
                 "completion_date": null,
@@ -80,11 +148,45 @@
             },
             {
                 "description": "Collect water",
-                "date": "27/07/2002",
+                "date": "27/02/2024",
                 "start_time": "06:00",
-                "end_time": "08:00",
+                "end_time": "18:00",
                 "completion_date": null,
-                "subtasks": []
+                "subtasks": [
+                    {
+                        "description": "Build rain collector",
+                        "date": "27/02/2024",
+                        "start_time": "09:00",
+                        "end_time": "10:00",
+                        "completion_date": null,
+                        "subtasks": []
+                    },
+                    {
+                        "description": "Build container for collected water.",
+                        "date": "27/02/2024",
+                        "start_time": "06:00",
+                        "end_time": "08:00",
+                        "completion_date": null,
+                        "subtasks": [
+                            {
+                                "description": "Look for big leafs.",
+                                "date": null,
+                                "start_time": null,
+                                "end_time": null,
+                                "completion_date": null,
+                                "subtasks": []
+                            },
+                            {
+                                "description": "Look for useful wood.",
+                                "date": null,
+                                "start_time": null,
+                                "end_time": null,
+                                "completion_date": null,
+                                "subtasks": []
+                            }
+                        ]
+                    }
+                ]
             }
         ],
         "completed_tasks": []

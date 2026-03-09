@@ -77,7 +77,7 @@ class Quest:
             return self.tasks.pop(idx)
         else:
             return None
-        
+
     def get_all_tasks(self) -> List[Task]:
         """Returns a list of all tasks (including nested ones) that are assigned to this quest.
 
@@ -98,6 +98,17 @@ class Quest:
             for subtask in current.subtasks:
                 self.__collect_tasks_recursively(task_list, subtask)
         return
+
+    def get_progress_dict(self) -> Dict[datetime, int]:
+        result: Dict[datetime, int] = {}
+        all_tasks: List[Task] = self.get_all_tasks()
+
+        for task in all_tasks:
+            if task.completion_date is None:
+                continue
+            result[task.completion_date] = result.get(task.completion_date, 0) + 1
+
+        return result
 
     def update_completed_tasks(self) -> None:
         """

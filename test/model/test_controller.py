@@ -5,13 +5,13 @@ from typing import List
 from model.quest import Quest
 from controller import Controller
 
-class TestQuestLog:
+class TestController:
 
     @pytest.mark.parametrize(
             "quest_list",
-            [["quest_1", "quest_2", "quest_with_time"],
-             ["quest_2", "quest_1", "quest_with_time"],
-             ["quest_with_time", "quest_1", "quest_2"]]
+            [["quest_1", "quest_2", "quest_3"],
+             ["quest_2", "quest_1", "quest_3"],
+             ["quest_3", "quest_1", "quest_2"]]
 
     )
     def test_io(self, quest_list: List[str], request: pytest.FixtureRequest):

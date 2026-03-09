@@ -8,7 +8,7 @@ class TestQuest:
     def test_quest_eq(self, request: pytest.FixtureRequest):
         q_1: Quest = request.getfixturevalue("quest_1")
         q_1_r: Quest = request.getfixturevalue("quest_2")
-        q_2: Quest= request.getfixturevalue("quest_with_time")
+        q_2: Quest= request.getfixturevalue("quest_3")
 
         assert q_1 == q_1
         assert not (q_1_r == q_1)
@@ -18,7 +18,7 @@ class TestQuest:
 
     @pytest.mark.parametrize(
             "quest",
-            ["quest_1", "quest_2", "quest_with_time"]
+            ["quest_1", "quest_2", "quest_3"]
 
     )
     def test_io(self, quest: str, request: pytest.FixtureRequest,):
@@ -51,3 +51,10 @@ class TestQuest:
 
         except:
             assert False
+
+
+    def test_progress_dict(self, request: pytest.FixtureRequest):
+        q: Quest = request.getfixturevalue("quest_3")
+        expected = request.getfixturevalue("quest_3_progress_dict")
+
+        assert q.get_progress_dict() == expected

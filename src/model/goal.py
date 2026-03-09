@@ -1,9 +1,8 @@
 from typing import List, Dict, Any
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from model.quest import Quest
-from model.task import Task
 from object_parser import ObjectParser
 from config_reader import Config
 
@@ -35,15 +34,48 @@ class Goal:
 
         return Goal(data.get("name", ""), quests, progress_dict)
 
+    @staticmethod
+    def format_progress_dict(base: Dict[datetime, int],
+                             daily_border: datetime | int,
+                             lower_bound: datetime) -> Dict[datetime, int]:
+        result: Dict[datetime, int] = {}
+        daily_count_bound: int | datetime
+
+        if isinstance(daily_border, int):
+            daily_count_bound = datetime.now() - timedelta(days=daily_border)
+        elif isinstance(daily_border, datetime):
+            daily_count_bound = daily_border
+        else:
+            return result
+
+        for date, count in base.items():
+            if date >= daily_count_bound:
+                start_of_day = date.replace(hour=0, minute=0, second=0)
+                result[start_of_day] = result.get(start_of_day, 0) + count
+            elif date < lower_bound:
+                continue
+            else:
+                week_start =\
+                    (date - timedelta(days=date.weekday())).replace(hour=0, minute=0, second=0)
+                # if the week start would be too early, still include the score
+                if week_start < lower_bound:
+                    week_start = lower_bound
+                result[week_start] = result.get(week_start, 0) + count
+        return result
+
     def __init__(self, name: str = "", associated_quests: List[Quest] = [],
                  progress_dict: Dict[datetime, int] = {},
-                 milestones: Dict[datetime, str] = {}):
+                 milestones: Dict[datetime, str] = {},
+                 progress_time_border: datetime = datetime(2026, 1, 1),
+                 daily_count_border: int = 30):
         """
         Initializes a goal object.
         """
         self.name = name
         self.associated_quests: List[Quest] = associated_quests
         self.progress_dict: Dict[datetime, int] = progress_dict
+        self.progress_time_border: datetime = progress_time_border
+        self.daily_count_border: int = daily_count_border
         self.milestones: Dict[datetime, str] = milestones
 
     def add_quest(self, quest: Quest) -> None:
@@ -64,22 +96,18 @@ class Goal:
         Args:
             quest (Quest): The quest of which to transfer the progress.
         """
-        all_completed_tasks: List[Task] =\
-            [t for t in quest.get_all_tasks() if t.completion_date is not None]
-        
-        for t in all_completed_tasks:
-            if t.completion_date not in self.progress_dict.keys():
-                self.progress_dict[t.completion_date] = 1
-            else:
-                self.progress_dict[t.completion_date] += 1
+        # get progress dict of quest
+        quest_progress_dict = quest.get_progress_dict()
+
+        # integrate progress of quest into local progress dict
+        self.progress_dict |= quest_progress_dict
+
+        # reformat the progress dict
+        self.progress_dict = self.format_progress_dict(self.progress_dict, self.daily_count_border,
+                                                       self.progress_time_border)
 
         # remove quest from associated quests
         self.remove_quest(quest)
-
-    def update_progress_dict(self) -> None:
-        """
-        Updates the progress dict.
-        """
 
     def to_dict(self) -> Dict[str, Any]:
         str_progress_dict = {}
