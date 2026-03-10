@@ -70,6 +70,8 @@ class TestQuest:
         q: Quest = request.getfixturevalue(quest)
         controll_dict = {}
         tasks = [t for t in q.get_all_tasks()]
+        num_uncompleted_before = len(tasks)
+        num_completed_before = num_uncompleted_before - len(q.get_all_tasks(False))
         completion_time = datetime.now()
         origin_tasks = tasks.copy()
 
@@ -77,8 +79,12 @@ class TestQuest:
             controll_dict[t.description] = t.completion_date
 
         # set to completed
-        q.complete_all_remaining_tasks(completion_time)
+        q.complete_all_tasks(completion_time)
 
+        num_completed_after = len(q.get_all_tasks()) - len(q.get_all_tasks(False))
+
+        assert len(q.tasks) == 0
+        assert num_completed_after == num_completed_before + num_uncompleted_before
         assert len(tasks) == len(origin_tasks)
         
         for task, origin_task in zip(tasks, origin_tasks):

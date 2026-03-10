@@ -21,7 +21,7 @@ class Journal:
 
         if set_to_completed:
             # complete all potentially uncompleted tasks
-            quest.complete_all_remaining_tasks(datetime.now())
+            quest.complete_all_tasks(datetime.now())
 
         # make sure the goals update the progress dict when enabled
         if transfer_progress:

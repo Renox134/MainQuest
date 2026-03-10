@@ -111,7 +111,7 @@
                 },
                 {
                     "description": "Gather food",
-                    "date": "28/08/2023",
+                    "date": "28/08/2024",
                     "start_time": "06:00",
                     "end_time": "08:00",
                     "completion_date": null,
@@ -141,7 +141,7 @@
                 },
                 {
                     "description": "Gather food",
-                    "date": "28/08/2023",
+                    "date": "28/08/2024",
                     "start_time": "06:00",
                     "end_time": "08:00",
                     "completion_date": null,
@@ -203,8 +203,7 @@
             "progress_dict": {
                 "10/01/2024, 00:00": 6,
                 "15/01/2024, 00:00": 6,
-                "02/02/2024, 00:00": 5,
-                "03/02/2024, 00:00": 4
+                "29/01/2024, 00:00": 9
             },
             "milestones": {},
             "daily_count_border": 30,

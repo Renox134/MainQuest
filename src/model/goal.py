@@ -64,13 +64,14 @@ class Goal:
 
         for date, count in base.items():
             if date >= daily_count_bound:
-                start_of_day = date.replace(hour=0, minute=0, second=0)
+                start_of_day = date.replace(hour=0, minute=0, second=0, microsecond=0)
                 result[start_of_day] = result.get(start_of_day, 0) + count
             elif date < lower_bound:
                 continue
             else:
                 week_start =\
-                    (date - timedelta(days=date.weekday())).replace(hour=0, minute=0, second=0)
+                    (date - timedelta(days=date.weekday())).replace(hour=0, minute=0,
+                                                                    second=0, microsecond=0)
                 # if the week start would be too early, still include the score
                 if week_start < lower_bound:
                     week_start = lower_bound

@@ -78,37 +78,46 @@ class Quest:
         else:
             return None
 
-    def get_all_tasks(self) -> List[Task]:
+    def get_all_tasks(self, include_completed: bool = True) -> List[Task]:
         """Returns a list of all tasks (including nested ones) that are assigned to this quest.
 
         Returns:
             List[Task]: The list of all tasks assigned to this quest (including nested ones).
         """
         all_tasks: List[Task] = []
-        self.__collect_tasks_recursively(all_tasks, None)
+        self.__collect_tasks_recursively(all_tasks, None, include_completed)
 
         return all_tasks
 
-    def __collect_tasks_recursively(self, task_list: List[Task], current: Task | None) -> None:
+    def __collect_tasks_recursively(self, task_list: List[Task], current: Task | None,
+                                    include_completed: bool = False) -> None:
         if current is None:
             for task in self.tasks:
                 self.__collect_tasks_recursively(task_list, task)
+            if include_completed:
+                for completed_task in self.completed_tasks:
+                    self.__collect_tasks_recursively(task_list, completed_task)
         else:
             task_list.append(current)
             for subtask in current.subtasks:
                 self.__collect_tasks_recursively(task_list, subtask)
         return
 
-    def complete_all_remaining_tasks(self, time_of_completion: datetime,
-                                     parent: Task | None = None) -> None:
-        if parent is None:
-            for task in self.tasks:
-                self.complete_all_remaining_tasks(time_of_completion, task)
-        else:
-            if parent.completion_date is None:
-                parent.completion_date = time_of_completion
-            for child in parent.subtasks:
-                self.complete_all_remaining_tasks(time_of_completion, child)
+    def complete_all_tasks(self, time_of_completion: datetime,
+                           move_to_completed_list: bool = True) -> None:
+        for i in range(len(self.tasks) - 1, -1, -1):
+            self.complete_task_and_subtasks(time_of_completion, self.tasks[i],
+                                            move_to_completed_list)
+
+    def complete_task_and_subtasks(self, time_of_completion: datetime,
+                                   parent: Task,
+                                   move_to_completed_list: bool = True) -> None:
+        parent.completion_date = time_of_completion
+        for child in parent.subtasks:
+            self.complete_task_and_subtasks(time_of_completion, child, False)
+        if move_to_completed_list:
+            self.tasks.remove(parent)
+            self.completed_tasks.append(parent)
 
     def get_progress_dict(self) -> Dict[datetime, int]:
         result: Dict[datetime, int] = {}

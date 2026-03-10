@@ -41,9 +41,9 @@ def test_tasks() -> List[Task]:
         ),
         Task(
             description="Gather food",
-            date=date(2023, 8, 28),
+            date=date(2024, 8, 28),
             start_time=time(6),
-            end_time=(time(8)),
+            end_time=time(8),
         ),
         Task(
             description="Build shelter"
@@ -121,9 +121,9 @@ def quest_3(completed_test_tasks: List[Task]) -> Quest:
 
 
 @pytest.fixture
-def goal_1(quest_1: Quest, quest_2: Quest, formated_progress_dict,
+def goal_1(quest_1: Quest, quest_2: Quest, weekly_progress_dict,
            lower_bound) -> Goal:
-    return Goal("Goal_1", [quest_1, quest_2], formated_progress_dict, {}, lower_bound, 30)
+    return Goal("Goal_1", [quest_1, quest_2], weekly_progress_dict, {}, lower_bound, 30)
 
 
 @pytest.fixture
@@ -189,4 +189,13 @@ def fused_progress_dict():
         datetime(2024, 2, 3, 0, 0): 4,
         datetime(2024, 2, 22, 0, 0): 1,
         datetime(2024, 2, 27, 0, 0): 5,
+    }
+
+
+@pytest.fixture
+def weekly_progress_dict():
+    return {
+        datetime(2024, 1, 10, 0, 0): 6,
+        datetime(2024, 1, 15, 0, 0): 6,
+        datetime(2024, 1, 29, 0, 0): 9,
     }
