@@ -21,8 +21,8 @@ class MainQuestApp(MDApp):
     The main app.
     """
 
-    def __init__(self, controller: Journal, **kwargs: Any):
-        self.controller = controller
+    def __init__(self, journal: Journal, **kwargs: Any):
+        self.journal = journal
         self.quest_widgets: List[QuestWidget] = []
         self.open_task_screens: int = 0
         MQ_Resource_Loader().load_resources()
@@ -38,7 +38,7 @@ class MainQuestApp(MDApp):
         quest_layout = self.root.ids.quest_layout
 
         async def add_quests():
-            for quest in self.controller.quests:
+            for quest in self.journal.quests:
                 await asynckivy.sleep(0)
                 quest_widget = QuestWidget(quest)
                 quest_layout.add_widget(quest_widget.root)

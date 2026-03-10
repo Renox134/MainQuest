@@ -99,6 +99,17 @@ class Quest:
                 self.__collect_tasks_recursively(task_list, subtask)
         return
 
+    def complete_all_remaining_tasks(self, time_of_completion: datetime,
+                                     parent: Task | None = None) -> None:
+        if parent is None:
+            for task in self.tasks:
+                self.complete_all_remaining_tasks(time_of_completion, task)
+        else:
+            if parent.completion_date is None:
+                parent.completion_date = time_of_completion
+            for child in parent.subtasks:
+                self.complete_all_remaining_tasks(time_of_completion, child)
+
     def get_progress_dict(self) -> Dict[datetime, int]:
         result: Dict[datetime, int] = {}
         all_tasks: List[Task] = self.get_all_tasks()

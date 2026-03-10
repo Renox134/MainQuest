@@ -31,5 +31,3 @@ class TestGoal:
         test_goal.move_quest_to_progress(q)
 
         assert test_goal.progress_dict == expected
-
-        assert q not in test_goal.associated_quests

@@ -96,16 +96,6 @@ class Goal:
         self.daily_count_border: int = daily_count_border
         self.milestones: Dict[datetime, str] = milestones
 
-    def add_quest(self, quest: Quest) -> None:
-        if quest not in self.associated_quests:
-            self.associated_quests.append(quest)
-
-    def remove_quest(self, quest: Quest) -> Quest | None:
-        if quest in self.associated_quests:
-            return self.associated_quests.pop(self.associated_quests.index(quest))
-        else:
-            return None
-
     def move_quest_to_progress(self, quest: Quest) -> None:
         """
         Removes a qiven quest from the associated quests and writes the completion record
@@ -123,9 +113,6 @@ class Goal:
         # reformat the progress dict
         self.progress_dict = self.format_progress_dict(self.progress_dict, self.daily_count_border,
                                                        self.progress_time_border)
-
-        # remove quest from associated quests
-        self.remove_quest(quest)
 
     def to_dict(self) -> Dict[str, Any]:
         str_progress_dict = {}
