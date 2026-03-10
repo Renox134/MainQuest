@@ -26,6 +26,10 @@ class Journal:
             json.dump(to_export, file, indent=4, ensure_ascii=False)
 
     def import_quests(self, path: str) -> None:
+        # clear out everything old
+        self.quests = []
+        self.goals = []
+
         with open(path, "r") as file:
             raw_input = json.load(file)
             # add quests

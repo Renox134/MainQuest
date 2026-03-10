@@ -1,5 +1,7 @@
 {
     "time_format": "%H:%M",
     "date_format": "%d/%m/%Y",
-    "datetime_format": "%d/%m/%Y, %H:%M"
+    "datetime_format": "%d/%m/%Y, %H:%M",
+    "default_daily_count_border": 30,
+    "default_progress_time_border": "10/01/2024, 00:00"
 }
