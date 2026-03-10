@@ -1,199 +1,535 @@
-[
-    {
-        "name": "Survive",
-        "tasks": [
-            {
-                "description": "Collect water",
-                "notes": "Water in necessary to survive",
-                "date": "27/07/2026",
-                "start_time": "06:00",
-                "end_time": "23:59",
-                "completion_date": null,
-                "subtasks": [
-                    {
-                        "description": "Find a water source",
-                        "date": "27/07/2026",
-                        "start_time": "20:00",
-                        "end_time": "23:00",
-                        "completion_date": null,
-                        "subtasks": [
-                            {
-                                "description": "Build a rain collector",
-                                "date": "27/07/2026",
-                                "start_time": "20:00",
-                                "end_time": "23:00",
-                                "completion_date": null,
-                                "subtasks": []
-                            },
-                            {
-                                "description": "Look for a stream",
-                                "date": "27/07/2026",
-                                "start_time": "06:00",
-                                "end_time": "10:00",
-                                "completion_date": null,
-                                "subtasks": []
-                            }
-                        ]
-                    },
-                    {
-                        "description": "Fill containers",
-                        "date": "27/07/2026",
-                        "start_time": "23:30",
-                        "end_time": null,
-                        "completion_date": null,
-                        "subtasks": []
-                    }
-                ]
+{
+    "quests": [
+        {
+            "name": "Survive",
+            "tasks": [
+                {
+                    "description": "Collect water",
+                    "notes": "Water in necessary to survive",
+                    "date": "27/07/2026",
+                    "start_time": "06:00",
+                    "end_time": "23:59",
+                    "completion_date": null,
+                    "subtasks": [
+                        {
+                            "description": "Find a water source",
+                            "date": "27/07/2026",
+                            "start_time": "20:00",
+                            "end_time": "23:00",
+                            "completion_date": null,
+                            "subtasks": [
+                                {
+                                    "description": "Build a rain collector",
+                                    "date": "27/07/2026",
+                                    "start_time": "20:00",
+                                    "end_time": "23:00",
+                                    "completion_date": null,
+                                    "subtasks": []
+                                },
+                                {
+                                    "description": "Look for a stream",
+                                    "date": "27/07/2026",
+                                    "start_time": "06:00",
+                                    "end_time": "10:00",
+                                    "completion_date": null,
+                                    "subtasks": []
+                                }
+                            ]
+                        },
+                        {
+                            "description": "Fill containers",
+                            "date": "27/07/2026",
+                            "start_time": "23:30",
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        }
+                    ]
+                },
+                {
+                    "description": "Gather food",
+                    "date": "28/08/2026",
+                    "start_time": "00:00",
+                    "end_time": "19:00",
+                    "completion_date": null,
+                    "subtasks": [
+                        {
+                            "description": "Collect fruits",
+                            "date": "27/08/2026",
+                            "start_time": "12:00",
+                            "end_time": "13:00",
+                            "completion_date": null,
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Hunt small animals",
+                            "date": "27/08/2026",
+                            "start_time": "18:00",
+                            "end_time": "19:00",
+                            "completion_date": null,
+                            "subtasks": []
+                        }
+                    ]
+                },
+                {
+                    "description": "Build shelter",
+                    "date": null,
+                    "start_time": null,
+                    "end_time": null,
+                    "completion_date": null,
+                    "subtasks": [
+                        {
+                            "description": "Gather wood",
+                            "date": null,
+                            "start_time": null,
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Construct frame",
+                            "date": null,
+                            "start_time": null,
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Add roof covering",
+                            "date": null,
+                            "start_time": null,
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        }
+                    ]
+                }
+            ],
+            "completed_tasks": []
+        },
+        {
+            "name": "Craft Weapons",
+            "tasks": [
+                {
+                    "description": "Gather crafting materials",
+                    "date": "02/09/2026",
+                    "start_time": "08:00",
+                    "end_time": "14:00",
+                    "completion_date": null,
+                    "subtasks": [
+                        {
+                            "description": "Collect sturdy branches",
+                            "date": "02/09/2026",
+                            "start_time": "08:00",
+                            "end_time": "09:30",
+                            "completion_date": "02/09/2026, 09:10",
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Find sharp stones",
+                            "date": "02/09/2026",
+                            "start_time": "10:00",
+                            "end_time": "11:00",
+                            "completion_date": null,
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Gather vines for bindings",
+                            "date": "02/09/2026",
+                            "start_time": "12:00",
+                            "end_time": "13:00",
+                            "completion_date": null,
+                            "subtasks": []
+                        }
+                    ]
+                },
+                {
+                    "description": "Craft a spear",
+                    "date": "03/09/2026",
+                    "start_time": "09:00",
+                    "end_time": "11:00",
+                    "completion_date": null,
+                    "subtasks": [
+                        {
+                            "description": "Sharpen spear tip",
+                            "date": "03/09/2026",
+                            "start_time": "09:00",
+                            "end_time": "09:30",
+                            "completion_date": null,
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Attach stone tip",
+                            "date": "03/09/2026",
+                            "start_time": "09:30",
+                            "end_time": "10:30",
+                            "completion_date": null,
+                            "subtasks": []
+                        }
+                    ]
+                }
+            ],
+            "completed_tasks": [
+                {
+                    "description": "Craft a wooden club",
+                    "date": "01/09/2026",
+                    "start_time": "15:00",
+                    "end_time": "16:00",
+                    "completion_date": "01/09/2026, 15:50",
+                    "subtasks": [
+                        {
+                            "description": "Select heavy branch",
+                            "date": "01/09/2026",
+                            "start_time": "15:00",
+                            "end_time": "15:10",
+                            "completion_date": "01/09/2026, 15:05",
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Carve handle grip",
+                            "date": "01/09/2026",
+                            "start_time": "15:10",
+                            "end_time": "15:40",
+                            "completion_date": "01/09/2026, 15:35",
+                            "subtasks": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Find Allies",
+            "tasks": [
+                {
+                    "description": "Locate nearby settlements",
+                    "date": null,
+                    "start_time": null,
+                    "end_time": null,
+                    "completion_date": null,
+                    "subtasks": [
+                        {
+                            "description": "Scout nearby hills",
+                            "date": null,
+                            "start_time": null,
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Look for smoke signals",
+                            "date": null,
+                            "start_time": null,
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        }
+                    ]
+                },
+                {
+                    "description": "Gain trust of villagers",
+                    "date": null,
+                    "start_time": null,
+                    "end_time": null,
+                    "completion_date": null,
+                    "subtasks": [
+                        {
+                            "description": "Offer gathered food",
+                            "date": null,
+                            "start_time": null,
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Help repair fences",
+                            "date": null,
+                            "start_time": null,
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        }
+                    ]
+                }
+            ],
+            "completed_tasks": [
+                {
+                    "description": "Meet wandering trader",
+                    "date": "31/08/2026",
+                    "start_time": "12:00",
+                    "end_time": "13:00",
+                    "completion_date": "31/08/2026, 12:45",
+                    "subtasks": [
+                        {
+                            "description": "Exchange information",
+                            "date": "31/08/2026",
+                            "start_time": "12:10",
+                            "end_time": "12:30",
+                            "completion_date": "31/08/2026, 12:25",
+                            "subtasks": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Explore the Land",
+            "tasks": [
+                {
+                    "description": "Map surrounding forest",
+                    "date": null,
+                    "start_time": null,
+                    "end_time": null,
+                    "completion_date": null,
+                    "subtasks": [
+                        {
+                            "description": "Mark dangerous areas",
+                            "date": null,
+                            "start_time": null,
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Identify edible plants",
+                            "date": null,
+                            "start_time": null,
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        }
+                    ]
+                }
+            ],
+            "completed_tasks": [
+                {
+                    "description": "Climb observation hill",
+                    "date": "30/08/2026",
+                    "start_time": "07:00",
+                    "end_time": "08:00",
+                    "completion_date": "30/08/2026, 07:55",
+                    "subtasks": []
+                }
+            ]
+        },
+        {
+            "name": "Study Dragons",
+            "tasks": [
+                {
+                    "description": "Research dragon weaknesses",
+                    "date": null,
+                    "start_time": null,
+                    "end_time": null,
+                    "completion_date": null,
+                    "subtasks": [
+                        {
+                            "description": "Study ancient texts",
+                            "date": null,
+                            "start_time": null,
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Compare eyewitness accounts",
+                            "date": null,
+                            "start_time": null,
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        }
+                    ]
+                }
+            ],
+            "completed_tasks": [
+                {
+                    "description": "Collect dragon folklore",
+                    "date": "29/08/2026",
+                    "start_time": "14:00",
+                    "end_time": "16:00",
+                    "completion_date": "29/08/2026, 15:40",
+                    "subtasks": []
+                }
+            ]
+        },
+        {
+            "name": "Find a Dragon",
+            "tasks": [
+                {
+                    "description": "Search in northern Europe",
+                    "date": null,
+                    "start_time": null,
+                    "end_time": null,
+                    "completion_date": null,
+                    "subtasks": [
+                        {
+                            "description": "Explore forests in Scandinavia",
+                            "date": null,
+                            "start_time": null,
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Interview local witnesses",
+                            "date": null,
+                            "start_time": null,
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Check historical archives",
+                            "date": null,
+                            "start_time": null,
+                            "end_time": null,
+                            "completion_date": null,
+                            "subtasks": []
+                        }
+                    ]
+                },
+                {
+                    "description": "Search in northern America",
+                    "date": "28/08/2026",
+                    "start_time": "00:00",
+                    "end_time": "10:00",
+                    "completion_date": null,
+                    "subtasks": [
+                        {
+                            "description": "Investigate Canadian forests",
+                            "date": "27/08/2026",
+                            "start_time": "12:00",
+                            "end_time": "13:00",
+                            "completion_date": null,
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Scout mountain ranges",
+                            "date": "27/08/2026",
+                            "start_time": "16:00",
+                            "end_time": "17:00",
+                            "completion_date": null,
+                            "subtasks": []
+                        }
+                    ]
+                }
+            ],
+            "completed_tasks": [
+                {
+                    "description": "Search in Siberia",
+                    "date": "28/08/2026",
+                    "start_time": "00:00",
+                    "end_time": "10:00",
+                    "completion_date": "29/08/2026, 14:00",
+                    "subtasks": [
+                        {
+                            "description": "Travel to Siberia",
+                            "date": "25/08/2026",
+                            "start_time": "10:00",
+                            "end_time": "11:00",
+                            "completion_date": "26/08/2026, 09:00",
+                            "subtasks": []
+                        },
+                        {
+                            "description": "Search taiga region",
+                            "date": "27/08/2026",
+                            "start_time": "09:00",
+                            "end_time": "10:00",
+                            "completion_date": "28/08/2026, 22:00",
+                            "subtasks": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "goals": [
+        {
+            "name": "Beat the Game",
+            "quest_names": [
+                "Survive",
+                "Craft Weapons",
+                "Find Allies",
+                "Study Dragons",
+                "Explore the Land",
+                "Find a Dragon"
+            ],
+            "progress_dict": {
+                "01/01/2026, 00:00": 1,
+                "08/01/2026, 00:00": 6,
+                "15/01/2026, 00:00": 6,
+                "02/02/2026, 00:00": 5,
+                "09/02/2026, 00:00": 4
             },
-            {
-                "description": "Gather food",
-                "date": "28/08/2027",
-                "start_time": "00:00",
-                "end_time": "19:00",
-                "completion_date": null,
-                "subtasks": [
-                    {
-                        "description": "Collect fruits",
-                        "date": "27/08/2027",
-                        "start_time": "12:00",
-                        "end_time": "13:00",
-                        "completion_date": null,
-                        "subtasks": []
-                    },
-                    {
-                        "description": "Hunt small animals",
-                        "date": "27/08/2027",
-                        "start_time": "18:00",
-                        "end_time": "19:00",
-                        "completion_date": null,
-                        "subtasks": []
-                    }
-                ]
+            "milestones": {
+                "01/01/2026, 00:00": "Wake up.",
+                "08/01/2026, 00:00": "Run and Hide!",
+                "15/01/2026, 00:00": "First real weapons crafted.",
+                "02/02/2026, 00:00": "Exploration begins paying off."
             },
-            {
-                "description": "Build shelter",
-                "date": null,
-                "start_time": null,
-                "end_time": null,
-                "completion_date": null,
-                "subtasks": [
-                    {
-                        "description": "Gather wood",
-                        "date": null,
-                        "start_time": null,
-                        "end_time": null,
-                        "completion_date": null,
-                        "subtasks": []
-                    },
-                    {
-                        "description": "Construct frame",
-                        "date": null,
-                        "start_time": null,
-                        "end_time": null,
-                        "completion_date": null,
-                        "subtasks": []
-                    },
-                    {
-                        "description": "Add roof covering",
-                        "date": null,
-                        "start_time": null,
-                        "end_time": null,
-                        "completion_date": null,
-                        "subtasks": []
-                    }
-                ]
-            }
-        ],
-        "completed_tasks": []
-    },
-    {
-        "name": "Find a Dragon",
-        "tasks": [
-            {
-                "description": "Search in northern Europe",
-                "date": null,
-                "start_time": null,
-                "end_time": null,
-                "completion_date": null,
-                "subtasks": [
-                    {
-                        "description": "Explore forests in Scandinavia",
-                        "date": null,
-                        "start_time": null,
-                        "end_time": null,
-                        "completion_date": null,
-                        "subtasks": []
-                    },
-                    {
-                        "description": "Interview local witnesses",
-                        "date": null,
-                        "start_time": null,
-                        "end_time": null,
-                        "completion_date": null,
-                        "subtasks": []
-                    },
-                    {
-                        "description": "Check historical archives",
-                        "date": null,
-                        "start_time": null,
-                        "end_time": null,
-                        "completion_date": null,
-                        "subtasks": []
-                    }
-                ]
+            "daily_count_border": 30,
+            "progress_time_border": "01/01/2026, 00:00"
+        },
+        {
+            "name": "Build Power",
+            "quest_names": [
+                "Craft Weapons",
+                "Find Allies"
+            ],
+            "progress_dict": {
+                "01/01/2026, 00:00": 0,
+                "08/01/2026, 00:00": 2,
+                "15/01/2026, 00:00": 3,
+                "02/02/2026, 00:00": 2,
+                "09/02/2026, 00:00": 1
             },
-            {
-                "description": "Search in northern America",
-                "date": "28/08/2027",
-                "start_time": "00:00",
-                "end_time": "10:00",
-                "completion_date": null,
-                "subtasks": [
-                    {
-                        "description": "Investigate Canadian forests",
-                        "date": "27/08/2027",
-                        "start_time": "12:00",
-                        "end_time": "13:00",
-                        "completion_date": null,
-                        "subtasks": []
-                    },
-                    {
-                        "description": "Scout mountain ranges",
-                        "date": "27/08/2027",
-                        "start_time": "16:00",
-                        "end_time": "17:00",
-                        "completion_date": null,
-                        "subtasks": []
-                    }
-                ]
-            }
-        ],
-        "completed_tasks": [
-            {
-                "description": "Search in Siberia",
-                "date": "28/08/2027",
-                "start_time": "00:00",
-                "end_time": "10:00",
-                "completion_date": "29/08/2027, 14:00",
-                "subtasks": [
-                    {
-                        "description": "Travel to Siberia",
-                        "date": "25/08/2027",
-                        "start_time": "10:00",
-                        "end_time": "11:00",
-                        "completion_date": "26/08/2027, 09:00",
-                        "subtasks": []
-                    },
-                    {
-                        "description": "Search taiga region",
-                        "date": "27/08/2027",
-                        "start_time": "09:00",
-                        "end_time": "10:00",
-                        "completion_date": "28/08/2027, 22:00",
-                        "subtasks": []
-                    }
-                ]
-            }
-        ]
-    }
-]
+            "milestones": {
+                "08/01/2026, 00:00": "First weapon crafted.",
+                "15/01/2026, 00:00": "An ally agrees to help."
+            },
+            "daily_count_border": 30,
+            "progress_time_border": "01/01/2026, 00:00"
+        },
+        {
+            "name": "Survival & Exploration",
+            "quest_names": [
+                "Survive",
+                "Explore the Land"
+            ],
+            "progress_dict": {
+                "01/01/2026, 00:00": 1,
+                "08/01/2026, 00:00": 3,
+                "15/01/2026, 00:00": 1,
+                "02/02/2026, 00:00": 2,
+                "09/02/2026, 00:00": 2
+            },
+            "milestones": {
+                "01/01/2026, 00:00": "First safe shelter secured.",
+                "08/01/2026, 00:00": "Reliable water source discovered.",
+                "09/02/2026, 00:00": "Nearby terrain successfully mapped."
+            },
+            "daily_count_border": 30,
+            "progress_time_border": "01/01/2026, 00:00"
+        },
+        {
+            "name": "Dragon Hunt",
+            "quest_names": [
+                "Study Dragons",
+                "Find a Dragon"
+            ],
+            "progress_dict": {
+                "01/01/2026, 00:00": 0,
+                "08/01/2026, 00:00": 1,
+                "15/01/2026, 00:00": 2,
+                "02/02/2026, 00:00": 1,
+                "09/02/2026, 00:00": 1
+            },
+            "milestones": {
+                "08/01/2026, 00:00": "First dragon sightings recorded.",
+                "15/01/2026, 00:00": "Ancient dragon lore discovered.",
+                "02/02/2026, 00:00": "Evidence of dragon tracks found."
+            },
+            "daily_count_border": 30,
+            "progress_time_border": "01/01/2026, 00:00"
+        }
+    ]
+}
