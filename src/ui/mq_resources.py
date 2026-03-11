@@ -69,12 +69,9 @@ class ListTaskItem(MDListItem):
     def animate_removal(self) -> None:
         self.disabled = True
 
-        anim = Animation(
-            opacity=0,
-            x=self.x - 80,   # slide left
-            d=0.25,
-            t="out_quad"
-        )
+        check_anim = Animation(d=0.08)
+        slide_anim = Animation(opacity=0, x=self.x + 80, d=0.25, t="out_quad")
+        anim = check_anim + slide_anim
 
         def remove_item(*args):
             if self.parent:
