@@ -12,6 +12,7 @@ from kivymd.uix.list import MDListItem, MDListItemSupportingText, MDListItemTert
     MDListItemLeadingIcon
 from kivymd.uix.screen import MDScreen
 
+from kivy.animation import Animation
 from kivy.lang import Builder
 
 
@@ -56,15 +57,31 @@ class ListTaskItem(MDListItem):
             self.add_widget(MDListItemTertiaryText(text=due_date_text))
 
     def complete_task(self):
-        print("Want to complete:\n", self.task, "\nAt ",
-              datetime.now().strftime(Config.get("datetime_format")))
-        print("Parent Quest:\t", self.parent_quest.name)
         if self.parent_task is None:
             self.parent_quest.complete_task_and_subtasks(datetime.now(), self.task)
         else:
             self.parent_quest.complete_task_and_subtasks(datetime.now(),
                                                          self.task,
                                                          self.parent_task)
+        self.ids.confirm_icon.icon = "checkbox-marked-circle"
+        self.animate_removal()
+
+    def animate_removal(self) -> None:
+        self.disabled = True
+
+        anim = Animation(
+            opacity=0,
+            x=self.x - 80,   # slide left
+            d=0.25,
+            t="out_quad"
+        )
+
+        def remove_item(*args):
+            if self.parent:
+                self.parent.remove_widget(self)
+
+        anim.bind(on_complete=remove_item)
+        anim.start(self)
 
 
 class MQ_Resource_Loader():

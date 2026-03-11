@@ -112,7 +112,9 @@ class Quest:
                                    parent: Task | None = None) -> None:
         to_complete.completion_date = time_of_completion
         for i in range(len(to_complete.subtasks) - 1, -1, -1):
-            self.complete_task_and_subtasks(time_of_completion, to_complete.subtasks[i], to_complete)
+            self.complete_task_and_subtasks(time_of_completion,
+                                            to_complete.subtasks[i],
+                                            to_complete)
         if parent is None:
             self.tasks.remove(to_complete)
         else:
