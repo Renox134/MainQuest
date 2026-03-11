@@ -41,7 +41,7 @@ class Quest:
             completed_tasks=completed_tasks
         )
 
-    def __init__(self, name: str, tasks: List[Task] = [],
+    def __init__(self, name: str = "", tasks: List[Task] = [],
                  completed_tasks: Optional[List[Task]] = None):
         """
         Initializes a quest.

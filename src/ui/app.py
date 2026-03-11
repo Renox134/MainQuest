@@ -2,6 +2,7 @@ from typing import Any, List
 
 from journal import Journal
 from model.task import Task
+from model.quest import Quest
 from ui.widgets.quest_widget import QuestWidget
 from ui.widgets.task_screen import TaskScreen
 from ui.mq_resources import MQ_Resource_Loader
@@ -82,9 +83,10 @@ class MainQuestApp(MDApp):
         manager.transition.direction = "right"
         self.root.ids.screen_manager.current = "progress_window"
 
-    def open_task_screen(self, task: Task) -> None:
+    def open_task_screen(self, task: Task, parent_quest: Quest) -> None:
         manager: MDScreenManager = self.root.ids.outer_screen_manager
-        manager.add_widget(TaskScreen(task, self.open_task_screens))
+        new_task_screen: TaskScreen = TaskScreen(task, parent_quest, self.open_task_screens)
+        manager.add_widget(new_task_screen)
         manager.transition.direction = "left"
         manager.current = f"task_screen_{str(self.open_task_screens)}"
         self.open_task_screens += 1

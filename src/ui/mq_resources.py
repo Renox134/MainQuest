@@ -1,4 +1,5 @@
 from model.task import Task
+from model.quest import Quest
 from config_reader import Config
 
 from datetime import datetime
@@ -36,8 +37,9 @@ class LeadingPressedIconButton(ButtonBehavior, MDListItemLeadingIcon):
 
 
 class ListTaskItem(MDListItem):
-    def __init__(self, task: Task = Task(), **kwargs):
+    def __init__(self, parent_quest: Quest, task: Task = Task(), **kwargs):
         self.task = task
+        self.parent_quest = parent_quest
         super().__init__(**kwargs)
 
         self.update_widget()
@@ -54,6 +56,7 @@ class ListTaskItem(MDListItem):
     def complete_task(self):
         print("Want to complete:\n", self.task, "\nAt ",
               datetime.now().strftime(Config.get("datetime_format")))
+        print("Parent Quest:\t", self.parent_quest.name)
 
 
 class MQ_Resource_Loader():
