@@ -65,4 +65,4 @@ class QuestWidget:
 
         self.root.ids.task_list.clear_widgets()
         for task in self.quest.tasks:
-            self.root.ids.task_list.add_widget(ListTaskItem(self.quest, task))
+            self.root.ids.task_list.add_widget(ListTaskItem(task, self.quest, None))

@@ -37,9 +37,11 @@ class LeadingPressedIconButton(ButtonBehavior, MDListItemLeadingIcon):
 
 
 class ListTaskItem(MDListItem):
-    def __init__(self, parent_quest: Quest, task: Task = Task(), **kwargs):
+    def __init__(self, task: Task, parent_quest: Quest,
+                 parent_task: Task | None, **kwargs):
         self.task = task
         self.parent_quest = parent_quest
+        self.parent_task = parent_task
         super().__init__(**kwargs)
 
         self.update_widget()
@@ -57,6 +59,12 @@ class ListTaskItem(MDListItem):
         print("Want to complete:\n", self.task, "\nAt ",
               datetime.now().strftime(Config.get("datetime_format")))
         print("Parent Quest:\t", self.parent_quest.name)
+        if self.parent_task is None:
+            self.parent_quest.complete_task_and_subtasks(datetime.now(), self.task)
+        else:
+            self.parent_quest.complete_task_and_subtasks(datetime.now(),
+                                                         self.task,
+                                                         self.parent_task)
 
 
 class MQ_Resource_Loader():

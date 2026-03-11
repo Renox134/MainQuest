@@ -49,7 +49,7 @@ class TaskScreen(MDScreen):
         # setup subtasks
         self.ids.subtask_list.clear_widgets()
         for subtask in self.task.subtasks:
-            self.ids.subtask_list.add_widget(ListTaskItem(self.parent_quest, subtask))
+            self.ids.subtask_list.add_widget(ListTaskItem(subtask, self.parent_quest, self.task))
 
     def open_date_selector(self):
         # create the date dialogue if necessary
