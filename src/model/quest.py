@@ -41,7 +41,7 @@ class Quest:
             completed_tasks=completed_tasks
         )
 
-    def __init__(self, name: str, tasks: List[Task] = [],
+    def __init__(self, name: str = "", tasks: List[Task] = [],
                  completed_tasks: Optional[List[Task]] = None):
         """
         Initializes a quest.
@@ -103,21 +103,23 @@ class Quest:
                 self.__collect_tasks_recursively(task_list, subtask)
         return
 
-    def complete_all_tasks(self, time_of_completion: datetime,
-                           move_to_completed_list: bool = True) -> None:
+    def complete_all_tasks(self, time_of_completion: datetime) -> None:
         for i in range(len(self.tasks) - 1, -1, -1):
-            self.complete_task_and_subtasks(time_of_completion, self.tasks[i],
-                                            move_to_completed_list)
+            self.complete_task_and_subtasks(time_of_completion, self.tasks[i])
 
     def complete_task_and_subtasks(self, time_of_completion: datetime,
-                                   parent: Task,
-                                   move_to_completed_list: bool = True) -> None:
-        parent.completion_date = time_of_completion
-        for child in parent.subtasks:
-            self.complete_task_and_subtasks(time_of_completion, child, False)
-        if move_to_completed_list:
-            self.tasks.remove(parent)
-            self.completed_tasks.append(parent)
+                                   to_complete: Task,
+                                   parent: Task | None = None) -> None:
+        to_complete.completion_date = time_of_completion
+        for i in range(len(to_complete.subtasks) - 1, -1, -1):
+            self.complete_task_and_subtasks(time_of_completion,
+                                            to_complete.subtasks[i],
+                                            to_complete)
+        if parent is None:
+            self.tasks.remove(to_complete)
+        else:
+            parent.subtasks.remove(to_complete)
+        self.completed_tasks.append(to_complete)
 
     def get_progress_dict(self) -> Dict[datetime, int]:
         result: Dict[datetime, int] = {}

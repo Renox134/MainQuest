@@ -1,7 +1,8 @@
-pillow
-pycairo
-materialyoucolor
-materialshapes
-asynckivy
-kivymd2
+kivy==2.3.0
+pillow==12.1.1
+pycairo==1.29.0
+materialyoucolor==3.0.2
+materialshapes==0.3
+asynckivy==0.6.4
+kivymd2==2.0.1
 pytest
