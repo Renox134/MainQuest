@@ -14,6 +14,7 @@ import asynckivy
 
 from kivymd.app import MDApp
 
+# this needs to be removed when building
 Window.size = (350, 650)
 
 

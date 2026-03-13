@@ -1,3 +1,4 @@
+from kivy.resources import resource_find
 import json
 
 from typing import Any
@@ -10,7 +11,8 @@ class Config():
 
     @staticmethod
     def get(key: str) -> Any:
-        with open("src/config.json", "r") as file:
+        config_path = resource_find("config.json")
+        with open(config_path, "r") as file:
             config_dict = json.load(file)
             if key not in config_dict.keys():
                 raise KeyError(f"The config does not a the entered key: {key}")
