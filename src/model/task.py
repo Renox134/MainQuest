@@ -111,16 +111,20 @@ class Task:
 
     def __str__(self) -> str:
         out = [f"Description:\t{self.description}"]
+        date_format = Config.get("date_format")
+        time_format = Config.get("time_format")
+        datetime_format = Config.get("datetime_format")
+
 
         if self.date:
-            out.append(f"Date:\t{self.date.strftime(Config.get("date_format"))}")
+            out.append(f"Date:\t{self.date.strftime(date_format)}")
         if self.start_time:
-            out.append(f"Start time: {self.start_time.strftime(Config.get("time_format"))}")
+            out.append(f"Start time: {self.start_time.strftime(time_format)}")
         if self.end_time:
-            out.append(f"End time: {self.end_time.strftime(Config.get("time_format"))}")
+            out.append(f"End time: {self.end_time.strftime(time_format)}")
         if self.completion_date:
             out.append("Completed:\t" +
-                       f"{self.completion_date.strftime(Config.get("datetime_format"))}"
+                       f"{self.completion_date.strftime(datetime_format)}"
                        )
         if self.subtasks:
             out.append(f"Subtasks ({len(self.subtasks)}):")

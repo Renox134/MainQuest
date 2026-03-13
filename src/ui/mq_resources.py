@@ -48,12 +48,14 @@ class ListTaskItem(MDListItem):
         self.update_widget()
 
     def update_widget(self) -> None:
+        date_format = Config.get("date_format")
+        time_format = Config.get("time_format")
         if self.task.notes != "":
             self.add_widget(MDListItemSupportingText(text=self.task.notes))
         if self.task.date is not None:
-            due_date_text = "Due: " + self.task.date.strftime(Config.get("date_format"))
+            due_date_text = "Due: " + self.task.date.strftime(date_format)
         if self.task.start_time is not None:
-            due_date_text += f", {self.task.start_time.strftime(Config.get("time_format"))}"
+            due_date_text += f", {self.task.start_time.strftime(time_format)}"
             self.add_widget(MDListItemTertiaryText(text=due_date_text))
 
     def complete_task(self):
