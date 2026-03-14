@@ -6,6 +6,7 @@ from kivymd.uix.expansionpanel import MDExpansionPanel
 from kivy.uix.behaviors import ButtonBehavior
 from kivymd.uix.behaviors import RotateBehavior
 from kivymd.uix.list import MDListItemTrailingIcon
+from kivymd.uix.menu import MDDropdownMenu
 from kivy.metrics import dp
 from kivy.animation import Animation
 
@@ -20,12 +21,24 @@ class TrailingPressedIconButton(
 
 
 class ExpansionPanelQuestItem(MDExpansionPanel):
-    def __init__(self, quest: Quest = Quest("", []), **kwargs):
+    def __init__(self, quest: Quest = Quest(), **kwargs):
         self.quest = quest
         super().__init__(**kwargs)
 
     def open_quest_context(self) -> None:
-        print(f"Open quest context for: {self.quest.name}")
+        menu_items = [
+            {
+                "text": f"Add new Task",
+                "on_release": lambda: print(f"Add new task button pressed"),
+            },
+            {
+                "text": f"Complete quest",
+                "on_release": lambda: print(f"Complete quest button pressed"),
+            }
+        ]
+        MDDropdownMenu(
+            caller=self.ids.context_button, items=menu_items
+        ).open()
 
     def tap_expansion_chevron(self, chevron: TrailingPressedIconButton):
         Animation(
