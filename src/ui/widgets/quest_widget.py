@@ -21,24 +21,30 @@ class TrailingPressedIconButton(
 
 
 class ExpansionPanelQuestItem(MDExpansionPanel):
-    def __init__(self, quest: Quest = Quest(), **kwargs):
+    def __init__(self, quest: Quest, add_task_func, **kwargs):
         self.quest = quest
+        self.add_task_func = add_task_func
         super().__init__(**kwargs)
 
     def open_quest_context(self) -> None:
+        drop_down = MDDropdownMenu()
+        def add_task():
+            drop_down.dismiss()
+            self.add_task_func(self.quest)
+            
         menu_items = [
             {
                 "text": "Add new Task",
-                "on_release": lambda: print("Add new task button pressed"),
+                "on_release": lambda: add_task(),
             },
             {
                 "text": "Complete quest",
                 "on_release": lambda: print("Complete quest button pressed"),
             }
         ]
-        MDDropdownMenu(
-            caller=self.ids.context_button, items=menu_items
-        ).open()
+        drop_down.caller = self.ids.context_button
+        drop_down.items = menu_items
+        drop_down.open()
 
     def tap_expansion_chevron(self, chevron: TrailingPressedIconButton):
         Animation(
@@ -68,9 +74,9 @@ class QuestWidget:
     A widget used to display a quest.
     """
 
-    def __init__(self, quest: Quest):
+    def __init__(self, quest: Quest, add_task_func):
         self.quest = quest
-        self.root = ExpansionPanelQuestItem(quest)
+        self.root = ExpansionPanelQuestItem(quest, add_task_func)
         self.update_widgets()
 
     def update_widgets(self) -> None:

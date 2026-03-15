@@ -10,7 +10,7 @@ from ui.mq_resources import MQ_Resource_Loader
 from kivy.core.window import Window
 from kivymd.uix.screenmanager import MDScreenManager
 from kivy.lang import Builder
-import asynckivy
+from kivymd.uix.bottomsheet import MDBottomSheet
 
 from kivymd.app import MDApp
 
@@ -37,19 +37,26 @@ class MainQuestApp(MDApp):
 
     def on_start(self):
         """Populate quest widgets dynamically after layout is built."""
-        quest_layout = self.root.ids.quest_layout
 
-        async def add_quests():
-            for quest in self.journal.quests:
-                await asynckivy.sleep(0)
-                quest_widget = QuestWidget(quest)
-                quest_layout.add_widget(quest_widget.root)
-                self.quest_widgets.append(quest_widget)
-        asynckivy.start(add_quests())
+        for quest in self.journal.quests:
+            self.add_quest(quest)
 
         # fix header
         self.root.ids.top_app_bar.width = self.root.ids.top_app_bar.minimum_width
         self.root.ids.top_app_bar.do_layout()
+
+    def add_quest(self, quest: Quest) -> None:
+        quest_layout = self.root.ids.quest_layout
+        quest_widget = QuestWidget(quest, self.add_task)
+        quest_layout.add_widget(quest_widget.root)
+        self.quest_widgets.append(quest_widget)
+
+    def add_task(self, quest: Quest, parent: Task | None = None) -> None:
+        sheet: MDBottomSheet = self.root.ids.bottom_sheet
+        self.root.ids.sheet_title.text = "Add Task"
+        self.root.ids.description_field_text.text = "Description"
+
+        sheet.set_state("open")
 
     def on_menu_pressed(self, *args):
         self.root.ids.top_app_bar.do_layout()

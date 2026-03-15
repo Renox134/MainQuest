@@ -68,7 +68,9 @@ MDScreen:
             orientation: "vertical"
 
             MDBottomSheetDragHandle:
+                id: drag_handle
                 MDBottomSheetDragHandleTitle:
+                    id: sheet_title
                     text: "Add Task"
 
                 MDBottomSheetDragHandleButton:
@@ -86,4 +88,5 @@ MDScreen:
                     on_focus: app.on_more_pressed()
 
                     MDTextFieldHintText:
+                        id: description_field_text
                         text: "Task Description"
