@@ -115,7 +115,6 @@ class Task:
         time_format = Config.get("time_format")
         datetime_format = Config.get("datetime_format")
 
-
         if self.date:
             out.append(f"Date:\t{self.date.strftime(date_format)}")
         if self.start_time:

@@ -28,12 +28,12 @@ class ExpansionPanelQuestItem(MDExpansionPanel):
     def open_quest_context(self) -> None:
         menu_items = [
             {
-                "text": f"Add new Task",
-                "on_release": lambda: print(f"Add new task button pressed"),
+                "text": "Add new Task",
+                "on_release": lambda: print("Add new task button pressed"),
             },
             {
-                "text": f"Complete quest",
-                "on_release": lambda: print(f"Complete quest button pressed"),
+                "text": "Complete quest",
+                "on_release": lambda: print("Complete quest button pressed"),
             }
         ]
         MDDropdownMenu(

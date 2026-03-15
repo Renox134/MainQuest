@@ -60,3 +60,30 @@ MDScreen:
                             icon: "calendar"
                             text: "Calendar"
                             on_release: app.on_calendar_pressed()
+
+        MDBottomSheet:
+            id: bottom_sheet
+            size_hint_x: 0.9
+            size_hint_y: 0.5
+            orientation: "vertical"
+
+            MDBottomSheetDragHandle:
+                MDBottomSheetDragHandleTitle:
+                    text: "Add Task"
+
+                MDBottomSheetDragHandleButton:
+                    icon: "check"
+                    on_release: app.on_more_pressed()
+
+            MDGridLayout:
+                id: bottom_sheet_container
+                rows: 1
+                cols: 1
+
+                MDTextField:
+                    id: description_field
+                    mode: "filled"
+                    on_focus: app.on_more_pressed()
+
+                    MDTextFieldHintText:
+                        text: "Task Description"
