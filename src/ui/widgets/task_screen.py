@@ -8,6 +8,8 @@ from datetime import datetime, time
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 from kivymd.uix.pickers import MDModalDatePicker, MDTimePickerDialVertical
 from kivymd.uix.screen import MDScreen
+from kivymd.uix.list import MDListItem, MDListItemHeadlineText
+from kivymd.uix.divider import MDDivider
 
 from kivy.metrics import dp
 from kivy.lang import Builder
@@ -17,11 +19,12 @@ Builder.load_file("ui/widgets/task_screen.kv")
 class TaskScreen(MDScreen):
 
     def __init__(self, task: Task, parent_quest: Quest, parent_task: Task | None,
-                 screen_id: int, *args, **kwargs):
+                 add_task_func, screen_id: int, *args, **kwargs):
         self.name = f"task_screen_{str(screen_id)}"
         self.task: Task = task
         self.parent_quest = parent_quest
         self.parent_task = parent_task
+        self.add_task_func = add_task_func
         self.date_dialog = None
         self.time_dialog = None
         self.__time_target = 0
@@ -52,6 +55,12 @@ class TaskScreen(MDScreen):
         self.ids.subtask_list.clear_widgets()
         for subtask in self.task.subtasks:
             self.ids.subtask_list.add_widget(ListTaskItem(subtask, self.parent_quest, self.task))
+
+        self.ids.subtask_list.add_widget(MDDivider())
+
+        self.ids.subtask_list.add_widget(MDListItem(MDListItemHeadlineText(text="Add subtask"),
+                                                    on_release=lambda x: self.add_task_func(self))
+        )
 
     def open_date_selector(self):
         # create the date dialogue if necessary
