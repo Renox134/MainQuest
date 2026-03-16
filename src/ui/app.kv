@@ -26,6 +26,7 @@ MDScreen:
 
                         MDTopAppBarTrailingButtonContainer:
                             MDActionTopAppBarButton:
+                                id: top_app_barcontext_button
                                 icon: "dots-vertical"
                                 on_release: app.on_more_pressed()
 
@@ -64,7 +65,7 @@ MDScreen:
         MDBottomSheet:
             id: bottom_sheet
             size_hint_x: 0.9
-            size_hint_y: 0.5
+            size_hint_y: 0.25
             orientation: "vertical"
 
             MDBottomSheetDragHandle:
@@ -74,8 +75,9 @@ MDScreen:
                     text: "Add Task"
 
                 MDBottomSheetDragHandleButton:
+                    id: button_sheet_confirm_button
                     icon: "check"
-                    on_release: app.on_more_pressed()
+                    # on_release: app.dummy()
 
             MDGridLayout:
                 id: bottom_sheet_container
@@ -85,7 +87,6 @@ MDScreen:
                 MDTextField:
                     id: description_field
                     mode: "filled"
-                    on_focus: app.on_more_pressed()
 
                     MDTextFieldHintText:
                         id: description_field_text

@@ -8,9 +8,13 @@ from ui.widgets.task_screen import TaskScreen
 from ui.mq_resources import MQ_Resource_Loader
 
 from kivy.core.window import Window
+import asynckivy
 from kivymd.uix.screenmanager import MDScreenManager
 from kivy.lang import Builder
+from kivymd.uix.textfield import MDTextField
+from kivymd.uix.bottomsheet import MDBottomSheetDragHandleButton
 from kivymd.uix.bottomsheet import MDBottomSheet
+from kivymd.uix.menu import MDDropdownMenu
 
 from kivymd.app import MDApp
 
@@ -39,31 +43,94 @@ class MainQuestApp(MDApp):
         """Populate quest widgets dynamically after layout is built."""
 
         for quest in self.journal.quests:
-            self.add_quest(quest)
+            asynckivy.start(self.add_quest_widget(quest))
 
         # fix header
         self.root.ids.top_app_bar.width = self.root.ids.top_app_bar.minimum_width
         self.root.ids.top_app_bar.do_layout()
 
-    def add_quest(self, quest: Quest) -> None:
+    async def add_quest_widget(self, quest: Quest) -> None:
+        await asynckivy.sleep(0)
         quest_layout = self.root.ids.quest_layout
-        quest_widget = QuestWidget(quest, self.add_task)
+        quest_widget = QuestWidget(quest, self.open_new_task_sheet)
         quest_layout.add_widget(quest_widget.root)
         self.quest_widgets.append(quest_widget)
 
-    def add_task(self, quest: Quest, parent: Task | None = None) -> None:
+    def add_new_quest(self, widget) -> None:
+        name = self.root.ids.description_field.text
+
+        to_add = Quest(name, [], [])
+
+        # add quest to backend
+        self.journal.quests.append(to_add)
+
+        # add new widget to frontend
+        asynckivy.start(self.add_quest_widget(to_add))
+
+        self.root.ids.bottom_sheet.set_state("close")
+
+    def add_new_task(self, widget) -> None:
+        description = self.root.ids.description_field.text
+
+        to_add = Task(description)
+
+        if isinstance(widget, TaskScreen):
+            # backend
+            widget.task.subtasks.append(to_add)
+            # frontend
+            widget.update_widgets()
+
+        elif isinstance(widget, QuestWidget):
+            # backend
+            widget.quest.tasks.append(to_add)
+            # frontend
+            widget.update_widgets() 
+
+        self.root.ids.bottom_sheet.set_state("close")
+
+    def open_new_task_sheet(self, calling_widget: TaskScreen | QuestWidget) -> None:
         sheet: MDBottomSheet = self.root.ids.bottom_sheet
         self.root.ids.sheet_title.text = "Add Task"
         self.root.ids.description_field_text.text = "Description"
+        field: MDTextField = self.root.ids.description_field
+        field.focus = True
 
         sheet.set_state("open")
+
+    def open_new_quest_sheet(self) -> None:
+        sheet: MDBottomSheet = self.root.ids.bottom_sheet
+        self.root.ids.sheet_title.text = "Add Quest"
+        self.root.ids.description_field_text.text = "Quest Name"
+        field: MDTextField = self.root.ids.description_field
+        field.focus = True
+
+        confirm_button: MDBottomSheetDragHandleButton = self.root.ids.button_sheet_confirm_button
+        confirm_button.bind(on_release=self.add_new_quest)
+
+        sheet.set_state("open")
+
+    def dummy(self) -> None:
+        print("Dummy")
 
     def on_menu_pressed(self, *args):
         self.root.ids.top_app_bar.do_layout()
         print("menu pressed")
 
     def on_more_pressed(self, *args):
-        print("three dots pressed")
+        drop_down = MDDropdownMenu()
+        def add_quest_press():
+            drop_down.dismiss()
+            self.open_new_quest_sheet()
+            
+        menu_items = [
+            {
+                "text": "Add new Quest",
+                "on_release": lambda: add_quest_press(),
+            }
+        ]
+        drop_down.caller = self.root.ids.top_app_barcontext_button
+        drop_down.items = menu_items
+        drop_down.open()
 
     def on_nav_switch(self, *args):
         print("Nav switch")
@@ -91,9 +158,10 @@ class MainQuestApp(MDApp):
         manager.transition.direction = "right"
         self.root.ids.screen_manager.current = "progress_window"
 
-    def open_task_screen(self, task: Task, parent_quest: Quest) -> None:
+    def open_task_screen(self, task: Task, parent_quest: Quest, parent_task: Task | None) -> None:
         manager: MDScreenManager = self.root.ids.outer_screen_manager
-        new_task_screen: TaskScreen = TaskScreen(task, parent_quest, self.open_task_screens)
+        new_task_screen: TaskScreen = TaskScreen(task, parent_quest,
+                                                 parent_task, self.open_task_screens)
         manager.add_widget(new_task_screen)
         manager.transition.direction = "left"
         manager.current = f"task_screen_{str(self.open_task_screens)}"

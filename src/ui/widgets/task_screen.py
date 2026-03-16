@@ -16,10 +16,12 @@ Builder.load_file("ui/widgets/task_screen.kv")
 
 class TaskScreen(MDScreen):
 
-    def __init__(self, task: Task, parent_quest: Quest, screen_id: int, *args, **kwargs):
+    def __init__(self, task: Task, parent_quest: Quest, parent_task: Task | None,
+                 screen_id: int, *args, **kwargs):
         self.name = f"task_screen_{str(screen_id)}"
         self.task: Task = task
         self.parent_quest = parent_quest
+        self.parent_task = parent_task
         self.date_dialog = None
         self.time_dialog = None
         self.__time_target = 0
