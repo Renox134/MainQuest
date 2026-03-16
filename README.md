@@ -39,55 +39,22 @@ python ./src/main.py
 This is what starts the app.
 
 ## How to Build?
-### Disclaimer
-Before you go through any of this trouble, let me tell you one thing up front:
-I am working on creating a docker image that would hopefully make readying and doing everything here obsolete. So if things go according to plan, going through the trouble described below will hopefully never be necessary for anyone other than me again.
+The easiest way to build this project is probably by using the docker environment provided in the repo.
+This saves you the trouble of going through everything by yourself. Also the project is intended to be build with **buildozer**, which is only available for unix systems anyway (at least to my knowledge). If, for some reason, you want to build it on your own linux system/vm, you can more or less see all necessary steps by looking into the dockerfile and simply redoing all necessary steps on your own system.
 
----
+To build any project with buildozer, you need generally need a **buildozer.spec** file. In the case of this project, I already provided one, which lies in the  root directory of the project. I edited it to the best of my knowledge to function with this project. The edits include the inclusion of ".json" as a file ending for files to take and more importantly, the exclusion of pycairo from the build because (to my knowledge) python-for-android currently doesn't support it.
 
+### Building with docker
+When using docker, hopefully all you have to do is to run:
+```bash
+sudo docker build -t kivymd-builder .
+```
+to build the image. Then, run the actual build with
+```bash
+sudo 
+```
 
-The project is intended to be build with **buildozer**, which is only available for unix systems (at least to my knowledge). Hence, you'll either need a unix system or use WSL or a VM or something like that before you can even install it. Once your system is ready, just type:
-
-```bash
-pip install buildozer
-```
-Usually, buildozer would now have to be initialized. However, I already provided a **buildozer.spec** file in the root directory of the project. I edited it to the best of my knowledge to function with this project. The edits include the inclusion of ".json" as a file ending for files to take and more importantly, the exclusion of pycairo from the build because (to my knowledge) python-for-android currently doesn't support it.
-
-Now, on my own Ubuntu machine, I also had to install **setuptools**, because I didn't have **dstutils** installed. If your system has this, you can skip this step. If you'don't know what I am talking about, just install it anyway, it sholdn't hurt (hopefully)...
-```bash
-pip install setuptools
-```
-Then, I ran the common build stack used by buildozer. You'll likely already have a few things listed here (looking at you, git), but I for one just did it like this anyway,
-```bash
-sudo apt install -y \
-    build-essential \
-    autoconf \
-    automake \
-    libtool \
-    pkg-config \
-    zlib1g-dev \
-    libncurses5-dev \
-    libncursesw5-dev \
-    libtinfo6 \
-    cmake \
-    git \
-    unzip
-```
-Next, you'll need **cython**, so if you don't already have it, install :D
-```bash
-pip3 install Cython==0.29.33
-```
-With that out of the way, we now also need a java compiler.
-For that, the most striaght way is to install a jdk.
-```bash
-sudo apt install openjdk-17-jdk
-```
-Now, we shold have everything we need and can finally run the build command :D
-```bash
-buildozer android debug
-```
-This will likely take some time, so you can go get yourself some tea ☕.
+This will take some time, so you can go get yourself some tea ☕, or even dinner on a slower device.
 However, during the first build, you'll likely have to agree to a few **license agreements** every now and then, so watch out for that. Otehrwise, this can be a very lengthy process, so on a slower system you might as well go get some dinner.
 
-Should you encounter any build issues, which sadly isn't that unlikely, please don't bother me with it. It's not that I'd be unwilling to help, but rather because I'd be **unable** to help. I'm just some random guy who thought developing a mobile app would be a fun hobby...
-I have absolutely no idea what I'm doing. You're better of asking Google or Claude, trust me.
+Regarding any questions on the building pipeline, it is sadly very likely that I won't be able to help, because I don't really know build process myself. So you're likely better off asking Google.
