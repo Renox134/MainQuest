@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Dict
 
 from journal import Journal
 from model.task import Task
@@ -31,6 +31,9 @@ class MainQuestApp(MDApp):
         self.journal = journal
         self.quest_widgets: List[QuestWidget] = []
         self.open_task_screens: int = 0
+
+        self.binding_id_dict: Dict[str, int] = {}
+
         MQ_Resource_Loader().load_resources()
         super().__init__(**kwargs)
 
@@ -53,7 +56,7 @@ class MainQuestApp(MDApp):
         await asynckivy.sleep(0)
         quest_layout = self.root.ids.quest_layout
         quest_widget = QuestWidget(quest, self.open_new_task_sheet)
-        quest_layout.add_widget(quest_widget.root)
+        quest_layout.add_widget(quest_widget)
         self.quest_widgets.append(quest_widget)
 
     def add_new_quest(self, widget) -> None:
@@ -69,22 +72,22 @@ class MainQuestApp(MDApp):
 
         self.root.ids.bottom_sheet.set_state("close")
 
-    def add_new_task(self, widget) -> None:
+    def add_new_task(self, parent_widget, button_widget) -> None:
         description = self.root.ids.description_field.text
 
         to_add = Task(description)
 
-        if isinstance(widget, TaskScreen):
+        if isinstance(parent_widget, TaskScreen):
             # backend
-            widget.task.subtasks.append(to_add)
+            parent_widget.task.subtasks.append(to_add)
             # frontend
-            widget.update_widgets()
+            parent_widget.update_widgets()
 
-        elif isinstance(widget, QuestWidget):
+        elif isinstance(parent_widget, QuestWidget):
             # backend
-            widget.quest.tasks.append(to_add)
+            parent_widget.quest.tasks.append(to_add)
             # frontend
-            widget.update_widgets() 
+            parent_widget.update_widgets()
 
         self.root.ids.bottom_sheet.set_state("close")
 
@@ -93,7 +96,18 @@ class MainQuestApp(MDApp):
         self.root.ids.sheet_title.text = "Add Task"
         self.root.ids.description_field_text.text = "Description"
         field: MDTextField = self.root.ids.description_field
+        field.text = ""
         field.focus = True
+
+        confirm_button: MDBottomSheetDragHandleButton = self.root.ids.button_sheet_confirm_button
+
+        # potentially unbind quest callable
+        confirm_button.unbind(on_release=self.add_new_quest)
+        if self.binding_id_dict.get("bottom_sheet_confirm_button") is not None:
+            confirm_button.unbind_uid("on_release",
+                                      self.binding_id_dict.get("bottom_sheet_confirm_button"))
+        self.binding_id_dict["bottom_sheet_confirm_button"] =\
+            confirm_button.fbind("on_release", self.add_new_task, calling_widget)
 
         sheet.set_state("open")
 
@@ -102,9 +116,16 @@ class MainQuestApp(MDApp):
         self.root.ids.sheet_title.text = "Add Quest"
         self.root.ids.description_field_text.text = "Quest Name"
         field: MDTextField = self.root.ids.description_field
+        field.text = ""
         field.focus = True
 
         confirm_button: MDBottomSheetDragHandleButton = self.root.ids.button_sheet_confirm_button
+
+        # potentially unbind quest callable
+        if self.binding_id_dict.get("bottom_sheet_confirm_button") is not None:
+            confirm_button.unbind_uid("on_release",
+                                      self.binding_id_dict.get("bottom_sheet_confirm_button"))
+            self.binding_id_dict["bottom_sheet_confirm_button"] = None
         confirm_button.bind(on_release=self.add_new_quest)
 
         sheet.set_state("open")
@@ -118,10 +139,11 @@ class MainQuestApp(MDApp):
 
     def on_more_pressed(self, *args):
         drop_down = MDDropdownMenu()
+
         def add_quest_press():
             drop_down.dismiss()
             self.open_new_quest_sheet()
-            
+
         menu_items = [
             {
                 "text": "Add new Quest",

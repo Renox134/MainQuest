@@ -20,18 +20,27 @@ class TrailingPressedIconButton(
     ...
 
 
-class ExpansionPanelQuestItem(MDExpansionPanel):
+class QuestWidget(MDExpansionPanel):
     def __init__(self, quest: Quest, add_task_func, **kwargs):
         self.quest = quest
         self.add_task_func = add_task_func
         super().__init__(**kwargs)
+        self.update_widgets()
+
+    def update_widgets(self) -> None:
+        self.text = self.quest.name
+
+        self.ids.task_list.clear_widgets()
+        for task in self.quest.tasks:
+            self.ids.task_list.add_widget(ListTaskItem(task, self.quest, None))
 
     def open_quest_context(self) -> None:
         drop_down = MDDropdownMenu()
+
         def add_task():
             drop_down.dismiss()
-            self.add_task_func(self.quest)
-            
+            self.add_task_func(self)
+
         menu_items = [
             {
                 "text": "Add new Task",
@@ -67,21 +76,3 @@ class ExpansionPanelQuestItem(MDExpansionPanel):
         panel_content = panel.ids.expansion_content
         panel_content.height = panel_content.minimum_height
         panel_content.do_layout()
-
-
-class QuestWidget:
-    """
-    A widget used to display a quest.
-    """
-
-    def __init__(self, quest: Quest, add_task_func):
-        self.quest = quest
-        self.root = ExpansionPanelQuestItem(quest, add_task_func)
-        self.update_widgets()
-
-    def update_widgets(self) -> None:
-        self.root.text = self.quest.name
-
-        self.root.ids.task_list.clear_widgets()
-        for task in self.quest.tasks:
-            self.root.ids.task_list.add_widget(ListTaskItem(task, self.quest, None))
