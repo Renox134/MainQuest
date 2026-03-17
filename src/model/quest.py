@@ -110,6 +110,7 @@ class Quest:
     def complete_task_and_subtasks(self, time_of_completion: datetime,
                                    to_complete: Task,
                                    parent: Task | None = None) -> None:
+        # set completion times
         to_complete.completion_date = time_of_completion
         for i in range(len(to_complete.subtasks) - 1, -1, -1):
             self.complete_task_and_subtasks(time_of_completion,

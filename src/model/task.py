@@ -80,12 +80,24 @@ class Task:
         Initializes a task.
         """
         self.description = description
-        self.subtasks = subtasks if subtasks is not None else []
+        self.subtasks: List[Task] = subtasks if subtasks is not None else []
         self.notes = notes if notes is not None else ""
         self.date = date
         self.start_time = start_time
         self.end_time = end_time
         self.completion_date = completion_date
+
+    def get_number_of_subtasks(self) -> int:
+        """
+        States how many subtasks and sub-subtasks the task has.
+
+        Returns:
+            int: The total recursive number of subtasks, sub-subtasks and so on.
+        """
+        result = len(self.subtasks)
+        if result > 0:
+            result += sum([s.get_number_of_subtasks() for s in self.subtasks])
+        return result
 
     def to_dict(self) -> Dict[str, Any]:
         """
