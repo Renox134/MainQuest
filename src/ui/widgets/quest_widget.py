@@ -32,7 +32,8 @@ class QuestWidget(MDExpansionPanel):
 
         self.ids.task_list.clear_widgets()
         for task in self.quest.tasks:
-            self.ids.task_list.add_widget(ListTaskItem(task, self.quest, None))
+            if task.completion_date is None:
+                self.ids.task_list.add_widget(ListTaskItem(task, self.quest, None))
 
     def open_quest_context(self) -> None:
         drop_down = MDDropdownMenu()

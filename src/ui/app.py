@@ -11,9 +11,10 @@ from kivy.core.window import Window
 import asynckivy
 from kivymd.uix.screenmanager import MDScreenManager
 from kivy.lang import Builder
-from kivymd.uix.textfield import MDTextField
-from kivymd.uix.bottomsheet import MDBottomSheetDragHandleButton
-from kivymd.uix.bottomsheet import MDBottomSheet
+from kivymd.uix.textfield import MDTextField, MDTextFieldHintText
+from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
+    MDDialogContentContainer
+from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
 
 from kivymd.app import MDApp
@@ -55,80 +56,86 @@ class MainQuestApp(MDApp):
     async def add_quest_widget(self, quest: Quest) -> None:
         await asynckivy.sleep(0)
         quest_layout = self.root.ids.quest_layout
-        quest_widget = QuestWidget(quest, self.open_new_task_sheet)
+        quest_widget = QuestWidget(quest, self.open_new_task_diallog)
         quest_layout.add_widget(quest_widget)
         self.quest_widgets.append(quest_widget)
 
-    def add_new_quest(self, widget) -> None:
-        name = self.root.ids.description_field.text
-
-        to_add = Quest(name, [], [])
-
+    def add_new_quest(self, name: str) -> None:
+        to_add = Quest(name, [])
         # add quest to backend
         self.journal.quests.append(to_add)
-
         # add new widget to frontend
         asynckivy.start(self.add_quest_widget(to_add))
 
-        self.root.ids.bottom_sheet.set_state("close")
-
-    def add_new_task(self, parent_widget, button_widget) -> None:
-        description = self.root.ids.description_field.text
-
+    def add_new_task(self, description: str, parent_widget) -> None:
         to_add = Task(description)
 
+        # either add task to quest or to subtasks
         if isinstance(parent_widget, TaskScreen):
             # backend
             parent_widget.task.subtasks.append(to_add)
-            # frontend
-            parent_widget.update_widgets()
-
         elif isinstance(parent_widget, QuestWidget):
             # backend
             parent_widget.quest.tasks.append(to_add)
-            # frontend
-            parent_widget.update_widgets()
 
-        self.root.ids.bottom_sheet.set_state("close")
+        # frontend
+        parent_widget.update_widgets()
 
-    def open_new_task_sheet(self, calling_widget: TaskScreen | QuestWidget) -> None:
-        sheet: MDBottomSheet = self.root.ids.bottom_sheet
-        self.root.ids.sheet_title.text = "Add Task"
-        self.root.ids.description_field_text.text = "Description"
-        field: MDTextField = self.root.ids.description_field
-        field.text = ""
-        field.focus = True
+    def open_new_quest_diallog(self) -> None:
+        entry_field = MDTextField(
+            MDTextFieldHintText(
+                text="Quest Name"
+                )
+            )
 
-        confirm_button: MDBottomSheetDragHandleButton = self.root.ids.button_sheet_confirm_button
+        def confirm_func():
+            self.add_new_quest(entry_field.text)
+            dialog.dismiss()
 
-        # potentially unbind quest callable
-        confirm_button.unbind(on_release=self.add_new_quest)
-        if self.binding_id_dict.get("bottom_sheet_confirm_button") is not None:
-            confirm_button.unbind_uid("on_release",
-                                      self.binding_id_dict.get("bottom_sheet_confirm_button"))
-        self.binding_id_dict["bottom_sheet_confirm_button"] =\
-            confirm_button.fbind("on_release", self.add_new_task, calling_widget)
+        confirm_button = MDIconButton(icon="check",
+                                      on_release=lambda x: confirm_func())
+        close_button = MDIconButton(icon="close")
+        dialog = MDDialog(
+            MDDialogHeadlineText(text="Add New Quest"),
+            MDDialogContentContainer(
+                entry_field
+            ),
+            MDDialogButtonContainer(
+                close_button,
+                confirm_button
+            )
+        )
+        close_button.on_release = lambda: dialog.dismiss()
+        entry_field.focus = True
+        dialog.open()
 
-        sheet.set_state("open")
+    def open_new_task_diallog(self, calling_widget: TaskScreen | QuestWidget) -> None:
+        entry_field = MDTextField(
+            MDTextFieldHintText(
+                text="Task Description"
+                )
+            )
 
-    def open_new_quest_sheet(self) -> None:
-        sheet: MDBottomSheet = self.root.ids.bottom_sheet
-        self.root.ids.sheet_title.text = "Add Quest"
-        self.root.ids.description_field_text.text = "Quest Name"
-        field: MDTextField = self.root.ids.description_field
-        field.text = ""
-        field.focus = True
+        def confirm_func():
+            self.add_new_task(entry_field.text, calling_widget)
+            dialog.dismiss()
 
-        confirm_button: MDBottomSheetDragHandleButton = self.root.ids.button_sheet_confirm_button
-
-        # potentially unbind quest callable
-        if self.binding_id_dict.get("bottom_sheet_confirm_button") is not None:
-            confirm_button.unbind_uid("on_release",
-                                      self.binding_id_dict.get("bottom_sheet_confirm_button"))
-            self.binding_id_dict["bottom_sheet_confirm_button"] = None
-        confirm_button.bind(on_release=self.add_new_quest)
-
-        sheet.set_state("open")
+        confirm_button = MDIconButton(icon="check",
+                                      on_release=lambda x: confirm_func())
+        close_button = MDIconButton(icon="close")
+        dialog = MDDialog(
+            MDDialogHeadlineText(text="Add New Task"),
+            MDDialogContentContainer(
+                entry_field
+            ),
+            MDDialogButtonContainer(
+                close_button,
+                confirm_button
+            )
+        )
+        close_button.on_release = lambda: dialog.dismiss()
+        entry_field.focus = True
+        dialog.open()
 
     def dummy(self) -> None:
         print("Dummy")
@@ -142,7 +149,7 @@ class MainQuestApp(MDApp):
 
         def add_quest_press():
             drop_down.dismiss()
-            self.open_new_quest_sheet()
+            self.open_new_quest_diallog()
 
         menu_items = [
             {
@@ -184,7 +191,7 @@ class MainQuestApp(MDApp):
         manager: MDScreenManager = self.root.ids.outer_screen_manager
         new_task_screen: TaskScreen = TaskScreen(task, parent_quest,
                                                  parent_task,
-                                                 self.open_new_task_sheet,
+                                                 self.open_new_task_diallog,
                                                  self.open_task_screens)
         manager.add_widget(new_task_screen)
         manager.transition.direction = "left"

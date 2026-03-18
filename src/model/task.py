@@ -67,7 +67,7 @@ class Task:
             end_time=end_time,
             completion_date=completion_date
             )
-    
+
     @staticmethod
     def complete_task_recursively(to_complete: "Task",
                                   time_of_completion: datetime,
@@ -83,8 +83,8 @@ class Task:
         result = [task]
         # collect subtasks recursively
         for subtask in task.subtasks:
-            result.extend(Task.get_linearized_task_list(subtask))     
-        return result   
+            result.extend(Task.get_linearized_task_list(subtask))
+        return result
 
     def __init__(self,
                  description: str = "",

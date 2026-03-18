@@ -54,13 +54,16 @@ class TaskScreen(MDScreen):
         # setup subtasks
         self.ids.subtask_list.clear_widgets()
         for subtask in self.task.subtasks:
-            self.ids.subtask_list.add_widget(ListTaskItem(subtask, self.parent_quest, self.task))
+            if subtask.completion_date is None:
+                self.ids.subtask_list.add_widget(ListTaskItem(subtask,
+                                                              self.parent_quest, self.task))
 
         self.ids.subtask_list.add_widget(MDDivider())
 
-        self.ids.subtask_list.add_widget(MDListItem(MDListItemHeadlineText(text="Add subtask"),
-                                                    on_release=lambda x: self.add_task_func(self))
-        )
+        self.ids.subtask_list.add_widget(MDListItem(
+            MDListItemHeadlineText(text="Add subtask"),
+            on_release=lambda x: self.add_task_func(self))
+            )
 
     def open_date_selector(self):
         # create the date dialogue if necessary
@@ -152,11 +155,18 @@ class TaskScreen(MDScreen):
     def update_notes(self):
         self.task.notes = self.ids.notes_field.text
 
-    def select_time(self):
-        print("Select Time")
-
     def set_deadline(self):
-        print("Set Deadline")
+        MDSnackbar(
+            MDSnackbarText(text="Not implemented yet :)"),
+            y=dp(24),
+            pos_hint={"center_x": 0.5},
+            size_hint_x=0.9,
+        ).open()
 
     def assign_priority(self):
-        print("Assign priority")
+        MDSnackbar(
+            MDSnackbarText(text="Not implemented yet :)"),
+            y=dp(24),
+            pos_hint={"center_x": 0.5},
+            size_hint_x=0.9,
+        ).open()
