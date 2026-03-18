@@ -8,9 +8,12 @@ from ui.widgets.task_screen import TaskScreen
 from ui.mq_resources import MQ_Resource_Loader
 
 from kivy.core.window import Window
-import asynckivy
-from kivymd.uix.screenmanager import MDScreenManager
 from kivy.lang import Builder
+from kivy.uix.widget import Widget
+
+import asynckivy
+
+from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.textfield import MDTextField, MDTextFieldHintText
 from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
     MDDialogContentContainer
@@ -101,12 +104,15 @@ class MainQuestApp(MDApp):
                 entry_field
             ),
             MDDialogButtonContainer(
+                Widget(),
                 close_button,
-                confirm_button
-            )
+                confirm_button,
+                spacing="4dp"
+            ),
         )
         close_button.on_release = lambda: dialog.dismiss()
         entry_field.focus = True
+        dialog.pos_hint = {"center_x": .5, "center_y": .75}
         dialog.open()
 
     def open_new_task_diallog(self, calling_widget: TaskScreen | QuestWidget) -> None:
@@ -129,12 +135,15 @@ class MainQuestApp(MDApp):
                 entry_field
             ),
             MDDialogButtonContainer(
+                Widget(),
                 close_button,
-                confirm_button
+                confirm_button,
+                spacing="4dp"
             )
         )
         close_button.on_release = lambda: dialog.dismiss()
         entry_field.focus = True
+        dialog.pos_hint = {"center_x": .5, "center_y": .75}
         dialog.open()
 
     def dummy(self) -> None:

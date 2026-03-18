@@ -54,6 +54,7 @@ class QuestWidget(MDExpansionPanel):
         ]
         drop_down.caller = self.ids.context_button
         drop_down.items = menu_items
+        drop_down.position = "center"
         drop_down.open()
 
     def tap_expansion_chevron(self, chevron: TrailingPressedIconButton):

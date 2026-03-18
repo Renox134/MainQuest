@@ -59,12 +59,7 @@ class ListTaskItem(MDListItem):
             self.add_widget(MDListItemTertiaryText(text=due_date_text))
 
     def complete_task(self):
-        if self.parent_task is None:
-            self.parent_quest.complete_task_and_subtasks(datetime.now(), self.task)
-        else:
-            self.parent_quest.complete_task_and_subtasks(datetime.now(),
-                                                         self.task,
-                                                         self.parent_task)
+        Task.complete_task_recursively(self.task, datetime.now(), False)
         self.ids.confirm_icon.icon = "checkbox-marked-circle"
         self.animate_removal()
 
