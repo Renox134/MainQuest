@@ -67,6 +67,24 @@ class Task:
             end_time=end_time,
             completion_date=completion_date
             )
+    
+    @staticmethod
+    def complete_task_recursively(to_complete: "Task",
+                                  time_of_completion: datetime,
+                                  overwrite: bool) -> None:
+        # set completion datetime if it wasn't set before or if overwrite is activated
+        if to_complete.completion_date is None or overwrite:
+            to_complete.completion_date = time_of_completion
+        for subtask in to_complete.subtasks:
+            Task.complete_task_recursively(subtask, time_of_completion, overwrite)
+
+    @staticmethod
+    def get_linearized_task_list(task: "Task") -> List["Task"]:
+        result = [task]
+        # collect subtasks recursively
+        for subtask in task.subtasks:
+            result.extend(Task.get_linearized_task_list(subtask))     
+        return result   
 
     def __init__(self,
                  description: str = "",

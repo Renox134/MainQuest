@@ -104,8 +104,7 @@
                         }
                     ]
                 }
-            ],
-            "completed_tasks": []
+            ]
         },
         {
             "name": "Craft Weapons",
@@ -167,9 +166,7 @@
                             "subtasks": []
                         }
                     ]
-                }
-            ],
-            "completed_tasks": [
+                },
                 {
                     "description": "Craft a wooden club",
                     "date": "01/09/2026",
@@ -249,9 +246,7 @@
                             "subtasks": []
                         }
                     ]
-                }
-            ],
-            "completed_tasks": [
+                },
                 {
                     "description": "Meet wandering trader",
                     "date": "31/08/2026",
@@ -298,9 +293,7 @@
                             "subtasks": []
                         }
                     ]
-                }
-            ],
-            "completed_tasks": [
+                },
                 {
                     "description": "Climb observation hill",
                     "date": "30/08/2026",
@@ -338,9 +331,7 @@
                             "subtasks": []
                         }
                     ]
-                }
-            ],
-            "completed_tasks": [
+                },
                 {
                     "description": "Collect dragon folklore",
                     "date": "29/08/2026",
@@ -411,9 +402,7 @@
                             "subtasks": []
                         }
                     ]
-                }
-            ],
-            "completed_tasks": [
+                },
                 {
                     "description": "Search in Siberia",
                     "date": "28/08/2026",
