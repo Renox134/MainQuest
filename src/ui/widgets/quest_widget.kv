@@ -1,6 +1,6 @@
 #:kivy 2.3.0
 
-<ExpansionPanelQuestItem>:
+<QuestWidget>:
     MDExpansionPanelHeader:
         MDListItem:
             theme_bg_color: "Custom"
@@ -19,6 +19,7 @@
                 on_release: root.tap_expansion_chevron(chevron)
 
             MDIconButton:
+                id: context_button
                 icon: "dots-vertical"
                 on_release: root.open_quest_context()
 

@@ -69,13 +69,14 @@ class TestQuest:
     def test_complete_all_remaining_tasks(self, quest: str, request: pytest.FixtureRequest):
         q: Quest = request.getfixturevalue(quest)
         controll_dict = {}
-        tasks = [t for t in q.get_all_tasks()]
-        num_uncompleted_before = len(tasks)
-        num_completed_before = num_uncompleted_before - len(q.get_all_tasks(False))
-        completion_time = datetime.now()
-        origin_tasks = tasks.copy()
+        all_tasks = q.get_all_tasks()
+        num_uncompleted_before = len(q.get_all_tasks(False))
+        num_completed_before = len(all_tasks) - num_uncompleted_before
 
-        for t in tasks:
+        completion_time = datetime.now()
+        origin_tasks = all_tasks.copy()
+
+        for t in all_tasks:
             controll_dict[t.description] = t.completion_date
 
         # set to completed
@@ -83,11 +84,10 @@ class TestQuest:
 
         num_completed_after = len(q.get_all_tasks()) - len(q.get_all_tasks(False))
 
-        assert len(q.tasks) == 0
-        assert num_completed_after == num_completed_before + num_uncompleted_before
-        assert len(tasks) == len(origin_tasks)
+        assert num_completed_after == num_uncompleted_before + num_completed_before
+        assert len(all_tasks) == len(origin_tasks)
         
-        for task, origin_task in zip(tasks, origin_tasks):
+        for task, origin_task in zip(all_tasks, origin_tasks):
             if controll_dict[task.description] is None:
                 assert task.completion_date == completion_time
             else:

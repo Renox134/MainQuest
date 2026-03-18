@@ -40,13 +40,11 @@ This is what starts the app.
 
 ## How to Build?
 ### Disclaimer
-Before you go through any of this trouble, let me tell you one thing up front:
-I am working on creating a docker image that would hopefully make readying and doing everything here obsolete. So if things go according to plan, going through the trouble described below will hopefully never be necessary for anyone other than me again.
+I am working on creating a docker image that would hopefully steamline the build process, but for now there is a critical issue that I haven't been able to solve. When the buildozer build process is started for the first time in a new environment, it tries to install an android SDK. However, to actually install it, a license agreement has to be accepted, and since the docker build is automated, there is nobody there to accept it, causing the entire build process to fail. Since I don't yet know how to solve this, the **docker build method** remains **disfunctional** for now.
 
 ---
 
-
-The project is intended to be build with **buildozer**, which is only available for unix systems (at least to my knowledge). Hence, you'll either need a unix system or use WSL or a VM or something like that before you can even install it. Once your system is ready, just type:
+The project is intended to be build with **buildozer**, which is only available for unix systems (at least to my knowledge). Hence, you'll either need a unix system or use windows with WSL or a VM or something like that before you can even install it. Once your system is ready, just type:
 
 ```bash
 pip install buildozer
@@ -89,5 +87,4 @@ buildozer android debug
 This will likely take some time, so you can go get yourself some tea ☕.
 However, during the first build, you'll likely have to agree to a few **license agreements** every now and then, so watch out for that. Otehrwise, this can be a very lengthy process, so on a slower system you might as well go get some dinner.
 
-Should you encounter any build issues, which sadly isn't that unlikely, please don't bother me with it. It's not that I'd be unwilling to help, but rather because I'd be **unable** to help. I'm just some random guy who thought developing a mobile app would be a fun hobby...
-I have absolutely no idea what I'm doing. You're better of asking Google or Claude, trust me.
+Should you encounter any build issues, which sadly isn't that unlikely, your best bet is asking google for help. I for one don't really know what I'm doing anyway, so any questions brought to me regarding the build process would go straight to google anyway, so you might as well do it yourself.

@@ -8,6 +8,8 @@ from datetime import datetime, time
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 from kivymd.uix.pickers import MDModalDatePicker, MDTimePickerDialVertical
 from kivymd.uix.screen import MDScreen
+from kivymd.uix.list import MDListItem, MDListItemHeadlineText
+from kivymd.uix.divider import MDDivider
 
 from kivy.metrics import dp
 from kivy.lang import Builder
@@ -16,10 +18,13 @@ Builder.load_file("ui/widgets/task_screen.kv")
 
 class TaskScreen(MDScreen):
 
-    def __init__(self, task: Task, parent_quest: Quest, screen_id: int, *args, **kwargs):
+    def __init__(self, task: Task, parent_quest: Quest, parent_task: Task | None,
+                 add_task_func, screen_id: int, *args, **kwargs):
         self.name = f"task_screen_{str(screen_id)}"
         self.task: Task = task
         self.parent_quest = parent_quest
+        self.parent_task = parent_task
+        self.add_task_func = add_task_func
         self.date_dialog = None
         self.time_dialog = None
         self.__time_target = 0
@@ -49,7 +54,16 @@ class TaskScreen(MDScreen):
         # setup subtasks
         self.ids.subtask_list.clear_widgets()
         for subtask in self.task.subtasks:
-            self.ids.subtask_list.add_widget(ListTaskItem(subtask, self.parent_quest, self.task))
+            if subtask.completion_date is None:
+                self.ids.subtask_list.add_widget(ListTaskItem(subtask,
+                                                              self.parent_quest, self.task))
+
+        self.ids.subtask_list.add_widget(MDDivider())
+
+        self.ids.subtask_list.add_widget(MDListItem(
+            MDListItemHeadlineText(text="Add subtask"),
+            on_release=lambda x: self.add_task_func(self))
+            )
 
     def open_date_selector(self):
         # create the date dialogue if necessary
@@ -141,11 +155,18 @@ class TaskScreen(MDScreen):
     def update_notes(self):
         self.task.notes = self.ids.notes_field.text
 
-    def select_time(self):
-        print("Select Time")
-
     def set_deadline(self):
-        print("Set Deadline")
+        MDSnackbar(
+            MDSnackbarText(text="Not implemented yet :)"),
+            y=dp(24),
+            pos_hint={"center_x": 0.5},
+            size_hint_x=0.9,
+        ).open()
 
     def assign_priority(self):
-        print("Assign priority")
+        MDSnackbar(
+            MDSnackbarText(text="Not implemented yet :)"),
+            y=dp(24),
+            pos_hint={"center_x": 0.5},
+            size_hint_x=0.9,
+        ).open()

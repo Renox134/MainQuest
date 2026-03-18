@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Dict
 
 from journal import Journal
 from model.task import Task
@@ -8,9 +8,17 @@ from ui.widgets.task_screen import TaskScreen
 from ui.mq_resources import MQ_Resource_Loader
 
 from kivy.core.window import Window
-from kivymd.uix.screenmanager import MDScreenManager
 from kivy.lang import Builder
+from kivy.uix.widget import Widget
+
 import asynckivy
+
+from kivymd.uix.screenmanager import MDScreenManager
+from kivymd.uix.textfield import MDTextField, MDTextFieldHintText
+from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
+    MDDialogContentContainer
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.menu import MDDropdownMenu
 
 from kivymd.app import MDApp
 
@@ -27,6 +35,9 @@ class MainQuestApp(MDApp):
         self.journal = journal
         self.quest_widgets: List[QuestWidget] = []
         self.open_task_screens: int = 0
+
+        self.binding_id_dict: Dict[str, int] = {}
+
         MQ_Resource_Loader().load_resources()
         super().__init__(**kwargs)
 
@@ -37,26 +48,127 @@ class MainQuestApp(MDApp):
 
     def on_start(self):
         """Populate quest widgets dynamically after layout is built."""
-        quest_layout = self.root.ids.quest_layout
 
-        async def add_quests():
-            for quest in self.journal.quests:
-                await asynckivy.sleep(0)
-                quest_widget = QuestWidget(quest)
-                quest_layout.add_widget(quest_widget.root)
-                self.quest_widgets.append(quest_widget)
-        asynckivy.start(add_quests())
+        for quest in self.journal.quests:
+            asynckivy.start(self.add_quest_widget(quest))
 
         # fix header
         self.root.ids.top_app_bar.width = self.root.ids.top_app_bar.minimum_width
         self.root.ids.top_app_bar.do_layout()
+
+    async def add_quest_widget(self, quest: Quest) -> None:
+        await asynckivy.sleep(0)
+        quest_layout = self.root.ids.quest_layout
+        quest_widget = QuestWidget(quest, self.open_new_task_diallog)
+        quest_layout.add_widget(quest_widget)
+        self.quest_widgets.append(quest_widget)
+
+    def add_new_quest(self, name: str) -> None:
+        to_add = Quest(name, [])
+        # add quest to backend
+        self.journal.quests.append(to_add)
+        # add new widget to frontend
+        asynckivy.start(self.add_quest_widget(to_add))
+
+    def add_new_task(self, description: str, parent_widget) -> None:
+        to_add = Task(description)
+
+        # either add task to quest or to subtasks
+        if isinstance(parent_widget, TaskScreen):
+            # backend
+            parent_widget.task.subtasks.append(to_add)
+        elif isinstance(parent_widget, QuestWidget):
+            # backend
+            parent_widget.quest.tasks.append(to_add)
+
+        # frontend
+        parent_widget.update_widgets()
+
+    def open_new_quest_diallog(self) -> None:
+        entry_field = MDTextField(
+            MDTextFieldHintText(
+                text="Quest Name"
+                )
+            )
+
+        def confirm_func():
+            self.add_new_quest(entry_field.text)
+            dialog.dismiss()
+
+        confirm_button = MDIconButton(icon="check",
+                                      on_release=lambda x: confirm_func())
+        close_button = MDIconButton(icon="close")
+        dialog = MDDialog(
+            MDDialogHeadlineText(text="Add New Quest"),
+            MDDialogContentContainer(
+                entry_field
+            ),
+            MDDialogButtonContainer(
+                Widget(),
+                close_button,
+                confirm_button,
+                spacing="4dp"
+            ),
+        )
+        close_button.on_release = lambda: dialog.dismiss()
+        entry_field.focus = True
+        dialog.pos_hint = {"center_x": .5, "center_y": .75}
+        dialog.open()
+
+    def open_new_task_diallog(self, calling_widget: TaskScreen | QuestWidget) -> None:
+        entry_field = MDTextField(
+            MDTextFieldHintText(
+                text="Task Description"
+                )
+            )
+
+        def confirm_func():
+            self.add_new_task(entry_field.text, calling_widget)
+            dialog.dismiss()
+
+        confirm_button = MDIconButton(icon="check",
+                                      on_release=lambda x: confirm_func())
+        close_button = MDIconButton(icon="close")
+        dialog = MDDialog(
+            MDDialogHeadlineText(text="Add New Task"),
+            MDDialogContentContainer(
+                entry_field
+            ),
+            MDDialogButtonContainer(
+                Widget(),
+                close_button,
+                confirm_button,
+                spacing="4dp"
+            )
+        )
+        close_button.on_release = lambda: dialog.dismiss()
+        entry_field.focus = True
+        dialog.pos_hint = {"center_x": .5, "center_y": .75}
+        dialog.open()
+
+    def dummy(self) -> None:
+        print("Dummy")
 
     def on_menu_pressed(self, *args):
         self.root.ids.top_app_bar.do_layout()
         print("menu pressed")
 
     def on_more_pressed(self, *args):
-        print("three dots pressed")
+        drop_down = MDDropdownMenu()
+
+        def add_quest_press():
+            drop_down.dismiss()
+            self.open_new_quest_diallog()
+
+        menu_items = [
+            {
+                "text": "Add new Quest",
+                "on_release": lambda: add_quest_press(),
+            }
+        ]
+        drop_down.caller = self.root.ids.top_app_barcontext_button
+        drop_down.items = menu_items
+        drop_down.open()
 
     def on_nav_switch(self, *args):
         print("Nav switch")
@@ -84,9 +196,12 @@ class MainQuestApp(MDApp):
         manager.transition.direction = "right"
         self.root.ids.screen_manager.current = "progress_window"
 
-    def open_task_screen(self, task: Task, parent_quest: Quest) -> None:
+    def open_task_screen(self, task: Task, parent_quest: Quest, parent_task: Task | None) -> None:
         manager: MDScreenManager = self.root.ids.outer_screen_manager
-        new_task_screen: TaskScreen = TaskScreen(task, parent_quest, self.open_task_screens)
+        new_task_screen: TaskScreen = TaskScreen(task, parent_quest,
+                                                 parent_task,
+                                                 self.open_new_task_diallog,
+                                                 self.open_task_screens)
         manager.add_widget(new_task_screen)
         manager.transition.direction = "left"
         manager.current = f"task_screen_{str(self.open_task_screens)}"

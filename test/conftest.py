@@ -8,47 +8,57 @@ from model.goal import Goal
 
 
 @pytest.fixture
-def test_tasks() -> List[Task]:
+def test_task_1() -> Task:
     """Provides a few example Task objects to be used as Quest tasks."""
-    return [
-        Task(
-            description="Collect water",
-            date=date(2024, 2, 27),
-            start_time=time(6),
-            end_time=(time(18)),
-            subtasks=[
-                Task(
-                    "Build rain collector",
-                    date=date(2024, 2, 27),
-                    start_time=time(9),
-                    end_time=(time(10)),
-                ),
-                Task(
-                    "Build container for collected water.",
-                    date=date(2024, 2, 27),
-                    start_time=time(6),
-                    end_time=(time(8)),
-                    subtasks=[
-                        Task(
-                            "Look for big leafs."
-                        ),
-                        Task(
-                            "Look for useful wood."
-                        )
-                    ]
-                )
-            ]
-        ),
-        Task(
-            description="Gather food",
-            date=date(2024, 8, 28),
-            start_time=time(6),
-            end_time=time(8),
-        ),
-        Task(
-            description="Build shelter"
+    return Task(
+        description="Collect water",
+        date=date(2024, 2, 27),
+        start_time=time(6),
+        end_time=(time(18)),
+        subtasks=[
+            Task(
+                "Build rain collector",
+                date=date(2024, 2, 27),
+                start_time=time(9),
+                end_time=(time(10)),
+            ),
+            Task(
+                "Build container for collected water.",
+                date=date(2024, 2, 27),
+                start_time=time(6),
+                end_time=(time(8)),
+                subtasks=[
+                    Task(
+                        "Look for big leafs."
+                    ),
+                    Task(
+                        "Look for useful wood."
+                    )
+                ]
+            )
+        ]
+    )
+
+
+@pytest.fixture
+def test_task_2() -> Task:
+    return Task(
+        description="Gather food",
+        date=date(2024, 8, 28),
+        start_time=time(6),
+        end_time=time(8)
         )
-    ]
+
+
+@pytest.fixture
+def test_task_3() -> Task:
+    return Task(description="Build shelter")
+
+
+@pytest.fixture
+def test_tasks(test_task_1: Task, test_task_2: Task, test_task_3: Task,) -> List[Task]:
+    """Provides a few example Task objects to be used as Quest tasks."""
+    return [test_task_1, test_task_2, test_task_3]
 
 
 @pytest.fixture

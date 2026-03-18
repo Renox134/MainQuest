@@ -68,6 +68,24 @@ class Task:
             completion_date=completion_date
             )
 
+    @staticmethod
+    def complete_task_recursively(to_complete: "Task",
+                                  time_of_completion: datetime,
+                                  overwrite: bool) -> None:
+        # set completion datetime if it wasn't set before or if overwrite is activated
+        if to_complete.completion_date is None or overwrite:
+            to_complete.completion_date = time_of_completion
+        for subtask in to_complete.subtasks:
+            Task.complete_task_recursively(subtask, time_of_completion, overwrite)
+
+    @staticmethod
+    def get_linearized_task_list(task: "Task") -> List["Task"]:
+        result = [task]
+        # collect subtasks recursively
+        for subtask in task.subtasks:
+            result.extend(Task.get_linearized_task_list(subtask))
+        return result
+
     def __init__(self,
                  description: str = "",
                  subtasks: Optional[List["Task"]] = None,
@@ -80,12 +98,24 @@ class Task:
         Initializes a task.
         """
         self.description = description
-        self.subtasks = subtasks if subtasks is not None else []
+        self.subtasks: List[Task] = subtasks if subtasks is not None else []
         self.notes = notes if notes is not None else ""
         self.date = date
         self.start_time = start_time
         self.end_time = end_time
         self.completion_date = completion_date
+
+    def get_number_of_subtasks(self) -> int:
+        """
+        States how many subtasks and sub-subtasks the task has.
+
+        Returns:
+            int: The total recursive number of subtasks, sub-subtasks and so on.
+        """
+        result = len(self.subtasks)
+        if result > 0:
+            result += sum([s.get_number_of_subtasks() for s in self.subtasks])
+        return result
 
     def to_dict(self) -> Dict[str, Any]:
         """
@@ -114,7 +144,6 @@ class Task:
         date_format = Config.get("date_format")
         time_format = Config.get("time_format")
         datetime_format = Config.get("datetime_format")
-
 
         if self.date:
             out.append(f"Date:\t{self.date.strftime(date_format)}")

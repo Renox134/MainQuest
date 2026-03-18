@@ -6,6 +6,7 @@ from kivymd.uix.expansionpanel import MDExpansionPanel
 from kivy.uix.behaviors import ButtonBehavior
 from kivymd.uix.behaviors import RotateBehavior
 from kivymd.uix.list import MDListItemTrailingIcon
+from kivymd.uix.menu import MDDropdownMenu
 from kivy.metrics import dp
 from kivy.animation import Animation
 
@@ -19,13 +20,42 @@ class TrailingPressedIconButton(
     ...
 
 
-class ExpansionPanelQuestItem(MDExpansionPanel):
-    def __init__(self, quest: Quest = Quest("", []), **kwargs):
+class QuestWidget(MDExpansionPanel):
+    def __init__(self, quest: Quest, add_task_func, **kwargs):
         self.quest = quest
+        self.add_task_func = add_task_func
         super().__init__(**kwargs)
+        self.update_widgets()
+
+    def update_widgets(self) -> None:
+        self.text = self.quest.name
+
+        self.ids.task_list.clear_widgets()
+        for task in self.quest.tasks:
+            if task.completion_date is None:
+                self.ids.task_list.add_widget(ListTaskItem(task, self.quest, None))
 
     def open_quest_context(self) -> None:
-        print(f"Open quest context for: {self.quest.name}")
+        drop_down = MDDropdownMenu()
+
+        def add_task():
+            drop_down.dismiss()
+            self.add_task_func(self)
+
+        menu_items = [
+            {
+                "text": "Add new Task",
+                "on_release": lambda: add_task(),
+            },
+            {
+                "text": "Complete quest",
+                "on_release": lambda: print("Complete quest button pressed"),
+            }
+        ]
+        drop_down.caller = self.ids.context_button
+        drop_down.items = menu_items
+        drop_down.position = "center"
+        drop_down.open()
 
     def tap_expansion_chevron(self, chevron: TrailingPressedIconButton):
         Animation(
@@ -48,21 +78,3 @@ class ExpansionPanelQuestItem(MDExpansionPanel):
         panel_content = panel.ids.expansion_content
         panel_content.height = panel_content.minimum_height
         panel_content.do_layout()
-
-
-class QuestWidget:
-    """
-    A widget used to display a quest.
-    """
-
-    def __init__(self, quest: Quest):
-        self.quest = quest
-        self.root = ExpansionPanelQuestItem(quest)
-        self.update_widgets()
-
-    def update_widgets(self) -> None:
-        self.root.text = self.quest.name
-
-        self.root.ids.task_list.clear_widgets()
-        for task in self.quest.tasks:
-            self.root.ids.task_list.add_widget(ListTaskItem(task, self.quest, None))

@@ -12,6 +12,9 @@ class Config():
     @staticmethod
     def get(key: str) -> Any:
         config_path = resource_find("config.json")
+        # if resource find doesn't find anything, try default path
+        if config_path is None:
+            config_path = "./src/config.json"
         with open(config_path, "r") as file:
             config_dict = json.load(file)
             if key not in config_dict.keys():

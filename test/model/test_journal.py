@@ -65,8 +65,8 @@ class TestJournal:
 
         journal: Journal = Journal(quests, goals)
 
-        sum_of_completed_tasks = len(to_remove.completed_tasks)
-        sum_of_tasks = len([t for t in to_remove.get_all_tasks()])
+        sum_of_tasks = len(to_remove.get_all_tasks())
+        sum_of_completed_tasks = sum_of_tasks - len(to_remove.get_all_tasks(False))
         sum_of_progress_dict_before = sum(journal.goals[0].progress_dict.values())
 
         journal.finish_quest(quests[0], transfer_progress, set_to_completed)
