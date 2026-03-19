@@ -15,7 +15,6 @@ class Goal:
     @staticmethod
     def to_goal(data: Dict[str, Any]) -> "Goal":
         quest_names: List[str] = data.get("quest_names", [])
-        print(quest_names)
         quests: List[Quest] = []
         progress_dict = {}
         milestones = {}
