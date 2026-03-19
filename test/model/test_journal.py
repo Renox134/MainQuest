@@ -28,7 +28,7 @@ class TestJournal:
         journal_1.export_journal("test/test_journal.json")
 
         journal_2: Journal = Journal()
-        journal_2.import_quests("test/test_journal.json")
+        journal_2.import_journal("test/test_journal.json")
 
         # asser quests are equal
         assert len(journal_2.quests) == len(journal_1.quests)

@@ -5,7 +5,7 @@ from model.task import Task
 from model.quest import Quest
 from ui.widgets.quest_widget import QuestWidget
 from ui.widgets.task_screen import TaskScreen
-from ui.mq_resources import MQ_Resource_Loader
+from ui.mq_resources import MQ_Resource_Loader, animate_removal
 
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -31,8 +31,9 @@ class MainQuestApp(MDApp):
     The main app.
     """
 
-    def __init__(self, journal: Journal, **kwargs: Any):
+    def __init__(self, journal: Journal, path_to_journal: str, **kwargs: Any):
         self.journal = journal
+        self.path_to_journal = path_to_journal
         self.quest_widgets: List[QuestWidget] = []
         self.open_task_screens: int = 0
 
@@ -59,7 +60,13 @@ class MainQuestApp(MDApp):
     async def add_quest_widget(self, quest: Quest) -> None:
         await asynckivy.sleep(0)
         quest_layout = self.root.ids.quest_layout
-        quest_widget = QuestWidget(quest, self.open_new_task_diallog)
+        quest_widget = QuestWidget(quest,
+                                   {
+                                       "add_task": self.open_new_task_diallog,
+                                       "finish_quest": self.finish_quest,
+                                       "abort_quest": self.abort_quest
+                                   }
+                                   )
         quest_layout.add_widget(quest_widget)
         self.quest_widgets.append(quest_widget)
 
@@ -145,6 +152,14 @@ class MainQuestApp(MDApp):
         entry_field.focus = True
         dialog.pos_hint = {"center_x": .5, "center_y": .75}
         dialog.open()
+
+    def finish_quest(self, quest_widget: QuestWidget) -> None:
+        self.journal.finish_quest(quest_widget.quest)
+        animate_removal(quest_widget)
+
+    def abort_quest(self, quest_widget: QuestWidget) -> None:
+        self.journal.finish_quest(quest_widget.quest, True, False)
+        animate_removal(quest_widget)
 
     def dummy(self) -> None:
         print("Dummy")

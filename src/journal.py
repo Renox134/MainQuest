@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import List
 from model.quest import Quest
 from model.goal import Goal
+from object_parser import ObjectParser
 
 
 class Journal:
@@ -49,26 +50,29 @@ class Journal:
         with open(path, "w") as file:
             json.dump(to_export, file, indent=4, ensure_ascii=False)
 
-    def import_quests(self, path: str) -> None:
+    def import_journal(self, path: str) -> None:
         # clear out everything old
         self.quests = []
         self.goals = []
 
         with open(path, "r") as file:
             raw_input = json.load(file)
-            # add quests
             if isinstance(raw_input, dict):
                 quest_dicts = raw_input.get("quests", [])
                 goal_dicts = raw_input.get("goals", [])
 
+                # add quests
                 for q in quest_dicts:
                     if isinstance(q, dict):
                         self.quests.append(Quest.to_quest(q))
                     else:
                         print("WARNING: Non-dict found in quest list")
-
+                # init quest parser
+                parser = ObjectParser()
+                parser.init(self.quests)
+                # add goals
                 for g in goal_dicts:
                     if isinstance(g, dict):
                         self.goals.append(Goal.to_goal(g))
                     else:
-                        print("WARNING: Non-dict found in quest list")
+                        print("WARNING: Non-dict found in goal list")

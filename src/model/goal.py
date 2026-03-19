@@ -99,8 +99,7 @@ class Goal:
 
     def move_quest_to_progress(self, quest: Quest) -> None:
         """
-        Removes a qiven quest from the associated quests and writes the completion record
-        of the quest to the progress dict.
+        Writes the completion record of the given quest to the progress dict.
 
         Args:
             quest (Quest): The quest of which to transfer the progress.
@@ -109,7 +108,12 @@ class Goal:
         quest_progress_dict = quest.get_progress_dict()
 
         # integrate progress of quest into local progress dict
-        self.progress_dict |= quest_progress_dict
+        for key, val in quest_progress_dict.items():
+            current_value = self.progress_dict.get(key, 0)
+            if current_value == 0:
+                self.progress_dict[key] = val
+            else:
+                self.progress_dict[key] += val
 
         # reformat the progress dict
         self.progress_dict = self.format_progress_dict(self.progress_dict, self.daily_count_border,
