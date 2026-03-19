@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from model.quest import Quest
 from ui.mq_resources import ListTaskItem
 
@@ -21,9 +23,10 @@ class TrailingPressedIconButton(
 
 
 class QuestWidget(MDExpansionPanel):
-    def __init__(self, quest: Quest, add_task_func, **kwargs):
+    def __init__(self, quest: Quest, callables: Dict[str, Any], **kwargs):
         self.quest = quest
-        self.add_task_func = add_task_func
+        self.add_task_func = callables["add_task"]
+        self.finish_quest_func = callables["finish_quest"]
         super().__init__(**kwargs)
         self.update_widgets()
 
@@ -42,6 +45,10 @@ class QuestWidget(MDExpansionPanel):
             drop_down.dismiss()
             self.add_task_func(self)
 
+        def finish():
+            drop_down.dismiss()
+            self.finish_quest_func(self)
+
         menu_items = [
             {
                 "text": "Add new Task",
@@ -49,7 +56,7 @@ class QuestWidget(MDExpansionPanel):
             },
             {
                 "text": "Complete quest",
-                "on_release": lambda: print("Complete quest button pressed"),
+                "on_release": lambda: finish(),
             }
         ]
         drop_down.caller = self.ids.context_button

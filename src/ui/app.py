@@ -14,6 +14,7 @@ from kivy.uix.widget import Widget
 import asynckivy
 
 from kivymd.uix.screenmanager import MDScreenManager
+from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.textfield import MDTextField, MDTextFieldHintText
 from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
     MDDialogContentContainer
@@ -31,8 +32,9 @@ class MainQuestApp(MDApp):
     The main app.
     """
 
-    def __init__(self, journal: Journal, **kwargs: Any):
+    def __init__(self, journal: Journal, path_to_journal: str, **kwargs: Any):
         self.journal = journal
+        self.path_to_journal = path_to_journal
         self.quest_widgets: List[QuestWidget] = []
         self.open_task_screens: int = 0
 
@@ -59,7 +61,12 @@ class MainQuestApp(MDApp):
     async def add_quest_widget(self, quest: Quest) -> None:
         await asynckivy.sleep(0)
         quest_layout = self.root.ids.quest_layout
-        quest_widget = QuestWidget(quest, self.open_new_task_diallog)
+        quest_widget = QuestWidget(quest,
+                                   {
+                                       "add_task": self.open_new_task_diallog,
+                                       "finish_quest": self.finish_quest
+                                   }
+                                   )
         quest_layout.add_widget(quest_widget)
         self.quest_widgets.append(quest_widget)
 
@@ -145,6 +152,19 @@ class MainQuestApp(MDApp):
         entry_field.focus = True
         dialog.pos_hint = {"center_x": .5, "center_y": .75}
         dialog.open()
+
+    def finish_quest(self, quest_widget: QuestWidget) -> None:
+        for g in self.journal.goals:
+            print(g.name, [q.name for q in g.associated_quests])
+        print("Before")
+        for g in self.journal.goals:
+            print(g.name, sum(g.progress_dict.values()))
+        self.journal.finish_quest(quest_widget.quest)
+        quest_layout: MDGridLayout = self.root.ids.quest_layout
+        quest_layout.remove_widget(quest_widget)
+        print("After")
+        for g in self.journal.goals:
+            print(g.name, sum(g.progress_dict.values()))
 
     def dummy(self) -> None:
         print("Dummy")
