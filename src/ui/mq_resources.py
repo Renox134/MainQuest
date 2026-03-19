@@ -61,24 +61,24 @@ class ListTaskItem(MDListItem):
     def complete_task(self):
         Task.complete_task_recursively(self.task, datetime.now(), False)
         self.ids.confirm_icon.icon = "checkbox-marked-circle"
-        self.animate_removal()
-
-    def animate_removal(self) -> None:
-        self.disabled = True
-
-        check_anim = Animation(d=0.08)
-        slide_anim = Animation(opacity=0, x=self.x + 80, d=0.25, t="out_quad")
-        anim = check_anim + slide_anim
-
-        def remove_item(*args):
-            if self.parent:
-                self.parent.remove_widget(self)
-
-        anim.bind(on_complete=remove_item)
-        anim.start(self)
+        animate_removal(self)
 
 
 class MQ_Resource_Loader():
     @staticmethod
     def load_resources() -> None:
         Builder.load_file("ui/mq_resources.kv")
+
+def animate_removal(to_remove) -> None:
+        to_remove.disabled = True
+
+        check_anim = Animation(d=0.08)
+        slide_anim = Animation(opacity=0, x=to_remove.x + 80, d=0.25, t="out_quad")
+        anim = check_anim + slide_anim
+
+        def remove_item(*args):
+            if to_remove.parent:
+                to_remove.parent.remove_widget(to_remove)
+
+        anim.bind(on_complete=remove_item)
+        anim.start(to_remove)

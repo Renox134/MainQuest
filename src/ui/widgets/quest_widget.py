@@ -27,6 +27,7 @@ class QuestWidget(MDExpansionPanel):
         self.quest = quest
         self.add_task_func = callables["add_task"]
         self.finish_quest_func = callables["finish_quest"]
+        self.abort_quest_func = callables["abort_quest"]
         super().__init__(**kwargs)
         self.update_widgets()
 
@@ -49,6 +50,10 @@ class QuestWidget(MDExpansionPanel):
             drop_down.dismiss()
             self.finish_quest_func(self)
 
+        def abort():
+            drop_down.dismiss()
+            self.abort_quest_func(self)
+
         menu_items = [
             {
                 "text": "Add new Task",
@@ -57,6 +62,10 @@ class QuestWidget(MDExpansionPanel):
             {
                 "text": "Complete quest",
                 "on_release": lambda: finish(),
+            },
+            {
+                "text": "Abort quest",
+                "on_release": lambda: abort(),
             }
         ]
         drop_down.caller = self.ids.context_button

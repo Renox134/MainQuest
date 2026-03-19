@@ -5,7 +5,7 @@ from model.task import Task
 from model.quest import Quest
 from ui.widgets.quest_widget import QuestWidget
 from ui.widgets.task_screen import TaskScreen
-from ui.mq_resources import MQ_Resource_Loader
+from ui.mq_resources import MQ_Resource_Loader, animate_removal
 
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -64,7 +64,8 @@ class MainQuestApp(MDApp):
         quest_widget = QuestWidget(quest,
                                    {
                                        "add_task": self.open_new_task_diallog,
-                                       "finish_quest": self.finish_quest
+                                       "finish_quest": self.finish_quest,
+                                       "abort_quest": self.abort_quest
                                    }
                                    )
         quest_layout.add_widget(quest_widget)
@@ -154,17 +155,12 @@ class MainQuestApp(MDApp):
         dialog.open()
 
     def finish_quest(self, quest_widget: QuestWidget) -> None:
-        for g in self.journal.goals:
-            print(g.name, [q.name for q in g.associated_quests])
-        print("Before")
-        for g in self.journal.goals:
-            print(g.name, sum(g.progress_dict.values()))
         self.journal.finish_quest(quest_widget.quest)
-        quest_layout: MDGridLayout = self.root.ids.quest_layout
-        quest_layout.remove_widget(quest_widget)
-        print("After")
-        for g in self.journal.goals:
-            print(g.name, sum(g.progress_dict.values()))
+        animate_removal(quest_widget)
+
+    def abort_quest(self, quest_widget: QuestWidget) -> None:
+        self.journal.finish_quest(quest_widget.quest, True, False)
+        animate_removal(quest_widget)
 
     def dummy(self) -> None:
         print("Dummy")
