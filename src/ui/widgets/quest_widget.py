@@ -82,7 +82,7 @@ class QuestWidget(MDExpansionPanel):
         ]
         drop_down.caller = self.ids.context_button
         drop_down.items = menu_items
-        drop_down.position = "center"
+        drop_down.position = "bottom"
         drop_down.open()
 
     def open_rename_quest_diallog(self) -> None:
