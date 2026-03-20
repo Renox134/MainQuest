@@ -4,16 +4,18 @@ from config_reader import Config
 
 from datetime import datetime
 
-from kivymd.uix.navigationbar import MDNavigationItem
-from kivy.properties import StringProperty
+import matplotlib.pyplot as plt
 
+from kivy.properties import StringProperty
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.animation import Animation
+from kivy.lang import Builder
+from kivy_garden.matplotlib import FigureCanvasKivyAgg
+
+from kivymd.uix.navigationbar import MDNavigationItem
 from kivymd.uix.list import MDListItem, MDListItemSupportingText, MDListItemTertiaryText, \
     MDListItemLeadingIcon
 from kivymd.uix.screen import MDScreen
-
-from kivy.animation import Animation
-from kivy.lang import Builder
 
 
 class MainAppWindow(MDScreen):
@@ -21,7 +23,19 @@ class MainAppWindow(MDScreen):
 
 
 class ProgressWindow(MDScreen):
-    pass
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.update_widgets()
+
+    def update_widgets(self) -> None:
+        plt.plot([1, 2, 3, 4], [10, 20, 25, 30])
+        plt.xlabel("X Axis")
+        plt.ylabel("Y Axis")
+        plt.title("Sample Plot")
+
+        # Add the figure to Kivy layout
+        self.add_widget(FigureCanvasKivyAgg(plt.gcf()))
 
 
 class CalendarWindow(MDScreen):
