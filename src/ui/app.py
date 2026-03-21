@@ -5,7 +5,7 @@ from model.task import Task
 from model.quest import Quest
 from ui.widgets.quest_widget import QuestWidget
 from ui.widgets.task_screen import TaskScreen
-from ui.mq_resources import MQ_Resource_Loader, animate_removal
+from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressWindow
 
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -56,6 +56,8 @@ class MainQuestApp(MDApp):
         # fix header
         self.root.ids.top_app_bar.width = self.root.ids.top_app_bar.minimum_width
         self.root.ids.top_app_bar.do_layout()
+
+        self.root.ids.screen_manager.add_widget(ProgressWindow(self.journal))
 
     async def add_quest_widget(self, quest: Quest) -> None:
         await asynckivy.sleep(0)

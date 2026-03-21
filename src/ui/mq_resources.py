@@ -1,5 +1,6 @@
 from model.task import Task
 from model.quest import Quest
+from journal import Journal
 from config_reader import Config
 
 from datetime import datetime
@@ -24,14 +25,17 @@ class MainAppWindow(MDScreen):
 
 class ProgressWindow(MDScreen):
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, journal: Journal, *args, **kwargs):
+        self.journal = journal
         super().__init__(*args, **kwargs)
         self.update_widgets()
 
     def update_widgets(self) -> None:
-        plt.plot([1, 2, 3, 4], [10, 20, 25, 30])
-        plt.xlabel("X Axis")
-        plt.ylabel("Y Axis")
+        dates = self.journal.goals[0].progress_dict.keys()
+        scores = self.journal.goals[0].progress_dict.values()
+        plt.plot(dates, scores)
+        plt.xlabel("Time")
+        plt.ylabel("Completed Tasks")
         plt.title("Sample Plot")
 
         # Add the figure to Kivy layout
