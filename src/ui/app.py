@@ -3,6 +3,7 @@ from typing import Any, List, Dict
 from journal import Journal
 from model.task import Task
 from model.quest import Quest
+from model.goal import Goal
 from ui.widgets.quest_widget import QuestWidget
 from ui.widgets.task_screen import TaskScreen
 from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressWindow
@@ -238,6 +239,9 @@ class MainQuestApp(MDApp):
             manager.current = f"task_screen_{str(self.open_task_screens - 1)}"
             manager.current_screen.update_widgets()
         manager.remove_widget(task_screen)
+
+    def open_goal_screen(self, goal: Goal) -> None:
+        print("Open goal screen for goal: ", goal.name)
 
     def show_date_picker(self, focus):
         from kivymd.uix.pickers import MDDockedDatePicker

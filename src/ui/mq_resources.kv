@@ -13,6 +13,10 @@
 <ProgressWindow>:
     name: "progress_window"
 
+    ScrollView:
+        MDList:
+            id: goal_list
+
 <CalendarWindow>:
     name: "calendar_window"
     MDLabel:
@@ -33,3 +37,16 @@
         id: name_text_field
         halign: "left"
         text: root.task.description
+
+<ListGoalItem>:
+    id: base_item
+    ripple_effect: False
+    on_release: app.open_goal_screen(self.goal)
+
+    MDListItemHeadlineText:
+        id: name_text_field
+        halign: "left"
+        text: root.goal.name
+
+    MDListItemTrailingIcon:
+        icon: "trophy"

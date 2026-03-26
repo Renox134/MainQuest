@@ -1,5 +1,6 @@
 from model.task import Task
 from model.quest import Quest
+from model.goal import Goal
 from journal import Journal
 from config_reader import Config
 
@@ -21,25 +22,6 @@ from kivymd.uix.screen import MDScreen
 
 class MainAppWindow(MDScreen):
     pass
-
-
-class ProgressWindow(MDScreen):
-    
-    def __init__(self, journal: Journal, *args, **kwargs):
-        self.journal = journal
-        super().__init__(*args, **kwargs)
-        self.update_widgets()
-
-    def update_widgets(self) -> None:
-        dates = self.journal.goals[0].progress_dict.keys()
-        scores = self.journal.goals[0].progress_dict.values()
-        plt.plot(dates, scores)
-        plt.xlabel("Time")
-        plt.ylabel("Completed Tasks")
-        plt.title("Sample Plot")
-
-        # Add the figure to Kivy layout
-        self.add_widget(FigureCanvasKivyAgg(plt.gcf()))
 
 
 class CalendarWindow(MDScreen):
@@ -101,3 +83,35 @@ def animate_removal(to_remove) -> None:
 
     anim.bind(on_complete=remove_item)
     anim.start(to_remove)
+
+
+class ListGoalItem(MDListItem):
+    def __init__(self, goal: Goal, *args, **kwargs):
+        self.goal = goal
+        super().__init__(*args, **kwargs)
+
+
+class ProgressWindow(MDScreen):
+    
+    def __init__(self, journal: Journal, *args, **kwargs):
+        self.journal = journal
+        super().__init__(*args, **kwargs)
+        self.update_widgets()
+
+    def update_widgets(self) -> None:
+        goal_list = self.ids.goal_list
+        for g in self.journal.goals:
+            goal_list.add_widget(
+                ListGoalItem(
+                    g
+                )
+            )
+        # dates = self.journal.goals[0].progress_dict.keys()
+        # scores = self.journal.goals[0].progress_dict.values()
+        # plt.plot(dates, scores)
+        # plt.xlabel("Time")
+        # plt.ylabel("Completed Tasks")
+        # plt.title("Sample Plot")
+
+        # # Add the figure to Kivy layout
+        # self.add_widget(FigureCanvasKivyAgg(plt.gcf()))
