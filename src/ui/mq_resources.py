@@ -106,12 +106,21 @@ class ProgressWindow(MDScreen):
                     g
                 )
             )
-        # dates = self.journal.goals[0].progress_dict.keys()
-        # scores = self.journal.goals[0].progress_dict.values()
-        # plt.plot(dates, scores)
-        # plt.xlabel("Time")
-        # plt.ylabel("Completed Tasks")
-        # plt.title("Sample Plot")
 
-        # # Add the figure to Kivy layout
-        # self.add_widget(FigureCanvasKivyAgg(plt.gcf()))
+
+class GoalScreen(MDScreen):
+    def __init__(self, goal: Goal, *args, **kwargs):
+        self.goal = goal
+        super().__init__(*args, **kwargs)
+        self.update_widgets()
+
+    def update_widgets(self) -> None:
+        dates = self.goal.progress_dict.keys()
+        scores = self.goal.progress_dict.values()
+        plt.plot(dates, scores)
+        plt.xlabel("Time")
+        plt.ylabel("Completed Tasks")
+        plt.title("Sample Plot")
+
+        # Add the figure to Kivy layout
+        self.ids.layout.add_widget(FigureCanvasKivyAgg(plt.gcf()))

@@ -6,7 +6,7 @@ from model.quest import Quest
 from model.goal import Goal
 from ui.widgets.quest_widget import QuestWidget
 from ui.widgets.task_screen import TaskScreen
-from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressWindow
+from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressWindow, GoalScreen
 
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -241,7 +241,18 @@ class MainQuestApp(MDApp):
         manager.remove_widget(task_screen)
 
     def open_goal_screen(self, goal: Goal) -> None:
-        print("Open goal screen for goal: ", goal.name)
+        manager: MDScreenManager = self.root.ids.outer_screen_manager
+        goal_screen = GoalScreen(goal)
+        manager.add_widget(goal_screen)
+        manager.transition.direction = "left"
+        manager.current = f"goal_screen"
+
+    def close_goal_screen(self, goal_screen: GoalScreen) -> None:
+        manager: MDScreenManager = self.root.ids.outer_screen_manager
+        manager.transition.direction = "right"
+        manager.current = "main_app_screen"
+
+        manager.remove_widget(goal_screen)
 
     def show_date_picker(self, focus):
         from kivymd.uix.pickers import MDDockedDatePicker

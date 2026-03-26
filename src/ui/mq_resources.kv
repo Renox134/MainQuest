@@ -50,3 +50,18 @@
 
     MDListItemTrailingIcon:
         icon: "trophy"
+
+<GoalScreen>:
+    name: "goal_screen"
+
+    BoxLayout:
+        id: layout
+        orientation: "vertical"
+        MDTopAppBar:
+            id: top_app_bar
+            type: "small"
+
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "chevron-left"
+                    on_release: app.close_goal_screen(root)
