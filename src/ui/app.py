@@ -54,11 +54,8 @@ class MainQuestApp(MDApp):
         for quest in self.journal.quests:
             asynckivy.start(self.add_quest_widget(quest))
 
-        # fix header
-        self.root.ids.top_app_bar.width = self.root.ids.top_app_bar.minimum_width
-        self.root.ids.top_app_bar.do_layout()
-
         self.root.ids.screen_manager.add_widget(ProgressWindow(self.journal))
+        asynckivy.start(self.add_goal_screen())
 
     async def add_quest_widget(self, quest: Quest) -> None:
         await asynckivy.sleep(0)
@@ -72,6 +69,12 @@ class MainQuestApp(MDApp):
                                    )
         quest_layout.add_widget(quest_widget)
         self.quest_widgets.append(quest_widget)
+
+    async def add_goal_screen(self) -> None:
+        await asynckivy.sleep(0)
+        manager: MDScreenManager = self.root.ids.outer_screen_manager
+        self.goal_screen = GoalScreen()
+        manager.add_widget(self.goal_screen)
 
     def add_new_quest(self, name: str) -> None:
         to_add = Quest(name, [])
@@ -178,12 +181,28 @@ class MainQuestApp(MDApp):
             drop_down.dismiss()
             self.open_new_quest_diallog()
 
-        menu_items = [
-            {
-                "text": "Add new Quest",
-                "on_release": lambda: add_quest_press(),
-            }
-        ]
+        def add_goal_press():
+            drop_down.dismiss()
+            print("New goal")
+ 
+        menu_items = []
+
+        # add menu items depending on the currently opened window
+        if self.root.ids.screen_manager.current == "progress_window":
+            menu_items.append(
+                {
+                    "text": "Add new Goal",
+                    "on_release": lambda: add_goal_press()
+                }
+            )
+        elif self.root.ids.screen_manager.current == "main_window":
+            menu_items.append(
+                {
+                    "text": "Add new Quest",
+                    "on_release": lambda: add_quest_press(),
+                }
+            )
+
         drop_down.caller = self.root.ids.top_app_barcontext_button
         drop_down.items = menu_items
         drop_down.open()
@@ -242,17 +261,14 @@ class MainQuestApp(MDApp):
 
     def open_goal_screen(self, goal: Goal) -> None:
         manager: MDScreenManager = self.root.ids.outer_screen_manager
-        goal_screen = GoalScreen(goal)
-        manager.add_widget(goal_screen)
         manager.transition.direction = "left"
+        self.goal_screen.update_widgets(goal)
         manager.current = f"goal_screen"
 
-    def close_goal_screen(self, goal_screen: GoalScreen) -> None:
+    def close_goal_screen(self) -> None:
         manager: MDScreenManager = self.root.ids.outer_screen_manager
         manager.transition.direction = "right"
         manager.current = "main_app_screen"
-
-        manager.remove_widget(goal_screen)
 
     def show_date_picker(self, focus):
         from kivymd.uix.pickers import MDDockedDatePicker

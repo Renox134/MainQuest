@@ -1,3 +1,5 @@
+from typing import List
+
 from model.task import Task
 from model.quest import Quest
 from model.goal import Goal
@@ -7,6 +9,7 @@ from config_reader import Config
 from datetime import datetime
 
 import matplotlib.pyplot as plt
+from matplotlib import style
 
 from kivy.properties import StringProperty
 from kivy.uix.behaviors import ButtonBehavior
@@ -109,18 +112,36 @@ class ProgressWindow(MDScreen):
 
 
 class GoalScreen(MDScreen):
-    def __init__(self, goal: Goal, *args, **kwargs):
-        self.goal = goal
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.update_widgets()
 
-    def update_widgets(self) -> None:
-        dates = self.goal.progress_dict.keys()
-        scores = self.goal.progress_dict.values()
-        plt.plot(dates, scores)
+    def update_widgets(self, goal: Goal) -> None:
+        self.ids.goal_title.text = goal.name
+
+        # reset_previous_widgets
+        self.ids.plot_layout.clear_widgets()
+
+        dates = self.format_dates(goal.progress_dict.keys())
+        scores = goal.progress_dict.values()
+
+        # clear previous plots
+        plt.cla()
+        plt.clf()
+
+        # set style
+        # with plt.style.context("dark_background"):
+        plt.bar(dates, scores, color="green")
         plt.xlabel("Time")
         plt.ylabel("Completed Tasks")
-        plt.title("Sample Plot")
 
         # Add the figure to Kivy layout
-        self.ids.layout.add_widget(FigureCanvasKivyAgg(plt.gcf()))
+        self.ids.plot_layout.add_widget(FigureCanvasKivyAgg(plt.gcf()))
+
+    def format_dates(self, unformated_dates: List[datetime]) -> List[str]:
+        result = []
+
+        for date in unformated_dates:
+            d = date.strftime(Config.get("date_format_goal_screen"))
+            result.append(d)
+
+        return result

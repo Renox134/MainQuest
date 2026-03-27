@@ -64,4 +64,10 @@
             MDTopAppBarLeadingButtonContainer:
                 MDActionTopAppBarButton:
                     icon: "chevron-left"
-                    on_release: app.close_goal_screen(root)
+                    on_release: app.close_goal_screen()
+
+            MDTopAppBarTitle:
+                id: goal_title
+                pos_hint: {"center_x": .5, "center_y": .5}
+        BoxLayout:
+            id: plot_layout
