@@ -24,7 +24,7 @@ from kivymd.uix.menu import MDDropdownMenu
 from kivymd.app import MDApp
 
 # this needs to be removed when building
-Window.size = (350, 650)  # times I accidentally build before removing: 7
+Window.size = (350, 650)  # times I accidentally build before removing: 8
 
 
 class MainQuestApp(MDApp):
