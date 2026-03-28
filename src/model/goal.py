@@ -119,6 +119,16 @@ class Goal:
         self.progress_dict = self.format_progress_dict(self.progress_dict, self.daily_count_border,
                                                        self.progress_time_border)
 
+    def get_progress(self) -> Dict[datetime, int]:
+        result = self.progress_dict
+
+        # include current progress of associated quests
+        for q in self.associated_quests:
+            result |= q.get_progress_dict()
+            result = self.format_progress_dict(result, self.daily_count_border,
+                                               self.progress_time_border)
+        return result
+
     def to_dict(self) -> Dict[str, Any]:
         str_progress_dict = {}
         for key, int_val in self.progress_dict.items():

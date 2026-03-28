@@ -54,6 +54,10 @@ class MainQuestApp(MDApp):
         for quest in self.journal.quests:
             asynckivy.start(self.add_quest_widget(quest))
 
+        # fix header
+        self.root.ids.top_app_bar.width = self.root.ids.top_app_bar.minimum_width
+        self.root.ids.top_app_bar.do_layout()
+
         self.root.ids.screen_manager.add_widget(ProgressWindow(self.journal))
         asynckivy.start(self.add_goal_screen())
 
@@ -260,6 +264,7 @@ class MainQuestApp(MDApp):
         manager.remove_widget(task_screen)
 
     def open_goal_screen(self, goal: Goal) -> None:
+        print(sum(goal.progress_dict.values()))
         manager: MDScreenManager = self.root.ids.outer_screen_manager
         manager.transition.direction = "left"
         self.goal_screen.update_widgets(goal)

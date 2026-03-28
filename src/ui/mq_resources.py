@@ -121,8 +121,11 @@ class GoalScreen(MDScreen):
         # reset_previous_widgets
         self.ids.plot_layout.clear_widgets()
 
-        dates = self.format_dates(goal.progress_dict.keys())
-        scores = goal.progress_dict.values()
+        progress_dict = goal.get_progress()
+        from pprint import pprint
+        pprint(progress_dict)
+        dates = self.format_dates(progress_dict.keys())
+        scores = progress_dict.values()
 
         # clear previous plots
         plt.cla()
