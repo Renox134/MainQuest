@@ -11,6 +11,8 @@ from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressWindow,
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
+from kivy.resources import resource_find
+from kivy.metrics import dp
 
 import asynckivy
 
@@ -20,6 +22,8 @@ from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlin
     MDDialogContentContainer
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
+from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
+
 
 from kivymd.app import MDApp
 
@@ -188,6 +192,19 @@ class MainQuestApp(MDApp):
         def add_goal_press():
             drop_down.dismiss()
             print("New goal")
+
+        def save_press():
+            drop_down.dismiss()
+            try:
+                path = resource_find("main_quest.json")
+                self.journal.export_journal(path)
+            except:
+                MDSnackbar(
+                    MDSnackbarText(text="An error occured while saving :("),
+                    y=dp(24),
+                    pos_hint={"center_x": 0.5},
+                    size_hint_x=0.9,
+                ).open()
  
         menu_items = []
 
@@ -200,11 +217,16 @@ class MainQuestApp(MDApp):
                 }
             )
         elif self.root.ids.screen_manager.current == "main_window":
-            menu_items.append(
+            menu_items.extend([
                 {
                     "text": "Add new Quest",
                     "on_release": lambda: add_quest_press(),
+                },
+                {
+                    "text": "Save",
+                    "on_release": lambda: save_press()
                 }
+            ]
             )
 
         drop_down.caller = self.root.ids.top_app_barcontext_button

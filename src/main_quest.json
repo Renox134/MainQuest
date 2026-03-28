@@ -9,40 +9,31 @@
                     "date": "27/07/2026",
                     "start_time": "06:00",
                     "end_time": "23:59",
-                    "completion_date": null,
                     "subtasks": [
                         {
                             "description": "Find a water source",
                             "date": "27/07/2026",
                             "start_time": "20:00",
                             "end_time": "23:00",
-                            "completion_date": null,
                             "subtasks": [
                                 {
                                     "description": "Build a rain collector",
                                     "date": "27/07/2026",
                                     "start_time": "20:00",
-                                    "end_time": "23:00",
-                                    "completion_date": null,
-                                    "subtasks": []
+                                    "end_time": "23:00"
                                 },
                                 {
                                     "description": "Look for a stream",
                                     "date": "27/07/2026",
                                     "start_time": "06:00",
-                                    "end_time": "10:00",
-                                    "completion_date": null,
-                                    "subtasks": []
+                                    "end_time": "10:00"
                                 }
                             ]
                         },
                         {
                             "description": "Fill containers",
                             "date": "27/07/2026",
-                            "start_time": "23:30",
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "start_time": "23:30"
                         }
                     ]
                 },
@@ -51,56 +42,32 @@
                     "date": "28/08/2026",
                     "start_time": "00:00",
                     "end_time": "19:00",
-                    "completion_date": null,
                     "subtasks": [
                         {
                             "description": "Collect fruits",
                             "date": "27/08/2026",
                             "start_time": "12:00",
-                            "end_time": "13:00",
-                            "completion_date": null,
-                            "subtasks": []
+                            "end_time": "13:00"
                         },
                         {
                             "description": "Hunt small animals",
                             "date": "27/08/2026",
                             "start_time": "18:00",
-                            "end_time": "19:00",
-                            "completion_date": null,
-                            "subtasks": []
+                            "end_time": "19:00"
                         }
                     ]
                 },
                 {
                     "description": "Build shelter",
-                    "date": null,
-                    "start_time": null,
-                    "end_time": null,
-                    "completion_date": null,
                     "subtasks": [
                         {
-                            "description": "Gather wood",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "description": "Gather wood"
                         },
                         {
-                            "description": "Construct frame",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "description": "Construct frame"
                         },
                         {
-                            "description": "Add roof covering",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "description": "Add roof covering"
                         }
                     ]
                 }
@@ -114,31 +81,25 @@
                     "date": "02/09/2026",
                     "start_time": "08:00",
                     "end_time": "14:00",
-                    "completion_date": null,
                     "subtasks": [
                         {
                             "description": "Collect sturdy branches",
                             "date": "02/09/2026",
                             "start_time": "08:00",
                             "end_time": "09:30",
-                            "completion_date": "02/09/2026, 09:10",
-                            "subtasks": []
+                            "completion_date": "02/09/2026, 09:10"
                         },
                         {
                             "description": "Find sharp stones",
                             "date": "02/09/2026",
                             "start_time": "10:00",
-                            "end_time": "11:00",
-                            "completion_date": null,
-                            "subtasks": []
+                            "end_time": "11:00"
                         },
                         {
                             "description": "Gather vines for bindings",
                             "date": "02/09/2026",
                             "start_time": "12:00",
-                            "end_time": "13:00",
-                            "completion_date": null,
-                            "subtasks": []
+                            "end_time": "13:00"
                         }
                     ]
                 },
@@ -147,23 +108,18 @@
                     "date": "03/09/2026",
                     "start_time": "09:00",
                     "end_time": "11:00",
-                    "completion_date": null,
                     "subtasks": [
                         {
                             "description": "Sharpen spear tip",
                             "date": "03/09/2026",
                             "start_time": "09:00",
-                            "end_time": "09:30",
-                            "completion_date": null,
-                            "subtasks": []
+                            "end_time": "09:30"
                         },
                         {
                             "description": "Attach stone tip",
                             "date": "03/09/2026",
                             "start_time": "09:30",
-                            "end_time": "10:30",
-                            "completion_date": null,
-                            "subtasks": []
+                            "end_time": "10:30"
                         }
                     ]
                 },
@@ -179,16 +135,14 @@
                             "date": "01/09/2026",
                             "start_time": "15:00",
                             "end_time": "15:10",
-                            "completion_date": "01/09/2026, 15:05",
-                            "subtasks": []
+                            "completion_date": "01/09/2026, 15:05"
                         },
                         {
                             "description": "Carve handle grip",
                             "date": "01/09/2026",
                             "start_time": "15:10",
                             "end_time": "15:40",
-                            "completion_date": "01/09/2026, 15:35",
-                            "subtasks": []
+                            "completion_date": "01/09/2026, 15:35"
                         }
                     ]
                 }
@@ -199,51 +153,23 @@
             "tasks": [
                 {
                     "description": "Locate nearby settlements",
-                    "date": null,
-                    "start_time": null,
-                    "end_time": null,
-                    "completion_date": null,
                     "subtasks": [
                         {
-                            "description": "Scout nearby hills",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "description": "Scout nearby hills"
                         },
                         {
-                            "description": "Look for smoke signals",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "description": "Look for smoke signals"
                         }
                     ]
                 },
                 {
                     "description": "Gain trust of villagers",
-                    "date": null,
-                    "start_time": null,
-                    "end_time": null,
-                    "completion_date": null,
                     "subtasks": [
                         {
-                            "description": "Offer gathered food",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "description": "Offer gathered food"
                         },
                         {
-                            "description": "Help repair fences",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "description": "Help repair fences"
                         }
                     ]
                 },
@@ -259,8 +185,7 @@
                             "date": "31/08/2026",
                             "start_time": "12:10",
                             "end_time": "12:30",
-                            "completion_date": "31/08/2026, 12:25",
-                            "subtasks": []
+                            "completion_date": "31/08/2026, 12:25"
                         }
                     ]
                 }
@@ -271,26 +196,12 @@
             "tasks": [
                 {
                     "description": "Map surrounding forest",
-                    "date": null,
-                    "start_time": null,
-                    "end_time": null,
-                    "completion_date": null,
                     "subtasks": [
                         {
-                            "description": "Mark dangerous areas",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "description": "Mark dangerous areas"
                         },
                         {
-                            "description": "Identify edible plants",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "description": "Identify edible plants"
                         }
                     ]
                 },
@@ -299,8 +210,7 @@
                     "date": "30/08/2026",
                     "start_time": "07:00",
                     "end_time": "08:00",
-                    "completion_date": "30/08/2026, 07:55",
-                    "subtasks": []
+                    "completion_date": "30/08/2026, 07:55"
                 }
             ]
         },
@@ -309,26 +219,12 @@
             "tasks": [
                 {
                     "description": "Research dragon weaknesses",
-                    "date": null,
-                    "start_time": null,
-                    "end_time": null,
-                    "completion_date": null,
                     "subtasks": [
                         {
-                            "description": "Study ancient texts",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "description": "Study ancient texts"
                         },
                         {
-                            "description": "Compare eyewitness accounts",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "description": "Compare eyewitness accounts"
                         }
                     ]
                 },
@@ -337,8 +233,7 @@
                     "date": "29/08/2026",
                     "start_time": "14:00",
                     "end_time": "16:00",
-                    "completion_date": "29/08/2026, 15:40",
-                    "subtasks": []
+                    "completion_date": "29/08/2026, 15:40"
                 }
             ]
         },
@@ -347,34 +242,15 @@
             "tasks": [
                 {
                     "description": "Search in northern Europe",
-                    "date": null,
-                    "start_time": null,
-                    "end_time": null,
-                    "completion_date": null,
                     "subtasks": [
                         {
-                            "description": "Explore forests in Scandinavia",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "description": "Explore forests in Scandinavia"
                         },
                         {
-                            "description": "Interview local witnesses",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "description": "Interview local witnesses"
                         },
                         {
-                            "description": "Check historical archives",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": null,
-                            "subtasks": []
+                            "description": "Check historical archives"
                         }
                     ]
                 },
@@ -383,23 +259,18 @@
                     "date": "28/08/2026",
                     "start_time": "00:00",
                     "end_time": "10:00",
-                    "completion_date": null,
                     "subtasks": [
                         {
                             "description": "Investigate Canadian forests",
                             "date": "27/08/2026",
                             "start_time": "12:00",
-                            "end_time": "13:00",
-                            "completion_date": null,
-                            "subtasks": []
+                            "end_time": "13:00"
                         },
                         {
                             "description": "Scout mountain ranges",
                             "date": "27/08/2026",
                             "start_time": "16:00",
-                            "end_time": "17:00",
-                            "completion_date": null,
-                            "subtasks": []
+                            "end_time": "17:00"
                         }
                     ]
                 },
@@ -415,16 +286,14 @@
                             "date": "25/08/2026",
                             "start_time": "10:00",
                             "end_time": "11:00",
-                            "completion_date": "26/08/2026, 09:00",
-                            "subtasks": []
+                            "completion_date": "26/08/2026, 09:00"
                         },
                         {
                             "description": "Search taiga region",
                             "date": "27/08/2026",
                             "start_time": "09:00",
                             "end_time": "10:00",
-                            "completion_date": "28/08/2026, 22:00",
-                            "subtasks": []
+                            "completion_date": "28/08/2026, 22:00"
                         }
                     ]
                 }

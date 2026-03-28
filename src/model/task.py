@@ -60,8 +60,8 @@ class Task:
 
         return Task(
             description=data.get("description", ""),
-            subtasks=subtasks,
             notes=data.get("notes", ""),
+            subtasks=subtasks,
             date=duedate,
             start_time=start_time,
             end_time=end_time,
@@ -121,6 +121,7 @@ class Task:
         """
         Convert the Task to a dictionary (serializable form).
         """
+        result = {}
         date_str = self.date.strftime(Config.get("date_format")) if self.date else None
         start_time_str =\
             self.start_time.strftime(Config.get("time_format")) if self.start_time else None
@@ -129,15 +130,24 @@ class Task:
         completion_str: None | str =\
             self.completion_date.strftime(Config.get("datetime_format")
                                           ) if self.completion_date else None
+        
+        result["description"] = self.description
 
-        return {
-            "description": self.description,
-            "date": date_str,
-            "start_time": start_time_str,
-            "end_time": end_time_str,
-            "completion_date": completion_str,
-            "subtasks": [s.to_dict() for s in self.subtasks]
-        }
+        # add other fields only if they're filled
+        if self.notes != "":
+            result["notes"] = self.notes
+        if date_str is not None:
+            result["date"] = date_str
+        if start_time_str is not None:
+            result["start_time"] = start_time_str
+        if end_time_str is not None:
+            result["end_time"] = end_time_str
+        if completion_str is not None:
+            result["completion_date"] = completion_str
+        if len(self.subtasks) > 0:
+            result["subtasks"] = [s.to_dict() for s in self.subtasks]
+
+        return result
 
     def __str__(self) -> str:
         out = [f"Description:\t{self.description}"]
