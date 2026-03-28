@@ -219,12 +219,12 @@ class MainQuestApp(MDApp):
         elif self.root.ids.screen_manager.current == "main_window":
             menu_items.extend([
                 {
-                    "text": "Add new Quest",
-                    "on_release": lambda: add_quest_press(),
-                },
-                {
                     "text": "Save",
                     "on_release": lambda: save_press()
+                },
+                {
+                    "text": "Add new Quest",
+                    "on_release": lambda: add_quest_press(),
                 }
             ]
             )
@@ -309,3 +309,19 @@ class MainQuestApp(MDApp):
             self.y - (date_dialog.height - dp(320)),
         ]
         date_dialog.open()
+
+    def on_stop(self):
+        try:
+            path = resource_find("main_quest.json")
+            self.journal.export_journal(path)
+        except:
+            print("An error occured while trying to save the data.")
+        return super().on_stop()
+    
+    def on_pause(self):
+        try:
+            path = resource_find("main_quest.json")
+            self.journal.export_journal(path)
+        except:
+            print("An error occured while trying to save the data.")
+        return super().on_pause()
