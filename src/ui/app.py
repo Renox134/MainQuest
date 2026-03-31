@@ -8,6 +8,8 @@ from ui.widgets.quest_widget import QuestWidget
 from ui.widgets.task_screen import TaskScreen
 from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressWindow, GoalScreen
 
+from datetime import datetime
+
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
@@ -62,7 +64,8 @@ class MainQuestApp(MDApp):
         self.root.ids.top_app_bar.width = self.root.ids.top_app_bar.minimum_width
         self.root.ids.top_app_bar.do_layout()
 
-        self.root.ids.screen_manager.add_widget(ProgressWindow(self.journal))
+        self.progress_window = ProgressWindow(self.journal)
+        self.root.ids.screen_manager.add_widget(self.progress_window)
         asynckivy.start(self.add_goal_screen())
 
     async def add_quest_widget(self, quest: Quest) -> None:
@@ -70,7 +73,7 @@ class MainQuestApp(MDApp):
         quest_layout = self.root.ids.quest_layout
         quest_widget = QuestWidget(quest,
                                    {
-                                       "add_task": self.open_new_task_diallog,
+                                       "add_task": self.open_new_task_dialog,
                                        "finish_quest": self.finish_quest,
                                        "abort_quest": self.abort_quest
                                    }
@@ -83,6 +86,13 @@ class MainQuestApp(MDApp):
         manager: MDScreenManager = self.root.ids.outer_screen_manager
         self.goal_screen = GoalScreen()
         manager.add_widget(self.goal_screen)
+
+    def add_new_goal(self, name: str) -> None:
+        to_add = Goal(name, progress_time_border=datetime.now())
+        # add goal to backend
+        self.journal.goals.append(to_add)
+        # update frontend
+        self.progress_window.update_widgets()
 
     def add_new_quest(self, name: str) -> None:
         to_add = Quest(name, [])
@@ -105,7 +115,7 @@ class MainQuestApp(MDApp):
         # frontend
         parent_widget.update_widgets()
 
-    def open_new_quest_diallog(self) -> None:
+    def open_new_quest_dialog(self) -> None:
         entry_field = MDTextField(
             MDTextFieldHintText(
                 text="Quest Name"
@@ -136,7 +146,38 @@ class MainQuestApp(MDApp):
         dialog.pos_hint = {"center_x": .5, "center_y": .75}
         dialog.open()
 
-    def open_new_task_diallog(self, calling_widget: TaskScreen | QuestWidget) -> None:
+    def open_new_goal_dialog(self) -> None:
+        entry_field = MDTextField(
+            MDTextFieldHintText(
+                text="Goal Name"
+                )
+            )
+
+        def confirm_func():
+            self.add_new_goal(entry_field.text)
+            dialog.dismiss()
+
+        confirm_button = MDIconButton(icon="check",
+                                      on_release=lambda x: confirm_func())
+        close_button = MDIconButton(icon="close")
+        dialog = MDDialog(
+            MDDialogHeadlineText(text="Add New Goal"),
+            MDDialogContentContainer(
+                entry_field
+            ),
+            MDDialogButtonContainer(
+                Widget(),
+                close_button,
+                confirm_button,
+                spacing="4dp"
+            ),
+        )
+        close_button.on_release = lambda: dialog.dismiss()
+        entry_field.focus = True
+        dialog.pos_hint = {"center_x": .5, "center_y": .75}
+        dialog.open()
+
+    def open_new_task_dialog(self, calling_widget: TaskScreen | QuestWidget) -> None:
         entry_field = MDTextField(
             MDTextFieldHintText(
                 text="Task Description"
@@ -187,11 +228,11 @@ class MainQuestApp(MDApp):
 
         def add_quest_press():
             drop_down.dismiss()
-            self.open_new_quest_diallog()
+            self.open_new_quest_dialog()
 
         def add_goal_press():
             drop_down.dismiss()
-            print("New goal")
+            self.open_new_goal_dialog()
 
         def save_press():
             drop_down.dismiss()
@@ -263,7 +304,7 @@ class MainQuestApp(MDApp):
         manager: MDScreenManager = self.root.ids.outer_screen_manager
         new_task_screen: TaskScreen = TaskScreen(task, parent_quest,
                                                  parent_task,
-                                                 self.open_new_task_diallog,
+                                                 self.open_new_task_dialog,
                                                  self.open_task_screens)
         manager.add_widget(new_task_screen)
         manager.transition.direction = "left"

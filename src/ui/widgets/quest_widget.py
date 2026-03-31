@@ -60,7 +60,7 @@ class QuestWidget(MDExpansionPanel):
 
         def rename():
             drop_down.dismiss()
-            self.open_rename_quest_diallog()
+            self.open_rename_quest_dialog()
 
         menu_items = [
             {
@@ -85,7 +85,7 @@ class QuestWidget(MDExpansionPanel):
         drop_down.position = "bottom"
         drop_down.open()
 
-    def open_rename_quest_diallog(self) -> None:
+    def open_rename_quest_dialog(self) -> None:
         entry_field = MDTextField(
             MDTextFieldHintText(
                 text="New Quest Name"

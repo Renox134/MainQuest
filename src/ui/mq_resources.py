@@ -16,11 +16,17 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy_garden.matplotlib import FigureCanvasKivyAgg
+from kivy.uix.widget import Widget
 
 from kivymd.uix.navigationbar import MDNavigationItem
 from kivymd.uix.list import MDListItem, MDListItemSupportingText, MDListItemTertiaryText, \
     MDListItemLeadingIcon
 from kivymd.uix.screen import MDScreen
+from kivymd.uix.menu import MDDropdownMenu
+from kivymd.uix.textfield import MDTextField, MDTextFieldHintText
+from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
+    MDDialogContentContainer
+from kivymd.uix.button import MDIconButton
 
 
 class MainAppWindow(MDScreen):
@@ -93,6 +99,78 @@ class ListGoalItem(MDListItem):
         self.goal = goal
         super().__init__(*args, **kwargs)
 
+    def open_goal_context(self) -> None:
+        drop_down = MDDropdownMenu()
+
+        def change_associated_quests():
+            drop_down.dismiss()
+
+        def finish():
+            drop_down.dismiss()
+
+        def abort():
+            drop_down.dismiss()
+
+        def rename():
+            drop_down.dismiss()
+            self.open_rename_goal_dialog()
+
+        menu_items = [
+            {
+                "text": "Rename Goal",
+                "on_release": lambda: rename(),
+            },
+            {
+                "text": "Change associated quests",
+                "on_release": lambda: change_associated_quests(),
+            },
+            {
+                "text": "Complete Goal",
+                "on_release": lambda: finish(),
+            },
+            {
+                "text": "Abort Goal",
+                "on_release": lambda: abort(),
+            }
+        ]
+        drop_down.caller = self.ids.context_button
+        drop_down.items = menu_items
+        drop_down.position = "bottom"
+        drop_down.open()
+
+    def open_rename_goal_dialog(self) -> None:
+        entry_field = MDTextField(
+            MDTextFieldHintText(
+                text="New Goal Name"
+                )
+            )
+        entry_field.text = self.goal.name
+
+        def confirm_func():
+            self.goal.name = entry_field.text
+            self.ids.name_text_field.text = self.goal.name
+            dialog.dismiss()
+
+        confirm_button = MDIconButton(icon="check",
+                                      on_release=lambda x: confirm_func())
+        close_button = MDIconButton(icon="close")
+        dialog = MDDialog(
+            MDDialogHeadlineText(text="Rename Goal"),
+            MDDialogContentContainer(
+                entry_field
+            ),
+            MDDialogButtonContainer(
+                Widget(),
+                close_button,
+                confirm_button,
+                spacing="4dp"
+            ),
+        )
+        close_button.on_release = lambda: dialog.dismiss()
+        entry_field.focus = True
+        dialog.pos_hint = {"center_x": .5, "center_y": .75}
+        dialog.open()
+
 
 class ProgressWindow(MDScreen):
     
@@ -103,6 +181,8 @@ class ProgressWindow(MDScreen):
 
     def update_widgets(self) -> None:
         goal_list = self.ids.goal_list
+        # clear old widgets if there are any
+        goal_list.clear_widgets()
         for g in self.journal.goals:
             goal_list.add_widget(
                 ListGoalItem(
@@ -122,8 +202,7 @@ class GoalScreen(MDScreen):
         self.ids.plot_layout.clear_widgets()
 
         progress_dict = goal.get_progress()
-        from pprint import pprint
-        pprint(progress_dict)
+
         dates = self.format_dates(progress_dict.keys())
         scores = progress_dict.values()
 
