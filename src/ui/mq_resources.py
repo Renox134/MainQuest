@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict, Any
 
 from model.task import Task
 from model.quest import Quest
@@ -95,8 +95,10 @@ def animate_removal(to_remove) -> None:
 
 
 class ListGoalItem(MDListItem):
-    def __init__(self, goal: Goal, *args, **kwargs):
+    def __init__(self, goal: Goal, callables: Dict[str, Any], *args, **kwargs):
         self.goal = goal
+        self.complete_func = callables.get("complete_goal")
+        self.abort_func = callables.get("abort_goal")
         super().__init__(*args, **kwargs)
 
     def open_goal_context(self) -> None:
@@ -107,9 +109,11 @@ class ListGoalItem(MDListItem):
 
         def finish():
             drop_down.dismiss()
+            self.complete_func(self)
 
         def abort():
             drop_down.dismiss()
+            self.abort_func(self)
 
         def rename():
             drop_down.dismiss()
@@ -186,9 +190,21 @@ class ProgressWindow(MDScreen):
         for g in self.journal.goals:
             goal_list.add_widget(
                 ListGoalItem(
-                    g
+                    g,
+                    {
+                        "complete_goal": self.finish_goal,
+                        "abort_goal": self.abort_goal
+                    }
                 )
             )
+
+    def finish_goal(self, goal_widget: ListGoalItem) -> None:
+        self.journal.finish_goal(goal_widget.goal, True)
+        self.update_widgets()
+
+    def abort_goal(self, goal_widget: ListGoalItem) -> None:
+        self.journal.finish_goal(goal_widget.goal, False)
+        self.update_widgets()
 
 
 class GoalScreen(MDScreen):

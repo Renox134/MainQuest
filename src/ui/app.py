@@ -6,7 +6,7 @@ from model.quest import Quest
 from model.goal import Goal
 from ui.widgets.quest_widget import QuestWidget
 from ui.widgets.task_screen import TaskScreen
-from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressWindow, GoalScreen
+from ui.mq_resources import *
 
 from datetime import datetime
 
@@ -215,6 +215,9 @@ class MainQuestApp(MDApp):
     def abort_quest(self, quest_widget: QuestWidget) -> None:
         self.journal.finish_quest(quest_widget.quest, True, False)
         animate_removal(quest_widget)
+
+    def abort_goal(self, goal_widget: ListGoalItem) -> None:
+        print("Abort Goal: ", goal_widget.goal.name)
 
     def dummy(self) -> None:
         print("Dummy")

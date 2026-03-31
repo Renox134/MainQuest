@@ -17,7 +17,6 @@ class Goal:
         quest_names: List[str] = data.get("quest_names", [])
         quests: List[Quest] = []
         progress_dict = {}
-        milestones = {}
 
         # fill quest list
         for q_n in quest_names:
@@ -28,10 +27,6 @@ class Goal:
         # fill progress dict
         for key, val in data.get("progress_dict", {}).items():
             progress_dict[datetime.strptime(key, Config.get("datetime_format"))] = val
-
-        # fill milestones
-        for key, val in data.get("milestones", {}).items():
-            milestones[datetime.strptime(key, Config.get("datetime_format"))] = val
 
         # get time borders
         progress_time_border = data.get("progress_time_border",
@@ -45,7 +40,7 @@ class Goal:
         daily_count_border = data.get("daily_count_border",
                                       Config.get("default_daily_count_border"))
 
-        return Goal(data.get("name", ""), quests, progress_dict, milestones,
+        return Goal(data.get("name", ""), quests, progress_dict,
                     progress_time_border, daily_count_border)
 
     @staticmethod
@@ -82,7 +77,6 @@ class Goal:
                  name: str = "",
                  associated_quests: List[Quest] = [],
                  progress_dict: Dict[datetime, int] = {},
-                 milestones: Dict[datetime, str] = {},
                  progress_time_border: datetime =
                  datetime.strptime(Config.get("default_progress_time_border"),
                                    Config.get("datetime_format")),
@@ -95,7 +89,6 @@ class Goal:
         self.progress_dict: Dict[datetime, int] = progress_dict
         self.progress_time_border: datetime = progress_time_border
         self.daily_count_border: int = daily_count_border
-        self.milestones: Dict[datetime, str] = milestones
 
     def move_quest_to_progress(self, quest: Quest) -> None:
         """
@@ -134,10 +127,6 @@ class Goal:
         for key, int_val in self.progress_dict.items():
             str_progress_dict[key.strftime(Config.get("datetime_format"))] = int_val
 
-        str_milestone_dict = {}
-        for key, str_val in self.milestones.items():
-            str_milestone_dict[key.strftime(Config.get("datetime_format"))] = str_val
-
         progress_time_border_str =\
             self.progress_time_border.strftime(Config.get("datetime_format"))
 
@@ -145,7 +134,6 @@ class Goal:
             "name": self.name,
             "quest_names": [q.name for q in self.associated_quests],
             "progress_dict": str_progress_dict,
-            "milestones": str_milestone_dict,
             "daily_count_border": self.daily_count_border,
             "progress_time_border": progress_time_border_str
         }
@@ -157,7 +145,6 @@ class Goal:
             self.name == other.name and
             self.associated_quests == other.associated_quests and
             self.progress_dict == other.progress_dict and
-            self.milestones == other.milestones and
             self.daily_count_border == other.daily_count_border and
             self.progress_time_border == other.progress_time_border
         )
@@ -166,7 +153,6 @@ class Goal:
         n = self.name
         aql = f"Associated quests:\t{[q.name for q in self.associated_quests]}"
         progress_count = f"Progress count sum:\t{sum(self.progress_dict.values())}"
-        num_milestones = f"Number of milestones:\t{len(self.milestones.values())}"
         daily_border = f"Border for daily progress storing:\t{self.daily_count_border}"
         inclusion_border = "Inclusion border:\t"
         if self.progress_time_border is not None:
@@ -174,5 +160,4 @@ class Goal:
         else:
             inclusion_border += "None"
 
-        return (n + "\n" + aql + "\n" + progress_count + "\n" +
-                num_milestones + "\n" + daily_border)
+        return (n + "\n" + aql + "\n" + progress_count + "\n" + "\n" + daily_border)

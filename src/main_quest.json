@@ -318,12 +318,6 @@
                 "02/02/2026, 00:00": 5,
                 "09/02/2026, 00:00": 4
             },
-            "milestones": {
-                "01/01/2026, 00:00": "Wake up.",
-                "08/01/2026, 00:00": "Run and Hide!",
-                "15/01/2026, 00:00": "First real weapons crafted.",
-                "02/02/2026, 00:00": "Exploration begins paying off."
-            },
             "daily_count_border": 30,
             "progress_time_border": "01/01/2026, 00:00"
         },
@@ -339,10 +333,6 @@
                 "15/01/2026, 00:00": 3,
                 "02/02/2026, 00:00": 2,
                 "09/02/2026, 00:00": 1
-            },
-            "milestones": {
-                "08/01/2026, 00:00": "First weapon crafted.",
-                "15/01/2026, 00:00": "An ally agrees to help."
             },
             "daily_count_border": 30,
             "progress_time_border": "01/01/2026, 00:00"
@@ -360,11 +350,6 @@
                 "02/02/2026, 00:00": 2,
                 "09/02/2026, 00:00": 2
             },
-            "milestones": {
-                "01/01/2026, 00:00": "First safe shelter secured.",
-                "08/01/2026, 00:00": "Reliable water source discovered.",
-                "09/02/2026, 00:00": "Nearby terrain successfully mapped."
-            },
             "daily_count_border": 30,
             "progress_time_border": "01/01/2026, 00:00"
         },
@@ -381,13 +366,30 @@
                 "02/02/2026, 00:00": 1,
                 "09/02/2026, 00:00": 1
             },
-            "milestones": {
-                "08/01/2026, 00:00": "First dragon sightings recorded.",
-                "15/01/2026, 00:00": "Ancient dragon lore discovered.",
-                "02/02/2026, 00:00": "Evidence of dragon tracks found."
-            },
             "daily_count_border": 30,
             "progress_time_border": "01/01/2026, 00:00"
+        }
+    ],
+    "milestones": [
+        {
+            "name": "Awake",
+            "datetime": "01/01/2026, 00:00",
+            "type": "Quest"
+        },
+        {
+            "name": "Discovere ancient dragon lore.",
+            "datetime": "15/01/2026, 00:00",
+            "type": "Quest"
+        },
+        {
+            "name": "He who speaks fire.",
+            "datetime": "22/01/2026, 00:00",
+            "type": "Quest"
+        },
+        {
+            "name": "Get the hell out.",
+            "datetime": "28/01/2026, 00:00",
+            "type": "Quest"
         }
     ]
 }

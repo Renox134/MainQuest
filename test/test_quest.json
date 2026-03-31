@@ -13,8 +13,7 @@
                     "date": "27/02/2024",
                     "start_time": "09:00",
                     "end_time": "10:00",
-                    "completion_date": "27/02/2024, 09:50",
-                    "subtasks": []
+                    "completion_date": "27/02/2024, 09:50"
                 },
                 {
                     "description": "Build container for collected water.",
@@ -25,19 +24,11 @@
                     "subtasks": [
                         {
                             "description": "Look for big leafs.",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": "27/02/2024, 06:45",
-                            "subtasks": []
+                            "completion_date": "27/02/2024, 06:45"
                         },
                         {
                             "description": "Look for useful wood.",
-                            "date": null,
-                            "start_time": null,
-                            "end_time": null,
-                            "completion_date": "27/02/2024, 06:45",
-                            "subtasks": []
+                            "completion_date": "27/02/2024, 06:45"
                         }
                     ]
                 }
@@ -48,16 +39,10 @@
             "date": "22/02/2024",
             "start_time": "06:00",
             "end_time": "08:00",
-            "completion_date": "22/02/2024, 06:50",
-            "subtasks": []
+            "completion_date": "22/02/2024, 06:50"
         },
         {
-            "description": "Build shelter",
-            "date": null,
-            "start_time": null,
-            "end_time": null,
-            "completion_date": null,
-            "subtasks": []
+            "description": "Build shelter"
         }
     ]
 }

@@ -133,7 +133,7 @@ def quest_3(completed_test_tasks: List[Task]) -> Quest:
 @pytest.fixture
 def goal_1(quest_1: Quest, quest_2: Quest, weekly_progress_dict,
            lower_bound) -> Goal:
-    return Goal("Goal_1", [quest_1, quest_2], weekly_progress_dict, {}, lower_bound, 30)
+    return Goal("Goal_1", [quest_1, quest_2], weekly_progress_dict, lower_bound, 30)
 
 
 @pytest.fixture
