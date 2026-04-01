@@ -71,6 +71,9 @@ class Goal:
                 if week_start < lower_bound:
                     week_start = lower_bound
                 result[week_start] = result.get(week_start, 0) + count
+
+        # final sort
+        result = dict(sorted(result.items()))
         return result
 
     def __init__(self,
@@ -113,7 +116,7 @@ class Goal:
                                                        self.progress_time_border)
 
     def get_progress(self) -> Dict[datetime, int]:
-        result = self.progress_dict
+        result = self.progress_dict.copy()
 
         # include current progress of associated quests
         for q in self.associated_quests:

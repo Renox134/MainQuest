@@ -17,16 +17,20 @@ from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy_garden.matplotlib import FigureCanvasKivyAgg
 from kivy.uix.widget import Widget
+from kivy.uix.scrollview import ScrollView
 
 from kivymd.uix.navigationbar import MDNavigationItem
 from kivymd.uix.list import MDListItem, MDListItemSupportingText, MDListItemTertiaryText, \
-    MDListItemLeadingIcon
+    MDListItemLeadingIcon, MDListItemHeadlineText
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.textfield import MDTextField, MDTextFieldHintText
 from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
     MDDialogContentContainer
 from kivymd.uix.button import MDIconButton
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.selectioncontrol import MDCheckbox
+from kivymd.uix.divider import MDDivider
 
 
 class MainAppWindow(MDScreen):
@@ -95,7 +99,8 @@ def animate_removal(to_remove) -> None:
 
 
 class ListGoalItem(MDListItem):
-    def __init__(self, goal: Goal, callables: Dict[str, Any], *args, **kwargs):
+    def __init__(self, journal: Journal, goal: Goal, callables: Dict[str, Any], *args, **kwargs):
+        self.journal = journal
         self.goal = goal
         self.complete_func = callables.get("complete_goal")
         self.abort_func = callables.get("abort_goal")
@@ -106,6 +111,7 @@ class ListGoalItem(MDListItem):
 
         def change_associated_quests():
             drop_down.dismiss()
+            self.open_associated_quest_dialog()
 
         def finish():
             drop_down.dismiss()
@@ -175,9 +181,58 @@ class ListGoalItem(MDListItem):
         dialog.pos_hint = {"center_x": .5, "center_y": .75}
         dialog.open()
 
+    def open_associated_quest_dialog(self) -> None:
+        scroll_view = ScrollView(size_hint_y=None, height=300)
+        quest_list_layout = MDBoxLayout(orientation='vertical', adaptive_height=True)
+        checkboxes = []
+
+        for q in self.journal.quests:
+            active_on_open = q in self.goal.associated_quests
+            box = MDCheckbox(id="check", active=active_on_open,
+                             pos_hint={"center_x": .5, "center_y": .5})
+            checkboxes.append(box)
+            quest_list_layout.add_widget(
+                MDListItem(MDListItemHeadlineText(text=q.name), box)
+            )
+
+        scroll_view.add_widget(quest_list_layout)
+
+        def confirm_func():
+            new_associated_quests: List[Quest] = []
+            for q, box in zip(self.journal.quests, checkboxes):
+                if box.active:
+                    new_associated_quests.append(q)
+
+            self.goal.associated_quests = new_associated_quests
+            dialog.dismiss()
+
+        confirm_button = MDIconButton(icon="check",
+                                      on_release=lambda x: confirm_func())
+        close_button = MDIconButton(icon="close")
+        dialog = MDDialog(
+            MDDialogHeadlineText(text="Select related quests"),
+            MDDialogContentContainer(
+                MDDivider(),
+                scroll_view,
+                MDDivider(),
+                orientation="vertical"
+            ),
+            MDDialogButtonContainer(
+                Widget(),
+                close_button,
+                confirm_button,
+                spacing="4dp"
+            ),
+            size_hint_y=0.75,
+            pos_hint={"center_x": .5, "center_y": .5}
+        )
+        close_button.on_release = lambda: dialog.dismiss()
+
+        dialog.open()
+
 
 class ProgressWindow(MDScreen):
-    
+
     def __init__(self, journal: Journal, *args, **kwargs):
         self.journal = journal
         super().__init__(*args, **kwargs)
@@ -190,6 +245,7 @@ class ProgressWindow(MDScreen):
         for g in self.journal.goals:
             goal_list.add_widget(
                 ListGoalItem(
+                    self.journal,
                     g,
                     {
                         "complete_goal": self.finish_goal,

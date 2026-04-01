@@ -6,7 +6,7 @@ from model.quest import Quest
 from model.goal import Goal
 from ui.widgets.quest_widget import QuestWidget
 from ui.widgets.task_screen import TaskScreen
-from ui.mq_resources import *
+from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressWindow, GoalScreen
 
 from datetime import datetime
 
@@ -24,7 +24,6 @@ from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlin
     MDDialogContentContainer
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
-from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 
 
 from kivymd.app import MDApp
@@ -216,9 +215,6 @@ class MainQuestApp(MDApp):
         self.journal.finish_quest(quest_widget.quest, True, False)
         animate_removal(quest_widget)
 
-    def abort_goal(self, goal_widget: ListGoalItem) -> None:
-        print("Abort Goal: ", goal_widget.goal.name)
-
     def dummy(self) -> None:
         print("Dummy")
 
@@ -239,17 +235,9 @@ class MainQuestApp(MDApp):
 
         def save_press():
             drop_down.dismiss()
-            try:
-                path = resource_find("main_quest.json")
-                self.journal.export_journal(path)
-            except:
-                MDSnackbar(
-                    MDSnackbarText(text="An error occured while saving :("),
-                    y=dp(24),
-                    pos_hint={"center_x": 0.5},
-                    size_hint_x=0.9,
-                ).open()
- 
+            path = resource_find("main_quest.json")
+            self.journal.export_journal(path)
+
         menu_items = []
 
         # add menu items depending on the currently opened window
@@ -330,11 +318,10 @@ class MainQuestApp(MDApp):
         manager.remove_widget(task_screen)
 
     def open_goal_screen(self, goal: Goal) -> None:
-        print(sum(goal.progress_dict.values()))
         manager: MDScreenManager = self.root.ids.outer_screen_manager
         manager.transition.direction = "left"
         self.goal_screen.update_widgets(goal)
-        manager.current = f"goal_screen"
+        manager.current = "goal_screen"
 
     def close_goal_screen(self) -> None:
         manager: MDScreenManager = self.root.ids.outer_screen_manager
@@ -343,7 +330,6 @@ class MainQuestApp(MDApp):
 
     def show_date_picker(self, focus):
         from kivymd.uix.pickers import MDDockedDatePicker
-        from kivy.metrics import dp
         if not focus:
             return
 
@@ -355,17 +341,11 @@ class MainQuestApp(MDApp):
         date_dialog.open()
 
     def on_stop(self):
-        try:
-            path = resource_find("main_quest.json")
-            self.journal.export_journal(path)
-        except:
-            print("An error occured while trying to save the data.")
+        path = resource_find("main_quest.json")
+        self.journal.export_journal(path)
         return super().on_stop()
-    
+
     def on_pause(self):
-        try:
-            path = resource_find("main_quest.json")
-            self.journal.export_journal(path)
-        except:
-            print("An error occured while trying to save the data.")
+        path = resource_find("main_quest.json")
+        self.journal.export_journal(path)
         return super().on_pause()

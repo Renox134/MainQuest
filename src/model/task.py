@@ -121,7 +121,7 @@ class Task:
         """
         Convert the Task to a dictionary (serializable form).
         """
-        result = {}
+        result: Dict[str, Any] = {}
         date_str = self.date.strftime(Config.get("date_format")) if self.date else None
         start_time_str =\
             self.start_time.strftime(Config.get("time_format")) if self.start_time else None
@@ -130,7 +130,7 @@ class Task:
         completion_str: None | str =\
             self.completion_date.strftime(Config.get("datetime_format")
                                           ) if self.completion_date else None
-        
+
         result["description"] = self.description
 
         # add other fields only if they're filled
