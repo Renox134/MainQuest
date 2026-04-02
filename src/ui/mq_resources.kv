@@ -55,24 +55,3 @@
         id: context_button
         icon: "dots-vertical"
         on_release: root.open_goal_context()
-
-<GoalScreen>:
-    name: "goal_screen"
-
-    BoxLayout:
-        id: layout
-        orientation: "vertical"
-        MDTopAppBar:
-            id: top_app_bar
-            type: "small"
-
-            MDTopAppBarLeadingButtonContainer:
-                MDActionTopAppBarButton:
-                    icon: "chevron-left"
-                    on_release: app.close_goal_screen()
-
-            MDTopAppBarTitle:
-                id: goal_title
-                pos_hint: {"center_x": .5, "center_y": .5}
-        BoxLayout:
-            id: plot_layout

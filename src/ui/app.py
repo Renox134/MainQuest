@@ -6,7 +6,8 @@ from model.quest import Quest
 from model.goal import Goal
 from ui.widgets.quest_widget import QuestWidget
 from ui.widgets.task_screen import TaskScreen
-from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressWindow, GoalScreen
+from ui.widgets.goal_screen import GoalScreen
+from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressWindow
 
 from datetime import datetime
 
@@ -15,6 +16,7 @@ from kivy.lang import Builder
 from kivy.uix.widget import Widget
 from kivy.resources import resource_find
 from kivy.metrics import dp
+from kivy.clock import Clock
 
 import asynckivy
 
@@ -320,8 +322,9 @@ class MainQuestApp(MDApp):
     def open_goal_screen(self, goal: Goal) -> None:
         manager: MDScreenManager = self.root.ids.outer_screen_manager
         manager.transition.direction = "left"
-        self.goal_screen.update_widgets(goal)
+        # self.goal_screen.update_widgets(goal)
         manager.current = "goal_screen"
+        Clock.schedule_once(lambda dt: self.goal_screen.update_widgets(goal), 0.5)
 
     def close_goal_screen(self) -> None:
         manager: MDScreenManager = self.root.ids.outer_screen_manager

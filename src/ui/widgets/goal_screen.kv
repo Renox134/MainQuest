@@ -1,0 +1,37 @@
+#:kivy 2.3.0
+
+<GoalScreen>:
+    name: "goal_screen"
+
+    BoxLayout:
+        id: layout
+        orientation: "vertical"
+        MDTopAppBar:
+            id: top_app_bar
+            type: "small"
+
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "chevron-left"
+                    on_release: app.close_goal_screen()
+
+            MDTopAppBarTitle:
+                id: goal_title
+                pos_hint: {"center_x": .5, "center_y": .5}
+        BoxLayout:
+            id: plot_layout
+            orientation: "vertical"
+
+            MDLabel:
+                text: "Monthly Progression"
+                halign: "center"
+
+            MDSwiper:
+                id: swiper
+                items_spacing: dp(0)
+                width: root.width
+
+            MDDivider:
+            MDLabel:
+                text: "Other"
+                halign: "center"
