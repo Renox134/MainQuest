@@ -324,7 +324,7 @@ class MainQuestApp(MDApp):
         manager.transition.direction = "left"
         # self.goal_screen.update_widgets(goal)
         manager.current = "goal_screen"
-        Clock.schedule_once(lambda dt: self.goal_screen.update_widgets(goal), 0.5)
+        Clock.schedule_once(lambda dt: self.goal_screen.update_widgets(goal), 0.01)
 
     def close_goal_screen(self) -> None:
         manager: MDScreenManager = self.root.ids.outer_screen_manager

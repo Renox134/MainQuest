@@ -13,6 +13,7 @@ from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.label import MDLabel
 
 from kivy.metrics import dp
+from kivy.clock import Clock
 from kivy.lang import Builder
 Builder.load_file("ui/widgets/goal_screen.kv")
 
@@ -32,17 +33,18 @@ class GoalScreen(MDScreen):
         super().__init__(*args, **kwargs)
 
     def update_widgets(self, goal: Goal = Goal("Test")) -> None:
-        # self.ids.goal_title.text = goal.name
+        self.ids.goal_title.text = goal.name
 
         # progress_dict = goal.get_progress()
         # scores = list(progress_dict.values())
         swiper = self.ids.swiper
-        swiper.clear_widgets()
+        for widget in swiper.get_items():
+            swiper.remove_widget(widget)
 
         vals = [i % 5 for i in range(35)]
-        month_progress = self.build_month_item("April", vals)
-        swiper.add_widget(month_progress)
-
+        for i in range(2):
+            item = self.build_month_item("April", vals)
+            swiper.add_widget(item)
 
     def format_dates(self, unformated_dates: List[datetime]) -> List[str]:
         result = []

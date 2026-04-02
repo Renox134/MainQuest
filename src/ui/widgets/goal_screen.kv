@@ -6,6 +6,8 @@
     BoxLayout:
         id: layout
         orientation: "vertical"
+        size_hint: 1, 1
+
         MDTopAppBar:
             id: top_app_bar
             type: "small"
@@ -21,17 +23,19 @@
         BoxLayout:
             id: plot_layout
             orientation: "vertical"
+            # size_hint_y: 1
 
-            MDLabel:
-                text: "Monthly Progression"
-                halign: "center"
+            
 
             MDSwiper:
                 id: swiper
                 items_spacing: dp(0)
                 width: root.width
+                height: dp(300)
+                size_hint_y: None
+                size_hint_x: None
 
-            MDDivider:
-            MDLabel:
-                text: "Other"
-                halign: "center"
+        MDDivider:
+        MDLabel:
+            text: "Other"
+            halign: "center"
