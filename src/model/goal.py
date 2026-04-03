@@ -1,6 +1,6 @@
 from typing import List, Dict, Any
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 from model.quest import Quest
 from object_parser import ObjectParser
@@ -26,16 +26,17 @@ class Goal:
 
         # fill progress dict
         for key, val in data.get("progress_dict", {}).items():
-            progress_dict[datetime.strptime(key, Config.get("datetime_format"))] = val
+            progress_dict[datetime.strptime(key, Config.get("date_format")).date()] = int(val)
 
         # get time borders
         progress_time_border = data.get("progress_time_border",
                                         datetime.strptime(
                                             Config.get("default_progress_time_border"),
-                                            Config.get("datetime_format")))
+                                            Config.get("date_format")))
         if isinstance(progress_time_border, str):
             progress_time_border = datetime.strptime(progress_time_border,
-                                                     Config.get("datetime_format"))
+                                                     Config.get("date_format")).date()
+        
 
         daily_count_border = data.get("daily_count_border",
                                       Config.get("default_daily_count_border"))
@@ -44,29 +45,27 @@ class Goal:
                     progress_time_border, daily_count_border)
 
     @staticmethod
-    def format_progress_dict(base: Dict[datetime, int],
-                             daily_border: datetime | int,
-                             lower_bound: datetime) -> Dict[datetime, int]:
-        result: Dict[datetime, int] = {}
-        daily_count_bound: int | datetime
+    def format_progress_dict(base: Dict[date, int],
+                             daily_border: date | int,
+                             lower_bound: date) -> Dict[date, int]:
+        result: Dict[date, int] = {}
+        daily_count_bound: int | date
 
         if isinstance(daily_border, int):
-            daily_count_bound = datetime.now() - timedelta(days=daily_border)
-        elif isinstance(daily_border, datetime):
+            daily_count_bound = (datetime.now() - timedelta(days=daily_border)).date()
+        elif isinstance(daily_border, date):
             daily_count_bound = daily_border
         else:
             return result
 
-        for date, count in base.items():
-            if date >= daily_count_bound:
-                start_of_day = date.replace(hour=0, minute=0, second=0, microsecond=0)
-                result[start_of_day] = result.get(start_of_day, 0) + count
-            elif date < lower_bound:
+        for d, count in base.items():
+            if d >= daily_count_bound:
+                result[d] = result.get(d, 0) + count
+            elif d < lower_bound:
                 continue
             else:
                 week_start =\
-                    (date - timedelta(days=date.weekday())).replace(hour=0, minute=0,
-                                                                    second=0, microsecond=0)
+                    (d - timedelta(days=d.weekday()))
                 # if the week start would be too early, still include the score
                 if week_start < lower_bound:
                     week_start = lower_bound
@@ -79,18 +78,18 @@ class Goal:
     def __init__(self,
                  name: str = "",
                  associated_quests: List[Quest] = [],
-                 progress_dict: Dict[datetime, int] = {},
-                 progress_time_border: datetime =
+                 progress_dict: Dict[date, int] = {},
+                 progress_time_border: date =
                  datetime.strptime(Config.get("default_progress_time_border"),
-                                   Config.get("datetime_format")),
+                                   Config.get("date_format")).date(),
                  daily_count_border: int = Config.get("default_daily_count_border")):
         """
         Initializes a goal object.
         """
         self.name = name
         self.associated_quests: List[Quest] = associated_quests
-        self.progress_dict: Dict[datetime, int] = progress_dict
-        self.progress_time_border: datetime = progress_time_border
+        self.progress_dict: Dict[date, int] = progress_dict
+        self.progress_time_border: date = progress_time_border
         self.daily_count_border: int = daily_count_border
 
     def move_quest_to_progress(self, quest: Quest) -> None:
@@ -115,7 +114,7 @@ class Goal:
         self.progress_dict = self.format_progress_dict(self.progress_dict, self.daily_count_border,
                                                        self.progress_time_border)
 
-    def get_progress(self) -> Dict[datetime, int]:
+    def get_progress(self) -> Dict[date, int]:
         result = self.progress_dict.copy()
 
         # include current progress of associated quests
@@ -128,10 +127,10 @@ class Goal:
     def to_dict(self) -> Dict[str, Any]:
         str_progress_dict = {}
         for key, int_val in self.progress_dict.items():
-            str_progress_dict[key.strftime(Config.get("datetime_format"))] = int_val
+            str_progress_dict[key.strftime(Config.get("date_format"))] = int_val
 
         progress_time_border_str =\
-            self.progress_time_border.strftime(Config.get("datetime_format"))
+            self.progress_time_border.strftime(Config.get("date_format"))
 
         return {
             "name": self.name,
@@ -144,6 +143,8 @@ class Goal:
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, Goal):
             return False
+
+        print("Time Border: ", self.progress_time_border, other.progress_time_border)
         return (
             self.name == other.name and
             self.associated_quests == other.associated_quests and
@@ -159,8 +160,9 @@ class Goal:
         daily_border = f"Border for daily progress storing:\t{self.daily_count_border}"
         inclusion_border = "Inclusion border:\t"
         if self.progress_time_border is not None:
-            inclusion_border += self.progress_time_border.strftime(Config.get("datetime_format"))
+            inclusion_border += self.progress_time_border.strftime(Config.get("date_format"))
         else:
             inclusion_border += "None"
 
-        return (n + "\n" + aql + "\n" + progress_count + "\n" + "\n" + daily_border)
+        return (n + "\n" + aql + "\n" + str(self.progress_dict) + "\n" +
+                inclusion_border + "\n" + daily_border)

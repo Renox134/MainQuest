@@ -26,7 +26,7 @@ class TestGoal:
         current = request.getfixturevalue("formated_progress_dict")
         expected = request.getfixturevalue("fused_progress_dict")
 
-        test_goal = Goal("", [q], current, lower_bound, daily_border)
+        test_goal = Goal("Test_goal", [q], current, lower_bound, daily_border)
 
         test_goal.move_quest_to_progress(q)
 

@@ -1,6 +1,6 @@
 from typing import List, Dict, Any
 
-from datetime import datetime
+from datetime import datetime, date
 
 from model.task import Task
 
@@ -60,14 +60,14 @@ class Quest:
         for task in self.tasks:
             Task.complete_task_recursively(task, time_of_completion, overwrite)
 
-    def get_progress_dict(self) -> Dict[datetime, int]:
-        result: Dict[datetime, int] = {}
+    def get_progress_dict(self) -> Dict[date, int]:
+        result: Dict[date, int] = {}
         all_tasks: List[Task] = self.get_all_tasks()
 
         for task in all_tasks:
             if task.completion_date is None:
                 continue
-            result[task.completion_date] = result.get(task.completion_date, 0) + 1
+            result[task.completion_date.date()] = result.get(task.completion_date.date(), 0) + 1
 
         return result
 
