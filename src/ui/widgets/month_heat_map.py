@@ -1,19 +1,14 @@
+from config_reader import Config
+
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, RoundedRectangle
 
 # layout constants
-COLS      = 7        # Mon–Sun
-ROWS      = 5        # weeks
-CELL_SIZE = 36
-CELL_GAP  = 5
-RADIUS    = [5]
-
-DAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-MONTHS = [
-    "January","February","March","April",
-    "May","June","July","August",
-    "September","October","November","December",
-]
+COLS = 7        # Mon–Sun
+ROWS = 5        # weeks
+CELL_SIZE = Config.get("month_heatmap_cell_size")
+CELL_GAP = Config.get("month_heatmap_cell_gap")
+RADIUS = Config.get("month_heatmap_radius")
 
 PALETTE = [
     (0.90, 0.90, 0.90, 1),
@@ -30,8 +25,8 @@ GRID_H = ROWS * CELL_SIZE + (ROWS - 1) * CELL_GAP
 
 class MonthHeatmap(Widget):
     """
-    Canvas-only widget. Draws COLS×ROWS rounded rectangles.
-    index = col * ROWS + row  (col=weekday 0-6, row=week 0-4)
+    Canvas-only widget. Draws COLS x ROWS rounded rectangles.
+    index = row * COLS + col  (col=weekday 0-6, row=week 0-4)
     """
     def __init__(self, data: list[int], **kwargs):
         super().__init__(**kwargs)
@@ -40,14 +35,14 @@ class MonthHeatmap(Widget):
 
     def _redraw(self, *_):
         self.canvas.clear()
-        origin_x = self.x + (self.width  - GRID_W) / 2
+        origin_x = self.x + (self.width - GRID_W) / 2
         origin_y = self.y + (self.height - GRID_H) / 2
 
         with self.canvas:
             count = 0
             # one column for each weekday
-            for col in range(COLS):
-                for row in range(ROWS):
+            for row in range(ROWS):
+                for col in range(COLS):
                     if count == len(self.data):
                         break
                     intensity = self.data[count]

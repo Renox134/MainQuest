@@ -67,7 +67,7 @@ class MainQuestApp(MDApp):
 
         self.progress_window = ProgressWindow(self.journal)
         self.root.ids.screen_manager.add_widget(self.progress_window)
-        asynckivy.start(self.add_goal_screen())
+        Clock.schedule_once(lambda dt: self.add_goal_screen())
 
     async def add_quest_widget(self, quest: Quest) -> None:
         await asynckivy.sleep(0)
@@ -82,8 +82,7 @@ class MainQuestApp(MDApp):
         quest_layout.add_widget(quest_widget)
         self.quest_widgets.append(quest_widget)
 
-    async def add_goal_screen(self) -> None:
-        await asynckivy.sleep(0)
+    def add_goal_screen(self) -> None:
         manager: MDScreenManager = self.root.ids.outer_screen_manager
         self.goal_screen = GoalScreen()
         manager.add_widget(self.goal_screen)
@@ -322,9 +321,8 @@ class MainQuestApp(MDApp):
     def open_goal_screen(self, goal: Goal) -> None:
         manager: MDScreenManager = self.root.ids.outer_screen_manager
         manager.transition.direction = "left"
-        # self.goal_screen.update_widgets(goal)
+        self.goal_screen.update_widgets(goal)
         manager.current = "goal_screen"
-        Clock.schedule_once(lambda dt: self.goal_screen.update_widgets(goal), 0.01)
 
     def close_goal_screen(self) -> None:
         manager: MDScreenManager = self.root.ids.outer_screen_manager
