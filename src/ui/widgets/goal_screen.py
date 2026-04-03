@@ -5,8 +5,7 @@ from ui.widgets.month_heat_map import MonthHeatmap
 from config_reader import Config
 
 from datetime import datetime
-from random import randint
-
+import random
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.swiper import MDSwiperItem
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -48,9 +47,15 @@ class GoalScreen(MDScreen):
         # progress_dict = goal.get_progress()
         # scores = list(progress_dict.values())
         for i, heatmap in enumerate(self._heatmaps):
-            vals = [randint(0, 4) for _ in range(31)]
+            vals = self.make_random_data()
             heatmap.data = vals
             heatmap._redraw()
+
+    def make_random_data(self) -> list[int]:
+        """35 random intensity values, weighted so 0 (empty) is most common."""
+        weights = [60, 30, 15, 10, 5]   # probability of each intensity level
+        population = [i for i, w in enumerate(weights) for _ in range(w)]
+        return [random.choice(population) for _ in range(31)]
 
     def format_dates(self, unformated_dates: List[datetime]) -> List[str]:
         result = []
