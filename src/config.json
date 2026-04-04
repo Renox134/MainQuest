@@ -5,7 +5,10 @@
     "default_daily_count_border": 365,
     "default_progress_time_border": "01/01/2026",
     "date_format_goal_screen": "%d.%m",
-    "month_heatmap_cell_size": 36,
+    "month_heatmap_empty": "#07160A",
+    "month_heatmap_low": "#0d4017",
+    "month_heatmap_medium": "#07771d",
+    "month_heatmap_high": "#19dd41",
     "month_heatmap_cell_gap": 5,
     "month_heatmap_radius": [5]
 

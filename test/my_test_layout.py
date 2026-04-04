@@ -35,10 +35,19 @@ PALETTE = [
 KV = '''
 MDScreen:
     md_bg_color: self.theme_cls.backgroundColor
-    MDSwiper:
-        id: swiper
-        items_spacing: dp(0)
-        width: root.width
+    MDBoxLayout:
+        orientation: "vertical"
+        size_hint: 1, 1
+        MDBoxLayout:
+            MDSwiper:
+                id: swiper
+                items_spacing: dp(0)
+                width: root.width
+
+        MDDivider:
+        MDLabel:
+            text: "Other"
+            halign: "center"
 '''
 
 # ── total pixel width of the drawn grid ──────────────────────────────────────

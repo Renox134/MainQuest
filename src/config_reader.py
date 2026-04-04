@@ -18,6 +18,6 @@ class Config():
         with open(config_path, "r") as file:
             config_dict = json.load(file)
             if key not in config_dict.keys():
-                raise KeyError(f"The config does not a the entered key: {key}")
+                raise KeyError(f"The config does not contain the entered key: {key}")
             else:
                 return config_dict[key]

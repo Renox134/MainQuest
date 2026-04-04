@@ -36,7 +36,6 @@ class Goal:
         if isinstance(progress_time_border, str):
             progress_time_border = datetime.strptime(progress_time_border,
                                                      Config.get("date_format")).date()
-        
 
         daily_count_border = data.get("daily_count_border",
                                       Config.get("default_daily_count_border"))
@@ -156,7 +155,6 @@ class Goal:
     def __str__(self) -> str:
         n = self.name
         aql = f"Associated quests:\t{[q.name for q in self.associated_quests]}"
-        progress_count = f"Progress count sum:\t{sum(self.progress_dict.values())}"
         daily_border = f"Border for daily progress storing:\t{self.daily_count_border}"
         inclusion_border = "Inclusion border:\t"
         if self.progress_time_border is not None:
