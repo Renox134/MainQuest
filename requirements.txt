@@ -1,6 +1,4 @@
 kivy==2.3.0
-matplotlib==3.7.2
-kivy-garden-matplotlib==0.1.1.dev0
 pillow==12.1.1
 pycairo==1.29.0
 materialyoucolor==3.0.2

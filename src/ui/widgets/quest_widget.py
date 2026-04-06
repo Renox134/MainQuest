@@ -44,7 +44,7 @@ class QuestWidget(MDExpansionPanel):
                 self.ids.task_list.add_widget(ListTaskItem(task, self.quest, None))
 
     def open_quest_context(self) -> None:
-        drop_down = MDDropdownMenu()
+        drop_down = MDDropdownMenu(width_mult=3)
 
         def add_task():
             drop_down.dismiss()

@@ -40,8 +40,6 @@ version = 0.1
 requirements = python3,
     pybind11,
     kivy==2.3.0,
-    matplotlib==3.5.3,
-    kivy-garden-matplotlib==0.1.1.dev0,
     pillow==12.1.1,
     materialyoucolor==3.0.2,
     materialshapes==0.3,
