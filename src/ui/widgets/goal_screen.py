@@ -49,6 +49,7 @@ class GoalScreen(MDScreen):
             month_heatmap = MonthHeatmap({}, month_name, borders)
             self.month_heatmaps.append(month_heatmap)
             swiper.add_widget(month_heatmap)
+        self.ids.swiper.set_current(2)
 
     def update_widgets(self, goal: Goal = Goal("Test")) -> None:
         self.ids.goal_title.text = goal.name

@@ -13,6 +13,8 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
+from kivy.core.window import Window
+from kivy.metrics import dp
 from kivy.uix.scrollview import ScrollView
 
 from kivymd.uix.navigationbar import MDNavigationItem
@@ -142,7 +144,14 @@ class ListGoalItem(MDListItem):
         drop_down.caller = self.ids.context_button
         drop_down.items = menu_items
         drop_down.position = "bottom"
+        drop_down.max_width = "200dp"
         drop_down.open()
+
+        # Clamp it so it never goes off the right edge of the screen
+        menu_width = drop_down.width
+        caller_x = self.ids.context_button.to_window(*self.ids.context_button.pos)[0]
+        if caller_x + menu_width > Window.width:
+            drop_down.x = Window.width - menu_width - dp(8)
 
     def open_rename_goal_dialog(self) -> None:
         entry_field = MDTextField(

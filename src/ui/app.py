@@ -9,6 +9,7 @@ from ui.widgets.task_screen import TaskScreen
 from ui.widgets.goal_screen import GoalScreen
 from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressWindow
 
+import os, shutil
 from datetime import datetime
 
 from kivy.core.window import Window
@@ -39,9 +40,8 @@ class MainQuestApp(MDApp):
     The main app.
     """
 
-    def __init__(self, journal: Journal, path_to_journal: str, **kwargs: Any):
+    def __init__(self, journal: Journal, **kwargs: Any):
         self.journal = journal
-        self.path_to_journal = path_to_journal
         self.quest_widgets: List[QuestWidget] = []
         self.open_task_screens: int = 0
 
@@ -56,7 +56,17 @@ class MainQuestApp(MDApp):
         return Builder.load_file("ui/app.kv")
 
     def on_start(self):
-        """Populate quest widgets dynamically after layout is built."""
+        # populate journal
+        persistent_path = os.path.join(self.user_data_dir, "main_quest.json")
+
+        # First launch (or after a fresh install): copy the bundled default in
+        if not os.path.exists(persistent_path):
+            bundled = resource_find("main_quest.json")
+            if bundled:
+                shutil.copy(bundled, persistent_path)
+
+        data_path = persistent_path
+        self.journal.import_journal(data_path)
 
         for quest in self.journal.quests:
             asynckivy.start(self.add_quest_widget(quest))
