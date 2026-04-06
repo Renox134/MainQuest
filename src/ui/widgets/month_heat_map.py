@@ -21,12 +21,6 @@ CELL_SIZE = dp(32)
 CELL_GAP = dp(5)
 RADIUS = [dp(5)]
 
-PALETTE = [
-    Config.get("month_heatmap_empty"),
-    Config.get("month_heatmap_normal"),
-    Config.get("month_heatmap_high"),
-]
-
 # ── total pixel width of the drawn grid ──────────────────────────────────────
 GRID_W = COLS * CELL_SIZE + (COLS - 1) * CELL_GAP
 GRID_H = ROWS * CELL_SIZE + (ROWS - 1) * CELL_GAP
@@ -162,6 +156,12 @@ class Heatmap(Widget):
         origin_x = self.x + (self.width - GRID_W) / 2
         origin_y = self.y + (self.height - GRID_H) / 2
 
+        palette = [
+            Config.get("month_heatmap_empty"),
+            Config.get("month_heatmap_normal"),
+            Config.get("month_heatmap_high"),
+        ]
+
         with self.canvas:
             count = 0
             # one column for each weekday
@@ -173,7 +173,7 @@ class Heatmap(Widget):
                     if intensity == -1:
                         count += 1
                         continue
-                    Color(*get_color_from_hex(PALETTE[intensity]))
+                    Color(*get_color_from_hex(palette[intensity]))
                     flipped_row = (ROWS - 1) - row
                     RoundedRectangle(
                         pos=(

@@ -86,11 +86,9 @@ class Goal:
                  name: str = "",
                  associated_quests: List[Quest] = [],
                  progress_dict: Dict[date, int] = {},
-                 progress_time_border: date =
-                 datetime.strptime(Config.get("default_progress_time_border"),
-                                   Config.get("date_format")).date(),
-                 daily_count_border: int = Config.get("default_daily_count_border"),
-                 high_performance_border: int = Config.get("goal_high_performance_border")):
+                 progress_time_border: date = date(2026, 1, 1),
+                 daily_count_border: int = 100,
+                 high_performance_border: int = 5):
         """
         Initializes a goal object.
         """

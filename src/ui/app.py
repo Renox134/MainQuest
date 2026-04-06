@@ -1,5 +1,6 @@
 from typing import Any, List, Dict
 
+from config_reader import Config
 from journal import Journal
 from model.task import Task
 from model.quest import Quest
@@ -9,7 +10,8 @@ from ui.widgets.task_screen import TaskScreen
 from ui.widgets.goal_screen import GoalScreen
 from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressWindow
 
-import os, shutil
+import os
+import shutil
 from datetime import datetime
 
 from kivy.core.window import Window
@@ -57,17 +59,26 @@ class MainQuestApp(MDApp):
 
     def on_start(self):
         # populate journal
-        persistent_path = os.path.join(self.user_data_dir, "main_quest.json")
+        data_path = os.path.join(self.user_data_dir, "main_quest.json")
+        config_path = os.path.join(self.user_data_dir, "config.json")
 
         # First launch (or after a fresh install): copy the bundled default in
-        if not os.path.exists(persistent_path):
+        if not os.path.exists(data_path):
             bundled = resource_find("main_quest.json")
             if bundled:
-                shutil.copy(bundled, persistent_path)
+                shutil.copy(bundled, data_path)
 
-        data_path = persistent_path
-        self.journal.import_journal(data_path)
+        self.data_path = data_path
 
+        if not os.path.exists(config_path):
+            bundled = resource_find("config.json")
+            if bundled:
+                shutil.copy(bundled, config_path)
+
+        Config.load_data(config_path)
+        self.journal.import_journal(self.data_path)
+
+        # initialize quests
         for quest in self.journal.quests:
             asynckivy.start(self.add_quest_widget(quest))
 
@@ -246,8 +257,7 @@ class MainQuestApp(MDApp):
 
         def save_press():
             drop_down.dismiss()
-            path = resource_find("main_quest.json")
-            self.journal.export_journal(path)
+            self.journal.export_journal(self.data_path)
 
         menu_items = []
 
@@ -352,11 +362,9 @@ class MainQuestApp(MDApp):
         date_dialog.open()
 
     def on_stop(self):
-        path = resource_find("main_quest.json")
-        self.journal.export_journal(path)
+        self.journal.export_journal(self.data_path)
         return super().on_stop()
 
     def on_pause(self):
-        path = resource_find("main_quest.json")
-        self.journal.export_journal(path)
+        self.journal.export_journal(self.data_path)
         return super().on_pause()
