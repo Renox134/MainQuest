@@ -56,20 +56,6 @@
                             "end_time": "19:00"
                         }
                     ]
-                },
-                {
-                    "description": "Build shelter",
-                    "subtasks": [
-                        {
-                            "description": "Gather wood"
-                        },
-                        {
-                            "description": "Construct frame"
-                        },
-                        {
-                            "description": "Add roof covering"
-                        }
-                    ]
                 }
             ]
         },

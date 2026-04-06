@@ -8,7 +8,7 @@
     "goal_weekly_plot_max_weeks": 52,
     "date_format_goal_screen": "%d.%m",
     "month_heatmap_empty": "#07160A",
-    "month_heatmap_normal": "#07771d",
+    "month_heatmap_normal": "#611e26",
     "month_heatmap_high": "#19dd41",
     "month_heatmap_cell_gap": 5,
     "month_heatmap_radius": [5]
