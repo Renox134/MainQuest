@@ -20,20 +20,21 @@
             MDTopAppBarTitle:
                 id: goal_title
                 pos_hint: {"center_x": .5, "center_y": .5}
-        BoxLayout:
-            id: plot_layout
+
+        MDBoxLayout:
             orientation: "vertical"
-            # size_hint_y: 1
 
-            MDSwiper:
-                id: swiper
-                items_spacing: dp(0)
-                width: root.width
-                height: dp(300)
-                size_hint_y: None
-                size_hint_x: None
+            MDBoxLayout:
+                id: plot_layout
+                orientation: "vertical"
 
-        MDDivider:
-        MDLabel:
-            text: "Other"
-            halign: "center"
+                MDSwiper:
+                    id: swiper
+                    items_spacing: dp(0)
+                    width: root.width
+                    size_hint_y: None
+                    height: dp(300)
+
+            MDDivider:
+            MDBoxLayout:
+                id: bar_chart_layout

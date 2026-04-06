@@ -1,3 +1,7 @@
+from typing import List, Dict, Tuple
+
+from datetime import date, timedelta
+
 from config_reader import Config
 
 from kivy.uix.widget import Widget
@@ -12,15 +16,14 @@ from kivymd.uix.swiper import MDSwiperItem
 
 # layout constants
 COLS = 7
-ROWS = 5
-CELL_SIZE = dp(36)
+ROWS = 6
+CELL_SIZE = dp(32)
 CELL_GAP = dp(5)
 RADIUS = [dp(5)]
 
 PALETTE = [
     Config.get("month_heatmap_empty"),
-    Config.get("month_heatmap_low"),
-    Config.get("month_heatmap_medium"),
+    Config.get("month_heatmap_normal"),
     Config.get("month_heatmap_high"),
 ]
 
@@ -33,8 +36,8 @@ MONTHS = ["January", "February", "March", "April", "May", "June", "July",
 
 
 class MonthHeatmap(MDSwiperItem):
-    def __init__(self, data: list[int], month_name: str, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, data: Dict[date, int], month_name: str,
+                 inclusion_borders: Tuple[date], **kwargs):
         """
         Item Layout:
 
@@ -44,6 +47,9 @@ class MonthHeatmap(MDSwiperItem):
                 ├── MDGridLayout cols=7  ← weekday header, one label per cell
                 └── MonthHeatmap         ← canvas grid, expands to fill rest
         """
+        self.inclusion_borders = inclusion_borders
+        super().__init__(**kwargs)
+
         outer = MDBoxLayout(
             orientation="vertical",
             padding=[0, 12, 0, 12],
@@ -56,7 +62,7 @@ class MonthHeatmap(MDSwiperItem):
             halign="center",
             valign="middle",
             size_hint=(1, None),
-            height=dp(32),
+            height=dp(28),
         )
         title.bind(size=title.setter("text_size"))
         outer.add_widget(title)
@@ -73,7 +79,7 @@ class MonthHeatmap(MDSwiperItem):
             spacing=CELL_GAP,
             size_hint=(None, None),
             width=GRID_W,
-            height=dp(20),
+            height=dp(18),
             pos_hint={"center_x": 0.5},
         )
 
@@ -93,12 +99,52 @@ class MonthHeatmap(MDSwiperItem):
         # size_hint_y=1 makes it absorb all vertical space not claimed by the
         # fixed-height title and header, eliminating the y-axis gap entirely.
         self.heatmap = Heatmap(
-            data=data,
             size_hint=(1, 1),
         )
         outer.add_widget(self.heatmap)
 
         self.add_widget(outer)
+
+    def goal_data_to_completion_score_list(self, data: Dict[date, int]) -> List[int]:
+        # create list with all days that matter for the month
+        month_list: List[date] = [self.inclusion_borders[0]]
+        next_day: date = month_list[0]
+        for i in range(35):
+            next_day = next_day + timedelta(days=1)
+            if next_day <= self.inclusion_borders[1]:
+                month_list.append(next_day)
+            else:
+                break
+
+        scores: List[int] = []
+        for d in month_list:
+            scores.append(data.get(d, 0))
+
+        return scores
+
+    def completion_score_list_to_color_index_list(self, data: List[int],
+                                                  high_performance_border: int) -> List[int]:
+        result = []
+        # add offset in case the month doesn't start with monday
+        for i in range(self.inclusion_borders[0].weekday()):
+            result.append(-1)
+
+        for entry in data:
+            if entry > 0 and entry < high_performance_border:
+                result.append(1)
+            elif entry >= high_performance_border:
+                result.append(2)
+            else:
+                result.append(0)
+
+        return result
+
+    def update_heatmap(self, data: Dict[date, int], high_performance_border: int) -> None:
+        scores = self.goal_data_to_completion_score_list(data)
+        heatmap_data = self.completion_score_list_to_color_index_list(scores,
+                                                                      high_performance_border)
+        self.heatmap.data = heatmap_data
+        self.heatmap._redraw()
 
 
 class Heatmap(Widget):
@@ -106,9 +152,9 @@ class Heatmap(Widget):
     Canvas-only widget. Draws COLS x ROWS rounded rectangles.
     index = row * COLS + col  (col=weekday 0-6, row=week 0-4)
     """
-    def __init__(self, data: list[int], **kwargs):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.data = data
+        self.data = []
         self.bind(pos=self._redraw, size=self._redraw)
 
     def _redraw(self, *_):
@@ -124,6 +170,9 @@ class Heatmap(Widget):
                     if count == len(self.data):
                         break
                     intensity = self.data[count]
+                    if intensity == -1:
+                        count += 1
+                        continue
                     Color(*get_color_from_hex(PALETTE[intensity]))
                     flipped_row = (ROWS - 1) - row
                     RoundedRectangle(

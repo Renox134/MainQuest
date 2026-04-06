@@ -345,7 +345,8 @@
                 "09/02/2026": 4
             },
             "daily_count_border": 30,
-            "progress_time_border": "01/01/2026"
+            "progress_time_border": "01/01/2026",
+            "high_performance_border": 5
         },
         {
             "name": "Build Power",
@@ -361,7 +362,8 @@
                 "09/02/2026": 1
             },
             "daily_count_border": 30,
-            "progress_time_border": "01/01/2026"
+            "progress_time_border": "01/01/2026",
+            "high_performance_border": 5
         },
         {
             "name": "Survival & Exploration",
@@ -393,7 +395,8 @@
                 "09/02/2026": 2
             },
             "daily_count_border": 30,
-            "progress_time_border": "01/01/2026"
+            "progress_time_border": "01/01/2026",
+            "high_performance_border": 5
         },
         {
             "name": "Dragon Hunt",
@@ -409,7 +412,8 @@
                 "09/02/2026": 1
             },
             "daily_count_border": 30,
-            "progress_time_border": "01/01/2026"
+            "progress_time_border": "01/01/2026",
+            "high_performance_border": 5
         }
     ],
     "milestones": [

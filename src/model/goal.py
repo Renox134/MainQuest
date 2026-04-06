@@ -40,8 +40,16 @@ class Goal:
         daily_count_border = data.get("daily_count_border",
                                       Config.get("default_daily_count_border"))
 
-        return Goal(data.get("name", ""), quests, progress_dict,
-                    progress_time_border, daily_count_border)
+        high_performance_border = data.get("high_performance_border",
+                                           Config.get("goal_high_performance_border"))
+
+        return Goal(name=data.get("name", ""),
+                    associated_quests=quests,
+                    progress_dict=progress_dict,
+                    progress_time_border=progress_time_border,
+                    daily_count_border=daily_count_border,
+                    high_performance_border=high_performance_border
+                    )
 
     @staticmethod
     def format_progress_dict(base: Dict[date, int],
@@ -81,7 +89,8 @@ class Goal:
                  progress_time_border: date =
                  datetime.strptime(Config.get("default_progress_time_border"),
                                    Config.get("date_format")).date(),
-                 daily_count_border: int = Config.get("default_daily_count_border")):
+                 daily_count_border: int = Config.get("default_daily_count_border"),
+                 high_performance_border: int = Config.get("goal_high_performance_border")):
         """
         Initializes a goal object.
         """
@@ -90,6 +99,7 @@ class Goal:
         self.progress_dict: Dict[date, int] = progress_dict
         self.progress_time_border: date = progress_time_border
         self.daily_count_border: int = daily_count_border
+        self.high_performance_border: int = high_performance_border
 
     def move_quest_to_progress(self, quest: Quest) -> None:
         """
@@ -123,6 +133,15 @@ class Goal:
                                                self.progress_time_border)
         return result
 
+    def get_weekly_progress(self) -> Dict[date, int]:
+        result = self.progress_dict.copy()
+
+        # include current progress of associated quests
+        for q in self.associated_quests:
+            result |= q.get_progress_dict()
+            result = self.format_progress_dict(result, 0, self.progress_time_border)
+        return result
+
     def to_dict(self) -> Dict[str, Any]:
         str_progress_dict = {}
         for key, int_val in self.progress_dict.items():
@@ -136,7 +155,8 @@ class Goal:
             "quest_names": [q.name for q in self.associated_quests],
             "progress_dict": str_progress_dict,
             "daily_count_border": self.daily_count_border,
-            "progress_time_border": progress_time_border_str
+            "progress_time_border": progress_time_border_str,
+            "high_performance_border": self.high_performance_border
         }
 
     def __eq__(self, other: Any) -> bool:
@@ -149,7 +169,8 @@ class Goal:
             self.associated_quests == other.associated_quests and
             self.progress_dict == other.progress_dict and
             self.daily_count_border == other.daily_count_border and
-            self.progress_time_border == other.progress_time_border
+            self.progress_time_border == other.progress_time_border and
+            self.high_performance_border == other.high_performance_border
         )
 
     def __str__(self) -> str:

@@ -1,11 +1,12 @@
 from typing import List
 
 from model.goal import Goal
-from ui.widgets.month_heat_map import MonthHeatmap, Heatmap
+from ui.widgets.month_heat_map import MonthHeatmap
+from ui.widgets.weekly_bar_chart import WeeklyBarChart
 from config_reader import Config
 
-from datetime import datetime
-import random
+from datetime import datetime, timedelta, date
+
 from kivymd.uix.screen import MDScreen
 
 from kivy.metrics import dp
@@ -26,38 +27,43 @@ MONTHS = ["January", "February", "March", "April", "May", "June", "July",
 
 class GoalScreen(MDScreen):
     def __init__(self, *args, **kwargs):
-        self._heatmaps: list[Heatmap] = []
+        self.month_heatmaps: list[MonthHeatmap] = []
         super().__init__(*args, **kwargs)
 
     def on_kv_post(self, base_widget):
         swiper = self.ids.swiper
-        for month_name in MONTHS:
-            vals = [i % 4 for i in range(31)]
-            month_heatmap = MonthHeatmap(vals, month_name)
-            self._heatmaps.append(month_heatmap.heatmap)
+
+        # create heatmap swiper widget for the current month and the two months before
+        last_month = (datetime.now().replace(day=1) - timedelta(days=1))
+        two_months_ago: date = (last_month.replace(day=1) - timedelta(days=1)).date()
+        last_month = last_month.date()
+        last_three_month_names = [MONTHS[two_months_ago.month - 1],
+                                  MONTHS[last_month.month - 1],
+                                  MONTHS[datetime.now().month - 1]]
+        inclusion_borders = [
+            (two_months_ago.replace(day=1), two_months_ago),
+            (last_month.replace(day=1), last_month),
+            ((datetime.now().replace(day=1)).date(), datetime.now().date())
+        ]
+        for month_name, borders in zip(last_three_month_names, inclusion_borders):
+            month_heatmap = MonthHeatmap({}, month_name, borders)
+            self.month_heatmaps.append(month_heatmap)
             swiper.add_widget(month_heatmap)
 
     def update_widgets(self, goal: Goal = Goal("Test")) -> None:
         self.ids.goal_title.text = goal.name
 
-        # progress_dict = goal.get_progress()
-        # scores = list(progress_dict.values())
-        for i, heatmap in enumerate(self._heatmaps):
-            vals = self.make_random_data()
-            heatmap.data = vals
-            heatmap._redraw()
+        for heatmap in self.month_heatmaps:
+            heatmap.update_heatmap(goal.get_progress(), goal.high_performance_border)
 
-    def make_random_data(self) -> list[int]:
-        """35 random intensity values, weighted so 0 (empty) is most common."""
-        weights = [60, 40, 15, 10]   # probability of each intensity level
-        population = [i for i, w in enumerate(weights) for _ in range(w)]
-        return [random.choice(population) for _ in range(31)]
+        self.ids.bar_chart_layout.clear_widgets()
+        self.ids.bar_chart_layout.add_widget(WeeklyBarChart(goal.get_weekly_progress()))
 
     def format_dates(self, unformated_dates: List[datetime]) -> List[str]:
         result = []
 
-        for date in unformated_dates:
-            d = date.strftime(Config.get("date_format_goal_screen"))
-            result.append(d)
+        for d in unformated_dates:
+            to_add = d.strftime(Config.get("date_format_goal_screen"))
+            result.append(to_add)
 
         return result
