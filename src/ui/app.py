@@ -51,7 +51,9 @@ class MainQuestApp(MDApp):
         self.quest_widgets: List[QuestWidget] = []
         self.open_task_screens: int = 0
 
-        self.binding_id_dict: Dict[str, int] = {}
+        self.cache: Dict[str, Any] = {
+            "completed_tasks": []
+        }
 
         MQ_Resource_Loader().load_resources()
         super().__init__(**kwargs)
@@ -369,6 +371,22 @@ class MainQuestApp(MDApp):
         manager.transition.direction = "left"
         self.edit_goal_screen.update_widgets(goal, self.journal)
         manager.current = "edit_goal_screen"
+
+    def add_task_to_completion_cache(self, task: Task) -> None:
+        completed_tasks = self.cache.get("completed_tasks", [])
+        completed_tasks.append(task)
+
+    def undo_last_task(self) -> None:
+        completed_tasks = self.cache.get("completed_tasks", [])
+        task_to_undo = completed_tasks.pop(-1)
+        completed_at = task_to_undo.completion_date
+        to_revert = Task.get_linearized_task_list(task_to_undo)
+        for t in to_revert:
+            if t.completion_date == completed_at:
+                t.completion_date = None
+
+        for qw in self.quest_widgets:
+            qw.update_widgets()
 
     def remove_goal_from_journal(self, goal: Goal) -> None:
         self.journal.goals.remove(goal)
