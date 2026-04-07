@@ -14,8 +14,14 @@
     name: "progress_screen"
 
     ScrollView:
-        MDList:
-            id: goal_list
+        MDBoxLayout:
+            orientation: "vertical"
+            adaptive_height: True
+            MDList:
+                id: goal_list
+            # MDDivider:
+            MDList:
+                id: milestone_list
 
 <CalendarWindow>:
     name: "calendar_window"
@@ -55,3 +61,15 @@
         id: context_button
         icon: "dots-vertical"
         on_release: root.open_goal_context()
+
+<ListMilestoneItem>:
+    MDListItemHeadlineText:
+        id: name_text_field
+        halign: "left"
+        text: root.milestone.name
+
+    MDListItemSupportingText:
+        id: supporting_text
+
+    MDListItemTrailingIcon:
+        icon: "trophy"

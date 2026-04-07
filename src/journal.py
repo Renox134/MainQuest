@@ -44,7 +44,7 @@ class Journal:
 
     def finish_goal(self, goal: Goal, move_to_milestone: bool) -> None:
         if move_to_milestone:
-            self.milestones.append(Milestone(goal.name, datetime.now(), "goal"))
+            self.milestones.insert(0, Milestone(goal.name, datetime.now(), "goal"))
         # remove goal
         self.goals.remove(goal)
 

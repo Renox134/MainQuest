@@ -32,6 +32,10 @@ class EditGoalScreen(MDScreen):
 
         self.ids.quest_list_layout.clear_widgets()
 
+        self.ids.quest_list_layout.add_widget(
+            MDListItem(MDListItemHeadlineText(text="Associated Quests", halign="center"))
+        )
+
         for q in self.journal.quests:
             active_on_open = q in self.goal.associated_quests
             box = MDCheckbox(id="check", active=active_on_open,
@@ -135,4 +139,3 @@ class EditGoalScreen(MDScreen):
 
     def update_high_performance_border(self) -> None:
         self.goal.high_performance_border = int(self.ids.slider.value)
-        print(self.goal.high_performance_border)

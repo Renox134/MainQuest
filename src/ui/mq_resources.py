@@ -3,6 +3,7 @@ from typing import Dict, Any
 from model.task import Task
 from model.quest import Quest
 from model.goal import Goal
+from model.milestone import Milestone
 from journal import Journal
 from config_reader import Config
 
@@ -11,16 +12,20 @@ from datetime import datetime
 from kivy.properties import StringProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.animation import Animation
+from kivy.uix.widget import Widget
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.metrics import dp
 
 from kivymd.uix.navigationbar import MDNavigationItem
 from kivymd.uix.list import MDListItem, MDListItemSupportingText, MDListItemTertiaryText, \
-    MDListItemLeadingIcon
+    MDListItemLeadingIcon, MDListItemHeadlineText
 from kivymd.uix.screen import MDScreen
+from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.app import MDApp
+from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
+    MDDialogSupportingText
 
 
 class MainAppWindow(MDScreen):
@@ -105,7 +110,24 @@ class ListGoalItem(MDListItem):
 
         def finish():
             drop_down.dismiss()
-            self.complete_func(self)
+            # double check via dialog
+            doublecheck_line = f"Are you sure you want to set \'{self.goal.name}\' to completed?"
+            close_button = MDIconButton(icon="close")
+            dialog = MDDialog(
+                MDDialogHeadlineText(text="Complete Goal"),
+                MDDialogSupportingText(text=doublecheck_line),
+                MDDialogButtonContainer(
+                    Widget(),
+                    MDIconButton(icon="check", on_release=lambda x: confirm()),
+                    close_button
+                )
+            )
+            close_button.on_release = lambda: dialog.dismiss()
+
+            def confirm():
+                dialog.dismiss()
+                self.complete_func(self)
+            dialog.open()
 
         menu_items = [
             {
@@ -130,6 +152,16 @@ class ListGoalItem(MDListItem):
             drop_down.x = Window.width - menu_width - dp(8)
 
 
+class ListMilestoneItem(MDListItem):
+    def __init__(self, milestone: Milestone, *args, **kwargs):
+        self.milestone = milestone
+        super().__init__(*args, **kwargs)
+
+    def update_texts(self) -> None:
+        self.ids.name_text_field.text = self.milestone.name
+        self.ids.supporting_text.text = self.milestone.datetime.strftime(Config.get("date_format"))
+
+
 class ProgressScreen(MDScreen):
 
     def __init__(self, journal: Journal, *args, **kwargs):
@@ -141,6 +173,9 @@ class ProgressScreen(MDScreen):
         goal_list = self.ids.goal_list
         # clear old widgets if there are any
         goal_list.clear_widgets()
+        goal_list.add_widget(
+            MDListItem(MDListItemHeadlineText(text="Goals", halign="center"))
+        )
         for g in self.journal.goals:
             goal_list.add_widget(
                 ListGoalItem(
@@ -152,6 +187,17 @@ class ProgressScreen(MDScreen):
                     }
                 )
             )
+
+        # add milestones
+        milestone_list = self.ids.milestone_list
+        milestone_list.clear_widgets()
+        milestone_list.add_widget(
+            MDListItem(MDListItemHeadlineText(text="Milestones", halign="center"))
+        )
+        for m in self.journal.milestones:
+            to_add = ListMilestoneItem(m)
+            milestone_list.add_widget(to_add)
+            to_add.update_texts()
 
     def finish_goal(self, goal_widget: ListGoalItem) -> None:
         self.journal.finish_goal(goal_widget.goal, True)
