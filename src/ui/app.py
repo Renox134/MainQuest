@@ -33,8 +33,11 @@ from kivymd.uix.menu import MDDropdownMenu
 
 from kivymd.app import MDApp
 
-# this needs to be removed when building
-Window.size = (350, 650)  # times I accidentally build before removing: 9
+# this needs to be set to False when building
+PC_DEV = True  # times I accidentally build before setting to false: 9
+
+if PC_DEV:
+    Window.size = (350, 650)
 
 
 class MainQuestApp(MDApp):
@@ -59,23 +62,15 @@ class MainQuestApp(MDApp):
 
     def on_start(self):
         # populate journal
-        data_path = os.path.join(self.user_data_dir, "main_quest.json")
-        config_path = os.path.join(self.user_data_dir, "config.json")
+        self.data_path = self.find_resource_on_phone("main_quest.json")
+        self.config_path = self.find_resource_on_phone("config.json")
 
-        # First launch (or after a fresh install): copy the bundled default in
-        if not os.path.exists(data_path):
-            bundled = resource_find("main_quest.json")
-            if bundled:
-                shutil.copy(bundled, data_path)
+        # overwrite during development to use local resources instead
+        if PC_DEV:
+            self.data_path = "src/main_quest.json"
+            self.config_path = "src/config.json"
 
-        self.data_path = data_path
-
-        if not os.path.exists(config_path):
-            bundled = resource_find("config.json")
-            if bundled:
-                shutil.copy(bundled, config_path)
-
-        Config.load_data(config_path)
+        Config.load_data(self.config_path)
         self.journal.import_journal(self.data_path)
 
         # initialize quests
@@ -89,6 +84,17 @@ class MainQuestApp(MDApp):
         self.progress_window = ProgressWindow(self.journal)
         self.root.ids.screen_manager.add_widget(self.progress_window)
         Clock.schedule_once(lambda dt: self.add_goal_screen())
+
+    def find_resource_on_phone(self, filename: str) -> str:
+        data_path = os.path.join(self.user_data_dir, filename)
+
+        # First launch (or after a fresh install): copy the bundled default in
+        if not os.path.exists(data_path):
+            bundled = resource_find(filename)
+            if bundled:
+                shutil.copy(bundled, data_path)
+
+        return data_path
 
     async def add_quest_widget(self, quest: Quest) -> None:
         await asynckivy.sleep(0)
