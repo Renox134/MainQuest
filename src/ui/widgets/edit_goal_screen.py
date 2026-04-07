@@ -44,6 +44,7 @@ class EditGoalScreen(MDScreen):
     def save_and_close(self) -> None:
         self.update_name()
         self.update_associated_quests()
+        self.update_high_performance_border()
         MDApp.get_running_app().update_progress_screen()
         MDApp.get_running_app().close_context_screen()
 
@@ -131,3 +132,7 @@ class EditGoalScreen(MDScreen):
                 new_list.append(q)
 
         self.goal.associated_quests = new_list
+
+    def update_high_performance_border(self) -> None:
+        self.goal.high_performance_border = int(self.ids.slider.value)
+        print(self.goal.high_performance_border)
