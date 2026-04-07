@@ -8,7 +8,8 @@ from model.goal import Goal
 from ui.widgets.quest_widget import QuestWidget
 from ui.widgets.task_screen import TaskScreen
 from ui.widgets.goal_screen import GoalScreen
-from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressWindow
+from ui.widgets.edit_goal_screen import EditGoalScreen
+from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressScreen
 
 import os
 import shutil
@@ -81,9 +82,12 @@ class MainQuestApp(MDApp):
         self.root.ids.top_app_bar.width = self.root.ids.top_app_bar.minimum_width
         self.root.ids.top_app_bar.do_layout()
 
-        self.progress_window = ProgressWindow(self.journal)
-        self.root.ids.screen_manager.add_widget(self.progress_window)
+        self.progress_screen = ProgressScreen(self.journal)
+        self.root.ids.screen_manager.add_widget(self.progress_screen)
+
+        # add screens
         Clock.schedule_once(lambda dt: self.add_goal_screen())
+        Clock.schedule_once(lambda dt: self.add_edit_goal_screen())
 
     def find_resource_on_phone(self, filename: str) -> str:
         data_path = os.path.join(self.user_data_dir, filename)
@@ -114,12 +118,17 @@ class MainQuestApp(MDApp):
         self.goal_screen = GoalScreen()
         manager.add_widget(self.goal_screen)
 
+    def add_edit_goal_screen(self) -> None:
+        manager: MDScreenManager = self.root.ids.outer_screen_manager
+        self.edit_goal_screen = EditGoalScreen()
+        manager.add_widget(self.edit_goal_screen)
+
     def add_new_goal(self, name: str) -> None:
         to_add = Goal(name, progress_time_border=datetime.now())
         # add goal to backend
         self.journal.goals.append(to_add)
         # update frontend
-        self.progress_window.update_widgets()
+        self.progress_screen.update_widgets()
 
     def add_new_quest(self, name: str) -> None:
         to_add = Quest(name, [])
@@ -268,7 +277,7 @@ class MainQuestApp(MDApp):
         menu_items = []
 
         # add menu items depending on the currently opened window
-        if self.root.ids.screen_manager.current == "progress_window":
+        if self.root.ids.screen_manager.current == "progress_screen":
             menu_items.append(
                 {
                     "text": "Add new Goal",
@@ -304,7 +313,7 @@ class MainQuestApp(MDApp):
         manager = self.root.ids.screen_manager
         direction = ""
         match self.root.ids.screen_manager.current:
-            case "progress_window":
+            case "progress_screen":
                 direction = "left"
             case "calendar_window":
                 direction = "right"
@@ -316,7 +325,7 @@ class MainQuestApp(MDApp):
     def on_trophy_pressed(self, *args):
         manager = self.root.ids.screen_manager
         manager.transition.direction = "right"
-        self.root.ids.screen_manager.current = "progress_window"
+        self.root.ids.screen_manager.current = "progress_screen"
 
     def open_task_screen(self, task: Task, parent_quest: Quest, parent_task: Task | None) -> None:
         manager: MDScreenManager = self.root.ids.outer_screen_manager
@@ -350,10 +359,23 @@ class MainQuestApp(MDApp):
         self.goal_screen.update_widgets(goal)
         manager.current = "goal_screen"
 
-    def close_goal_screen(self) -> None:
+    def close_context_screen(self) -> None:
         manager: MDScreenManager = self.root.ids.outer_screen_manager
         manager.transition.direction = "right"
         manager.current = "main_app_screen"
+
+    def open_edit_goal_screen(self, goal: Goal) -> None:
+        manager: MDScreenManager = self.root.ids.outer_screen_manager
+        manager.transition.direction = "left"
+        self.edit_goal_screen.update_widgets(goal, self.journal)
+        manager.current = "edit_goal_screen"
+
+    def remove_goal_from_journal(self, goal: Goal) -> None:
+        self.journal.goals.remove(goal)
+
+    def update_progress_screen(self) -> None:
+        self.progress_screen.journal = self.journal
+        self.progress_screen.update_widgets()
 
     def show_date_picker(self, focus):
         from kivymd.uix.pickers import MDDockedDatePicker

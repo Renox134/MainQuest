@@ -1,0 +1,72 @@
+#:kivy 2.3.0
+
+<EditGoalScreen>:
+    name: "edit_goal_screen"
+
+    BoxLayout:
+        id: layout
+        orientation: "vertical"
+        size_hint: 1, 1
+
+        MDTopAppBar:
+            id: top_app_bar
+            type: "small"
+
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "chevron-left"
+                    on_release: root.save_and_close()
+
+            MDTopAppBarTitle:
+                id: goal_title
+                pos_hint: {"center_x": .5, "center_y": .5}
+
+            MDTopAppBarTrailingButtonContainer:
+                MDActionTopAppBarButton:
+                    id: context_button
+                    icon: "dots-vertical"
+                    on_release: root.on_more_pressed()
+
+
+        MDGridLayout:
+            cols: 1
+            rows: 5
+
+            MDTextField:
+                id: name_field
+                mode: "filled"
+
+                MDTextFieldHintText:
+                    text: "Name"
+
+            MDGridLayout:
+                rows: 2
+                cols: 1
+                size_hint_y: None
+                height: "80dp"
+
+                MDLabel:
+                    text: "High Performance Border"
+                    halign: "center"
+                MDSlider:
+                    step: 1
+                    value: 5
+                    max: 15
+
+                    MDSliderHandle:
+
+                    MDSliderValueLabel:
+            MDDivider:
+
+            MDLabel:
+                text: "Associated Quests"
+                height: "45dp"
+                size_hint_y: None
+                halign: "center"
+
+            MDBoxLayout:
+                ScrollView:
+                    MDBoxLayout:
+                        id: quest_list_layout
+                        orientation: "vertical"
+                        adaptive_height: True

@@ -1,4 +1,4 @@
-from typing import List, Dict, Any
+from typing import Dict, Any
 
 from model.task import Task
 from model.quest import Quest
@@ -12,23 +12,15 @@ from kivy.properties import StringProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.animation import Animation
 from kivy.lang import Builder
-from kivy.uix.widget import Widget
 from kivy.core.window import Window
 from kivy.metrics import dp
-from kivy.uix.scrollview import ScrollView
 
 from kivymd.uix.navigationbar import MDNavigationItem
 from kivymd.uix.list import MDListItem, MDListItemSupportingText, MDListItemTertiaryText, \
-    MDListItemLeadingIcon, MDListItemHeadlineText
+    MDListItemLeadingIcon
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.menu import MDDropdownMenu
-from kivymd.uix.textfield import MDTextField, MDTextFieldHintText
-from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
-    MDDialogContentContainer
-from kivymd.uix.button import MDIconButton
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.selectioncontrol import MDCheckbox
-from kivymd.uix.divider import MDDivider
+from kivymd.app import MDApp
 
 
 class MainAppWindow(MDScreen):
@@ -107,38 +99,22 @@ class ListGoalItem(MDListItem):
     def open_goal_context(self) -> None:
         drop_down = MDDropdownMenu()
 
-        def change_associated_quests():
+        def edit():
             drop_down.dismiss()
-            self.open_associated_quest_dialog()
+            MDApp.get_running_app().open_edit_goal_screen(self.goal)
 
         def finish():
             drop_down.dismiss()
             self.complete_func(self)
 
-        def abort():
-            drop_down.dismiss()
-            self.abort_func(self)
-
-        def rename():
-            drop_down.dismiss()
-            self.open_rename_goal_dialog()
-
         menu_items = [
             {
-                "text": "Rename Goal",
-                "on_release": lambda: rename(),
-            },
-            {
-                "text": "Change associated quests",
-                "on_release": lambda: change_associated_quests(),
+                "text": "Edit Goal",
+                "on_release": lambda: edit(),
             },
             {
                 "text": "Complete Goal",
                 "on_release": lambda: finish(),
-            },
-            {
-                "text": "Abort Goal",
-                "on_release": lambda: abort(),
             }
         ]
         drop_down.caller = self.ids.context_button
@@ -153,90 +129,8 @@ class ListGoalItem(MDListItem):
         if caller_x + menu_width > Window.width:
             drop_down.x = Window.width - menu_width - dp(8)
 
-    def open_rename_goal_dialog(self) -> None:
-        entry_field = MDTextField(
-            MDTextFieldHintText(
-                text="New Goal Name"
-                )
-            )
-        entry_field.text = self.goal.name
 
-        def confirm_func():
-            self.goal.name = entry_field.text
-            self.ids.name_text_field.text = self.goal.name
-            dialog.dismiss()
-
-        confirm_button = MDIconButton(icon="check",
-                                      on_release=lambda x: confirm_func())
-        close_button = MDIconButton(icon="close")
-        dialog = MDDialog(
-            MDDialogHeadlineText(text="Rename Goal"),
-            MDDialogContentContainer(
-                entry_field
-            ),
-            MDDialogButtonContainer(
-                Widget(),
-                close_button,
-                confirm_button,
-                spacing="4dp"
-            ),
-        )
-        close_button.on_release = lambda: dialog.dismiss()
-        entry_field.focus = True
-        dialog.pos_hint = {"center_x": .5, "center_y": .75}
-        dialog.open()
-
-    def open_associated_quest_dialog(self) -> None:
-        scroll_view = ScrollView(size_hint_y=None, height=300)
-        quest_list_layout = MDBoxLayout(orientation='vertical', adaptive_height=True)
-        checkboxes = []
-
-        for q in self.journal.quests:
-            active_on_open = q in self.goal.associated_quests
-            box = MDCheckbox(id="check", active=active_on_open,
-                             pos_hint={"center_x": .5, "center_y": .5})
-            checkboxes.append(box)
-            quest_list_layout.add_widget(
-                MDListItem(MDListItemHeadlineText(text=q.name), box)
-            )
-
-        scroll_view.add_widget(quest_list_layout)
-
-        def confirm_func():
-            new_associated_quests: List[Quest] = []
-            for q, box in zip(self.journal.quests, checkboxes):
-                if box.active:
-                    new_associated_quests.append(q)
-
-            self.goal.associated_quests = new_associated_quests
-            dialog.dismiss()
-
-        confirm_button = MDIconButton(icon="check",
-                                      on_release=lambda x: confirm_func())
-        close_button = MDIconButton(icon="close")
-        dialog = MDDialog(
-            MDDialogHeadlineText(text="Select related quests"),
-            MDDialogContentContainer(
-                MDDivider(),
-                scroll_view,
-                MDDivider(),
-                orientation="vertical"
-            ),
-            MDDialogButtonContainer(
-                Widget(),
-                close_button,
-                confirm_button,
-                spacing="4dp"
-            ),
-            size_hint_y=0.75,
-            pos_hint={"center_x": .5, "center_y": .5}
-        )
-        close_button.on_release = lambda: dialog.dismiss()
-
-        dialog.open()
-
-
-class ProgressWindow(MDScreen):
+class ProgressScreen(MDScreen):
 
     def __init__(self, journal: Journal, *args, **kwargs):
         self.journal = journal

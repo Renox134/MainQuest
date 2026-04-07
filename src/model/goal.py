@@ -143,7 +143,8 @@ class Goal:
     def to_dict(self) -> Dict[str, Any]:
         str_progress_dict = {}
         for key, int_val in self.progress_dict.items():
-            str_progress_dict[key.strftime(Config.get("date_format"))] = int_val
+            if key >= self.progress_time_border:
+                str_progress_dict[key.strftime(Config.get("date_format"))] = int_val
 
         progress_time_border_str =\
             self.progress_time_border.strftime(Config.get("date_format"))
