@@ -8,6 +8,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.metrics import dp
 from kivy.animation import Animation
 from kivy.uix.widget import Widget
+from kivy.core.window import Window
 
 from kivymd.uix.expansionpanel import MDExpansionPanel
 from kivymd.uix.behaviors import RotateBehavior
@@ -60,7 +61,7 @@ class QuestWidget(MDExpansionPanel):
 
         def rename():
             drop_down.dismiss()
-            self.open_rename_quest_diallog()
+            self.open_rename_quest_dialog()
 
         menu_items = [
             {
@@ -82,10 +83,17 @@ class QuestWidget(MDExpansionPanel):
         ]
         drop_down.caller = self.ids.context_button
         drop_down.items = menu_items
+        drop_down.max_width = "200dp"
         drop_down.position = "bottom"
         drop_down.open()
 
-    def open_rename_quest_diallog(self) -> None:
+        # Clamp it so it never goes off the right edge of the screen
+        menu_width = drop_down.width
+        caller_x = self.ids.context_button.to_window(*self.ids.context_button.pos)[0]
+        if caller_x + menu_width > Window.width:
+            drop_down.x = Window.width - menu_width - dp(8)
+
+    def open_rename_quest_dialog(self) -> None:
         entry_field = MDTextField(
             MDTextFieldHintText(
                 text="New Quest Name"

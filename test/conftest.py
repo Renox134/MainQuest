@@ -133,45 +133,41 @@ def quest_3(completed_test_tasks: List[Task]) -> Quest:
 @pytest.fixture
 def goal_1(quest_1: Quest, quest_2: Quest, weekly_progress_dict,
            lower_bound) -> Goal:
-    return Goal("Goal_1", [quest_1, quest_2], weekly_progress_dict, {}, lower_bound, 30)
+    return Goal("Goal_1", [quest_1, quest_2], weekly_progress_dict, lower_bound, 30)
 
 
 @pytest.fixture
 def quest_3_progress_dict():
     return {
-        datetime(2024, 2, 27, 17, 50): 1,
-        datetime(2024, 2, 27, 9, 50): 1,
-        datetime(2024, 2, 27, 6, 50): 1,
-        datetime(2024, 2, 27, 6, 45): 2,
-        datetime(2024, 2, 22, 6, 50): 1
+        date(2024, 2, 22): 1,
+        date(2024, 2, 27): 5
     }
 
 @pytest.fixture
 def lower_bound():
-    return datetime(2024, 1, 10, 0, 0, 0)
+    return date(2024, 1, 10)
 
 
 @pytest.fixture
 def daily_border():
-    return datetime(2024, 2, 1, 0, 0, 0)
+    return date(2024, 2, 1)
 
 
 @pytest.fixture
 def unformated_progress_dict():
     return {
         # before lower_bound -> ignored
-        datetime(2024, 1, 5, 10, 0): 3,
+        date(2024, 1, 5): 3,
 
         # between lower_bound and daily_border -> weekly aggregation
-        datetime(2024, 1, 10, 9, 0): 2,
-        datetime(2024, 1, 11, 14, 0): 4,
-        datetime(2024, 1, 15, 16, 0): 5,
-        datetime(2024, 1, 17, 11, 0): 1,
+        date(2024, 1, 10): 2,
+        date(2024, 1, 11): 4,
+        date(2024, 1, 15): 5,
+        date(2024, 1, 17): 1,
 
         # after daily_border -> daily aggregation
-        datetime(2024, 2, 2, 8, 30): 2,
-        datetime(2024, 2, 2, 18, 0): 3,
-        datetime(2024, 2, 3, 9, 15): 4,
+        date(2024, 2, 2): 5,
+        date(2024, 2, 3): 4,
     }
 
 
@@ -179,33 +175,33 @@ def unformated_progress_dict():
 def formated_progress_dict():
     return {
         # week start would be 2024-01-08 but gets clamped to lower_bound
-        datetime(2024, 1, 10, 0, 0): 6,  # 2 + 4
+        date(2024, 1, 10): 6,  # 2 + 4
 
         # normal weekly aggregation
-        datetime(2024, 1, 15, 0, 0): 6,  # 5 + 1
+        date(2024, 1, 15): 6,  # 5 + 1
 
         # daily aggregation
-        datetime(2024, 2, 2, 0, 0): 5,   # 2 + 3
-        datetime(2024, 2, 3, 0, 0): 4,
+        date(2024, 2, 2): 5,   # 2 + 3
+        date(2024, 2, 3): 4,
     }
 
 
 @pytest.fixture
 def fused_progress_dict():
     return {
-        datetime(2024, 1, 10, 0, 0): 6,
-        datetime(2024, 1, 15, 0, 0): 6,
-        datetime(2024, 2, 2, 0, 0): 5,
-        datetime(2024, 2, 3, 0, 0): 4,
-        datetime(2024, 2, 22, 0, 0): 1,
-        datetime(2024, 2, 27, 0, 0): 5,
+        date(2024, 1, 10): 6,
+        date(2024, 1, 15): 6,
+        date(2024, 2, 2): 5,
+        date(2024, 2, 3): 4,
+        date(2024, 2, 22): 1,
+        date(2024, 2, 27): 5,
     }
 
 
 @pytest.fixture
 def weekly_progress_dict():
     return {
-        datetime(2024, 1, 10, 0, 0): 6,
-        datetime(2024, 1, 15, 0, 0): 6,
-        datetime(2024, 1, 29, 0, 0): 9,
+        date(2024, 1, 10): 6,
+        date(2024, 1, 15): 6,
+        date(2024, 1, 29): 9,
     }

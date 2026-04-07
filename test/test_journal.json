@@ -15,8 +15,7 @@
                             "date": "27/02/2024",
                             "start_time": "09:00",
                             "end_time": "10:00",
-                            "completion_date": "27/02/2024, 09:50",
-                            "subtasks": []
+                            "completion_date": "27/02/2024, 09:50"
                         },
                         {
                             "description": "Build container for collected water.",
@@ -27,19 +26,11 @@
                             "subtasks": [
                                 {
                                     "description": "Look for big leafs.",
-                                    "date": null,
-                                    "start_time": null,
-                                    "end_time": null,
-                                    "completion_date": "27/02/2024, 06:45",
-                                    "subtasks": []
+                                    "completion_date": "27/02/2024, 06:45"
                                 },
                                 {
                                     "description": "Look for useful wood.",
-                                    "date": null,
-                                    "start_time": null,
-                                    "end_time": null,
-                                    "completion_date": "27/02/2024, 06:45",
-                                    "subtasks": []
+                                    "completion_date": "27/02/2024, 06:45"
                                 }
                             ]
                         }
@@ -50,16 +41,10 @@
                     "date": "22/02/2024",
                     "start_time": "06:00",
                     "end_time": "08:00",
-                    "completion_date": "22/02/2024, 06:50",
-                    "subtasks": []
+                    "completion_date": "22/02/2024, 06:50"
                 },
                 {
-                    "description": "Build shelter",
-                    "date": null,
-                    "start_time": null,
-                    "end_time": null,
-                    "completion_date": null,
-                    "subtasks": []
+                    "description": "Build shelter"
                 }
             ]
         },
@@ -71,38 +56,24 @@
                     "date": "27/02/2024",
                     "start_time": "06:00",
                     "end_time": "18:00",
-                    "completion_date": null,
                     "subtasks": [
                         {
                             "description": "Build rain collector",
                             "date": "27/02/2024",
                             "start_time": "09:00",
-                            "end_time": "10:00",
-                            "completion_date": null,
-                            "subtasks": []
+                            "end_time": "10:00"
                         },
                         {
                             "description": "Build container for collected water.",
                             "date": "27/02/2024",
                             "start_time": "06:00",
                             "end_time": "08:00",
-                            "completion_date": null,
                             "subtasks": [
                                 {
-                                    "description": "Look for big leafs.",
-                                    "date": null,
-                                    "start_time": null,
-                                    "end_time": null,
-                                    "completion_date": null,
-                                    "subtasks": []
+                                    "description": "Look for big leafs."
                                 },
                                 {
-                                    "description": "Look for useful wood.",
-                                    "date": null,
-                                    "start_time": null,
-                                    "end_time": null,
-                                    "completion_date": null,
-                                    "subtasks": []
+                                    "description": "Look for useful wood."
                                 }
                             ]
                         }
@@ -112,17 +83,10 @@
                     "description": "Gather food",
                     "date": "28/08/2024",
                     "start_time": "06:00",
-                    "end_time": "08:00",
-                    "completion_date": null,
-                    "subtasks": []
+                    "end_time": "08:00"
                 },
                 {
-                    "description": "Build shelter",
-                    "date": null,
-                    "start_time": null,
-                    "end_time": null,
-                    "completion_date": null,
-                    "subtasks": []
+                    "description": "Build shelter"
                 }
             ]
         },
@@ -130,58 +94,37 @@
             "name": "Test Quest 2",
             "tasks": [
                 {
-                    "description": "Build shelter",
-                    "date": null,
-                    "start_time": null,
-                    "end_time": null,
-                    "completion_date": null,
-                    "subtasks": []
+                    "description": "Build shelter"
                 },
                 {
                     "description": "Gather food",
                     "date": "28/08/2024",
                     "start_time": "06:00",
-                    "end_time": "08:00",
-                    "completion_date": null,
-                    "subtasks": []
+                    "end_time": "08:00"
                 },
                 {
                     "description": "Collect water",
                     "date": "27/02/2024",
                     "start_time": "06:00",
                     "end_time": "18:00",
-                    "completion_date": null,
                     "subtasks": [
                         {
                             "description": "Build rain collector",
                             "date": "27/02/2024",
                             "start_time": "09:00",
-                            "end_time": "10:00",
-                            "completion_date": null,
-                            "subtasks": []
+                            "end_time": "10:00"
                         },
                         {
                             "description": "Build container for collected water.",
                             "date": "27/02/2024",
                             "start_time": "06:00",
                             "end_time": "08:00",
-                            "completion_date": null,
                             "subtasks": [
                                 {
-                                    "description": "Look for big leafs.",
-                                    "date": null,
-                                    "start_time": null,
-                                    "end_time": null,
-                                    "completion_date": null,
-                                    "subtasks": []
+                                    "description": "Look for big leafs."
                                 },
                                 {
-                                    "description": "Look for useful wood.",
-                                    "date": null,
-                                    "start_time": null,
-                                    "end_time": null,
-                                    "completion_date": null,
-                                    "subtasks": []
+                                    "description": "Look for useful wood."
                                 }
                             ]
                         }
@@ -198,13 +141,14 @@
                 "Test Quest 2"
             ],
             "progress_dict": {
-                "10/01/2024, 00:00": 6,
-                "15/01/2024, 00:00": 6,
-                "29/01/2024, 00:00": 9
+                "10/01/2024": 6,
+                "15/01/2024": 6,
+                "29/01/2024": 9
             },
-            "milestones": {},
             "daily_count_border": 30,
-            "progress_time_border": "10/01/2024, 00:00"
+            "progress_time_border": "10/01/2024",
+            "high_performance_border": 5
         }
-    ]
+    ],
+    "milestones": []
 }

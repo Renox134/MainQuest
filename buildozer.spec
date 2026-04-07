@@ -38,6 +38,7 @@ version = 0.1
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
 requirements = python3,
+    pybind11,
     kivy==2.3.0,
     pillow==12.1.1,
     materialyoucolor==3.0.2,

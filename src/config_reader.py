@@ -1,23 +1,25 @@
-from kivy.resources import resource_find
+from typing import Any
 import json
 
-from typing import Any
+DATA = {}
 
 
 class Config():
     """
     Reads in the config information from the config json.
     """
+    @staticmethod
+    def load_data(path: str) -> None:
+        with open(path, "r") as file:
+            tmp = json.load(file)
+
+        for key, val in tmp.items():
+            DATA[key] = val
 
     @staticmethod
     def get(key: str) -> Any:
-        config_path = resource_find("config.json")
-        # if resource find doesn't find anything, try default path
-        if config_path is None:
-            config_path = "./src/config.json"
-        with open(config_path, "r") as file:
-            config_dict = json.load(file)
-            if key not in config_dict.keys():
-                raise KeyError(f"The config does not a the entered key: {key}")
-            else:
-                return config_dict[key]
+        if key not in DATA.keys():
+            raise KeyError(f"The config does not contain the entered key: {key}. " +
+                           f"Known keys: {[k for k in DATA.keys()]}")
+        else:
+            return DATA[key]

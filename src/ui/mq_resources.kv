@@ -10,11 +10,18 @@
 <MainAppWindow>:
     name: "main_window"
 
-<ProgressWindow>:
-    name: "progress_window"
-    MDLabel:
-        text: "Progress tracking is comming soon :)"
-        halign: "center"
+<ProgressScreen>:
+    name: "progress_screen"
+
+    ScrollView:
+        MDBoxLayout:
+            orientation: "vertical"
+            adaptive_height: True
+            MDList:
+                id: goal_list
+            # MDDivider:
+            MDList:
+                id: milestone_list
 
 <CalendarWindow>:
     name: "calendar_window"
@@ -36,3 +43,33 @@
         id: name_text_field
         halign: "left"
         text: root.task.description
+
+<ListGoalItem>:
+    id: base_item
+    ripple_effect: False
+    on_release: app.open_goal_screen(self.goal)
+
+    MDListItemHeadlineText:
+        id: name_text_field
+        halign: "left"
+        text: root.goal.name
+
+    MDListItemTrailingIcon:
+        icon: "trophy"
+
+    MDIconButton:
+        id: context_button
+        icon: "dots-vertical"
+        on_release: root.open_goal_context()
+
+<ListMilestoneItem>:
+    MDListItemHeadlineText:
+        id: name_text_field
+        halign: "left"
+        text: root.milestone.name
+
+    MDListItemSupportingText:
+        id: supporting_text
+
+    MDListItemTrailingIcon:
+        icon: "trophy"

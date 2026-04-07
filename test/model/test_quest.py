@@ -59,6 +59,8 @@ class TestQuest:
         q: Quest = request.getfixturevalue("quest_3")
         expected = request.getfixturevalue("quest_3_progress_dict")
 
+        print(expected)
+
         assert q.get_progress_dict() == expected
 
     @pytest.mark.parametrize(
