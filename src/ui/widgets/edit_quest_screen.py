@@ -1,19 +1,16 @@
 from journal import Journal
 from model.quest import Quest
 from ui.widgets.quest_widget import QuestWidget
+from ui.mq_resources import ConfirmDialog
 
 from kivymd.app import MDApp
-from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.list import MDListItem, MDListItemHeadlineText
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
-    MDDialogSupportingText
 
 from kivy.metrics import dp
 from kivy.core.window import Window
-from kivy.uix.widget import Widget
 from kivy.lang import Builder
 Builder.load_file("ui/widgets/edit_quest_screen.kv")
 
@@ -87,89 +84,42 @@ class EditQuestScreen(MDScreen):
             self.drop_down.x = Window.width - menu_width - dp(8)
 
     def clear_tasks(self) -> None:
-        confirm_button = MDIconButton(icon="check",
-                                      on_release=lambda x: confirm_func())
-        close_button = MDIconButton(icon="close")
         warning_text = """
         Are you sure you want to remove all tasks?
         They will be treated as aborted and thus will not count towards the progress of any goal.
         """
-        dialog = MDDialog(
-            MDDialogHeadlineText(text="Clear Tasks"),
-            MDDialogSupportingText(text=warning_text),
-            MDDialogButtonContainer(
-                Widget(),
-                close_button,
-                confirm_button,
-                spacing="4dp"
-            ),
-            pos_hint={"center_x": .5, "center_y": .5}
-        )
-        close_button.on_release = lambda: dialog.dismiss()
-        dialog.open()
+        ConfirmDialog("Clear Tasks", warning_text, lambda: confirm_func()).open()
 
         def confirm_func():
             self.drop_down.dismiss()
-            dialog.dismiss()
             self.quest.tasks.clear()
             MDApp.get_running_app().update_quest_widgets()
 
     def abort_quest(self) -> None:
-        confirm_button = MDIconButton(icon="check",
-                                      on_release=lambda x: confirm_func())
-        close_button = MDIconButton(icon="close")
         warning_text = """
         Are you sure you want to abort this quest?
         The progress made until now will be kept, but all tasks that are still uncompleted
         will be treated as aborted.
         """
-        dialog = MDDialog(
-            MDDialogHeadlineText(text="Abort Quest"),
-            MDDialogSupportingText(text=warning_text),
-            MDDialogButtonContainer(
-                Widget(),
-                close_button,
-                confirm_button,
-                spacing="4dp"
-            ),
-            pos_hint={"center_x": .5, "center_y": .5}
-        )
-        close_button.on_release = lambda: dialog.dismiss()
-        dialog.open()
+        ConfirmDialog("Abort Quest", warning_text, lambda: confirm_func()).open()
 
         def confirm_func():
             self.drop_down.dismiss()
-            dialog.dismiss()
             MDApp.get_running_app().abort_quest(self.parent_widget)
             MDApp.get_running_app().close_context_screen()
 
     def delete_quest(self) -> None:
-        confirm_button = MDIconButton(icon="check",
-                                      on_release=lambda x: confirm_func())
-        close_button = MDIconButton(icon="close")
+
         warning_text = """
         Are you sure you want to permanently delete this quest?
         By deleting the quest, all tasks are aborted and all goals will loose the all progress that
         was previously added through this quest. In contrast,aborting the quest would keep the
         progress that was already done, while only remaning tasks are aborted. 
         """
-        dialog = MDDialog(
-            MDDialogHeadlineText(text="Delete Quest"),
-            MDDialogSupportingText(text=warning_text),
-            MDDialogButtonContainer(
-                Widget(),
-                close_button,
-                confirm_button,
-                spacing="4dp"
-            ),
-            pos_hint={"center_x": .5, "center_y": .5}
-        )
-        close_button.on_release = lambda: dialog.dismiss()
-        dialog.open()
+        ConfirmDialog("Delete Quest", warning_text, lambda: confirm_func()).open()
 
         def confirm_func():
             self.drop_down.dismiss()
-            dialog.dismiss()
             MDApp.get_running_app().delete_quest(self.parent_widget)
             MDApp.get_running_app().close_context_screen()
 
