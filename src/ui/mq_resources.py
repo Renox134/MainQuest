@@ -73,7 +73,7 @@ class ListTaskItem(MDListItem):
         self.ids.confirm_icon.icon = "checkbox-marked-circle"
         animate_removal(self)
         MDApp.get_running_app().add_task_to_completion_cache(self.task)
-        MDSnackbar(
+        snackbar = MDSnackbar(
             MDSnackbarSupportingText(
                 text=f"Completed \'{self.task.description}\'",
             ),
@@ -82,7 +82,7 @@ class ListTaskItem(MDListItem):
                     MDSnackbarActionButtonText(
                         text="Undo"
                     ),
-                    on_release=lambda x: MDApp.get_running_app().undo_last_task()
+                    on_release=lambda x: undo()
                 ),
                 pos_hint={"center_y": 0.5}
             ),
@@ -90,7 +90,12 @@ class ListTaskItem(MDListItem):
             orientation="horizontal",
             pos_hint={"center_x": 0.5},
             size_hint_x=0.9,
-        ).open()
+        )
+        snackbar.open()
+
+        def undo():
+            snackbar.dismiss()
+            MDApp.get_running_app().undo_last_task()
 
 
 class MQ_Resource_Loader():
