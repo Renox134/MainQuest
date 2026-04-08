@@ -1,24 +1,17 @@
-from typing import Dict, Any
-
 from model.quest import Quest
-from ui.mq_resources import ListTaskItem
+from ui.mq_resources import ListTaskItem, ConfirmDialog
 
 from kivy.lang.builder import Builder
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.metrics import dp
 from kivy.animation import Animation
-from kivy.uix.widget import Widget
 from kivy.core.window import Window
 
+from kivymd.app import MDApp
 from kivymd.uix.expansionpanel import MDExpansionPanel
 from kivymd.uix.behaviors import RotateBehavior
 from kivymd.uix.list import MDListItemTrailingIcon
 from kivymd.uix.menu import MDDropdownMenu
-from kivymd.uix.textfield import MDTextField, MDTextFieldHintText
-from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
-    MDDialogContentContainer
-from kivymd.uix.button import MDIconButton
-
 
 Builder.load_file("ui/widgets/quest_widget.kv")
 
@@ -30,11 +23,8 @@ class TrailingPressedIconButton(
 
 
 class QuestWidget(MDExpansionPanel):
-    def __init__(self, quest: Quest, callables: Dict[str, Any], **kwargs):
+    def __init__(self, quest: Quest, **kwargs):
         self.quest = quest
-        self.add_task_func = callables["add_task"]
-        self.finish_quest_func = callables["finish_quest"]
-        self.abort_quest_func = callables["abort_quest"]
         super().__init__(**kwargs)
         self.update_widgets()
 
@@ -47,38 +37,34 @@ class QuestWidget(MDExpansionPanel):
     def open_quest_context(self) -> None:
         drop_down = MDDropdownMenu()
 
+        def edit():
+            drop_down.dismiss()
+            MDApp.get_running_app().open_edit_quest_screen(self.quest, self)
+
         def add_task():
             drop_down.dismiss()
-            self.add_task_func(self)
+            MDApp.get_running_app().open_new_task_dialog(self)
 
         def finish():
             drop_down.dismiss()
-            self.finish_quest_func(self)
-
-        def abort():
-            drop_down.dismiss()
-            self.abort_quest_func(self)
-
-        def rename():
-            drop_down.dismiss()
-            self.open_rename_quest_dialog()
+            ConfirmDialog("Complete Quest",
+                          f"Are you sure you want to complete \'{self.quest.name}\'?",
+                          lambda: MDApp.get_running_app().finish_quest(self)).open()
 
         menu_items = [
-            {
-                "text": "Rename Quest",
-                "on_release": lambda: rename(),
-            },
             {
                 "text": "Add new Task",
                 "on_release": lambda: add_task(),
             },
             {
-                "text": "Complete quest",
-                "on_release": lambda: finish(),
+                "text": "Edit",
+                "on_release": lambda: edit(),
+                "text_color": "orange"
             },
             {
-                "text": "Abort quest",
-                "on_release": lambda: abort(),
+                "text": "Complete quest",
+                "on_release": lambda: finish(),
+                "text_color": "green"
             }
         ]
         drop_down.caller = self.ids.context_button
@@ -92,39 +78,6 @@ class QuestWidget(MDExpansionPanel):
         caller_x = self.ids.context_button.to_window(*self.ids.context_button.pos)[0]
         if caller_x + menu_width > Window.width:
             drop_down.x = Window.width - menu_width - dp(8)
-
-    def open_rename_quest_dialog(self) -> None:
-        entry_field = MDTextField(
-            MDTextFieldHintText(
-                text="New Quest Name"
-                )
-            )
-        entry_field.text = self.quest.name
-
-        def confirm_func():
-            self.quest.name = entry_field.text
-            self.ids.name_text_field.text = self.quest.name
-            dialog.dismiss()
-
-        confirm_button = MDIconButton(icon="check",
-                                      on_release=lambda x: confirm_func())
-        close_button = MDIconButton(icon="close")
-        dialog = MDDialog(
-            MDDialogHeadlineText(text="Rename Quest"),
-            MDDialogContentContainer(
-                entry_field
-            ),
-            MDDialogButtonContainer(
-                Widget(),
-                close_button,
-                confirm_button,
-                spacing="4dp"
-            ),
-        )
-        close_button.on_release = lambda: dialog.dismiss()
-        entry_field.focus = True
-        dialog.pos_hint = {"center_x": .5, "center_y": .75}
-        dialog.open()
 
     def tap_expansion_chevron(self, chevron: TrailingPressedIconButton):
         Animation(

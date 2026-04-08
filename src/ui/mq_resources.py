@@ -98,6 +98,27 @@ class ListTaskItem(MDListItem):
             MDApp.get_running_app().undo_last_task()
 
 
+
+class ConfirmDialog(MDDialog):
+    def __init__(self, heading: str, supporting_text: str, confirm_func, *args, **kwargs):
+        self.heading = heading
+        self.supporting_text = supporting_text
+        self.confirm_func = confirm_func
+        super().__init__(*args, **kwargs)
+
+        def confirm():
+            self.dismiss()
+            confirm_func()
+
+        self.add_widget(MDDialogHeadlineText(text=heading))
+        self.add_widget(MDDialogSupportingText(text=supporting_text))
+        self.add_widget(MDDialogButtonContainer(
+            Widget(),
+            MDIconButton(icon="check", on_release=lambda x: confirm()),
+            MDIconButton(icon="close", on_release=lambda x: self.dismiss())
+        ))
+
+
 class MQ_Resource_Loader():
     @staticmethod
     def load_resources() -> None:
@@ -138,31 +159,19 @@ class ListGoalItem(MDListItem):
             drop_down.dismiss()
             # double check via dialog
             doublecheck_line = f"Are you sure you want to set \'{self.goal.name}\' to completed?"
-            close_button = MDIconButton(icon="close")
-            dialog = MDDialog(
-                MDDialogHeadlineText(text="Complete Goal"),
-                MDDialogSupportingText(text=doublecheck_line),
-                MDDialogButtonContainer(
-                    Widget(),
-                    MDIconButton(icon="check", on_release=lambda x: confirm()),
-                    close_button
-                )
-            )
-            close_button.on_release = lambda: dialog.dismiss()
-
-            def confirm():
-                dialog.dismiss()
-                self.complete_func(self)
-            dialog.open()
+            ConfirmDialog("Complete Goal", doublecheck_line,
+                          lambda: self.complete_func(self)).open()
 
         menu_items = [
             {
                 "text": "Edit Goal",
                 "on_release": lambda: edit(),
+                "text_color": "orange"
             },
             {
                 "text": "Complete Goal",
                 "on_release": lambda: finish(),
+                "text_color": "green"
             }
         ]
         drop_down.caller = self.ids.context_button
