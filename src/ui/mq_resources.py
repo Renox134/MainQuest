@@ -26,6 +26,8 @@ from kivymd.uix.menu import MDDropdownMenu
 from kivymd.app import MDApp
 from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
     MDDialogSupportingText
+from kivymd.uix.snackbar import MDSnackbar, MDSnackbarActionButton, MDSnackbarSupportingText, \
+    MDSnackbarActionButtonText, MDSnackbarButtonContainer
 
 
 class MainAppWindow(MDScreen):
@@ -70,6 +72,30 @@ class ListTaskItem(MDListItem):
         Task.complete_task_recursively(self.task, datetime.now(), False)
         self.ids.confirm_icon.icon = "checkbox-marked-circle"
         animate_removal(self)
+        MDApp.get_running_app().add_task_to_completion_cache(self.task)
+        snackbar = MDSnackbar(
+            MDSnackbarSupportingText(
+                text=f"Completed \'{self.task.description}\'",
+            ),
+            MDSnackbarButtonContainer(
+                MDSnackbarActionButton(
+                    MDSnackbarActionButtonText(
+                        text="Undo"
+                    ),
+                    on_release=lambda x: undo()
+                ),
+                pos_hint={"center_y": 0.5}
+            ),
+            y=dp(24),
+            orientation="horizontal",
+            pos_hint={"center_x": 0.5},
+            size_hint_x=0.9,
+        )
+        snackbar.open()
+
+        def undo():
+            snackbar.dismiss()
+            MDApp.get_running_app().undo_last_task()
 
 
 class MQ_Resource_Loader():
