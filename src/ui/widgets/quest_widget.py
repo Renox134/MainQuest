@@ -10,6 +10,7 @@ from kivy.animation import Animation
 from kivy.uix.widget import Widget
 from kivy.core.window import Window
 
+from kivymd.app import MDApp
 from kivymd.uix.expansionpanel import MDExpansionPanel
 from kivymd.uix.behaviors import RotateBehavior
 from kivymd.uix.list import MDListItemTrailingIcon
@@ -30,11 +31,8 @@ class TrailingPressedIconButton(
 
 
 class QuestWidget(MDExpansionPanel):
-    def __init__(self, quest: Quest, callables: Dict[str, Any], **kwargs):
+    def __init__(self, quest: Quest, **kwargs):
         self.quest = quest
-        self.add_task_func = callables["add_task"]
-        self.finish_quest_func = callables["finish_quest"]
-        self.abort_quest_func = callables["abort_quest"]
         super().__init__(**kwargs)
         self.update_widgets()
 
@@ -47,38 +45,32 @@ class QuestWidget(MDExpansionPanel):
     def open_quest_context(self) -> None:
         drop_down = MDDropdownMenu()
 
+        def edit():
+            drop_down.dismiss()
+            MDApp.get_running_app().open_edit_quest_screen(self.quest, self)
+
         def add_task():
             drop_down.dismiss()
-            self.add_task_func(self)
+            MDApp.get_running_app().open_new_task_dialog(self)
 
         def finish():
             drop_down.dismiss()
-            self.finish_quest_func(self)
-
-        def abort():
-            drop_down.dismiss()
-            self.abort_quest_func(self)
-
-        def rename():
-            drop_down.dismiss()
-            self.open_rename_quest_dialog()
+            MDApp.get_running_app().finish_quest(self)
 
         menu_items = [
-            {
-                "text": "Rename Quest",
-                "on_release": lambda: rename(),
-            },
             {
                 "text": "Add new Task",
                 "on_release": lambda: add_task(),
             },
             {
-                "text": "Complete quest",
-                "on_release": lambda: finish(),
+                "text": "Edit",
+                "on_release": lambda: edit(),
+                "text_color": "orange"
             },
             {
-                "text": "Abort quest",
-                "on_release": lambda: abort(),
+                "text": "Complete quest",
+                "on_release": lambda: finish(),
+                "text_color": "green"
             }
         ]
         drop_down.caller = self.ids.context_button

@@ -62,10 +62,12 @@ class EditGoalScreen(MDScreen):
             {
                 "text": "Reset Progress",
                 "on_release": lambda: self.reset_progress(),
+                "text_color": "red"
             },
             {
                 "text": "Remove Goal",
                 "on_release": lambda: self.delete_goal(),
+                "text_color": "red"
             }
         ]
         self.drop_down.caller = self.ids.context_button

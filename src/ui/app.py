@@ -9,6 +9,7 @@ from ui.widgets.quest_widget import QuestWidget
 from ui.widgets.task_screen import TaskScreen
 from ui.widgets.goal_screen import GoalScreen
 from ui.widgets.edit_goal_screen import EditGoalScreen
+from ui.widgets.edit_quest_screen import EditQuestScreen
 from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressScreen
 
 import os
@@ -90,6 +91,7 @@ class MainQuestApp(MDApp):
         # add screens
         Clock.schedule_once(lambda dt: self.add_goal_screen())
         Clock.schedule_once(lambda dt: self.add_edit_goal_screen())
+        Clock.schedule_once(lambda dt: self.add_edit_quest_screen())
 
     def find_resource_on_phone(self, filename: str) -> str:
         data_path = os.path.join(self.user_data_dir, filename)
@@ -105,13 +107,7 @@ class MainQuestApp(MDApp):
     async def add_quest_widget(self, quest: Quest) -> None:
         await asynckivy.sleep(0)
         quest_layout = self.root.ids.quest_layout
-        quest_widget = QuestWidget(quest,
-                                   {
-                                       "add_task": self.open_new_task_dialog,
-                                       "finish_quest": self.finish_quest,
-                                       "abort_quest": self.abort_quest
-                                   }
-                                   )
+        quest_widget = QuestWidget(quest)
         quest_layout.add_widget(quest_widget)
         self.quest_widgets.append(quest_widget)
 
@@ -124,6 +120,11 @@ class MainQuestApp(MDApp):
         manager: MDScreenManager = self.root.ids.outer_screen_manager
         self.edit_goal_screen = EditGoalScreen()
         manager.add_widget(self.edit_goal_screen)
+
+    def add_edit_quest_screen(self) -> None:
+        manager: MDScreenManager = self.root.ids.outer_screen_manager
+        self.edit_quest_screen = EditQuestScreen()
+        manager.add_widget(self.edit_quest_screen)
 
     def add_new_goal(self, name: str) -> None:
         to_add = Goal(name, progress_time_border=datetime.now())
@@ -254,6 +255,10 @@ class MainQuestApp(MDApp):
         self.journal.finish_quest(quest_widget.quest, True, False)
         animate_removal(quest_widget)
 
+    def delete_quest(self, quest_widget: QuestWidget) -> None:
+        self.journal.finish_quest(quest_widget.quest, False, False)
+        animate_removal(quest_widget)
+
     def dummy(self) -> None:
         print("Dummy")
 
@@ -372,6 +377,12 @@ class MainQuestApp(MDApp):
         self.edit_goal_screen.update_widgets(goal, self.journal)
         manager.current = "edit_goal_screen"
 
+    def open_edit_quest_screen(self, quest: Quest, parent: QuestWidget) -> None:
+        manager: MDScreenManager = self.root.ids.outer_screen_manager
+        manager.transition.direction = "left"
+        self.edit_quest_screen.update_widgets(quest, self.journal, parent)
+        manager.current = "edit_quest_screen"
+
     def add_task_to_completion_cache(self, task: Task) -> None:
         completed_tasks = self.cache.get("completed_tasks", [])
         completed_tasks.append(task)
@@ -385,8 +396,7 @@ class MainQuestApp(MDApp):
             if t.completion_date == completed_at:
                 t.completion_date = None
 
-        for qw in self.quest_widgets:
-            qw.update_widgets()
+        self.update_quest_widgets()
 
     def remove_goal_from_journal(self, goal: Goal) -> None:
         self.journal.goals.remove(goal)
@@ -394,6 +404,10 @@ class MainQuestApp(MDApp):
     def update_progress_screen(self) -> None:
         self.progress_screen.journal = self.journal
         self.progress_screen.update_widgets()
+
+    def update_quest_widgets(self) -> None:
+        for qw in self.quest_widgets:
+            qw.update_widgets()
 
     def show_date_picker(self, focus):
         from kivymd.uix.pickers import MDDockedDatePicker
