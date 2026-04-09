@@ -1,6 +1,6 @@
 from typing import Any, List, Dict
 
-from config_reader import Config
+from config import Config
 from journal import Journal
 from model.task import Task
 from model.quest import Quest
@@ -10,7 +10,7 @@ from ui.widgets.task_screen import TaskScreen
 from ui.widgets.goal_screen import GoalScreen
 from ui.widgets.edit_goal_screen import EditGoalScreen
 from ui.widgets.edit_quest_screen import EditQuestScreen
-from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressScreen
+from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressScreen, ThemeSelectDialog
 
 import os
 import shutil
@@ -60,8 +60,6 @@ class MainQuestApp(MDApp):
         super().__init__(**kwargs)
 
     def build(self):
-        self.theme_cls.theme_style = "Dark"
-        self.theme_cls.primary_palette = "Olive"
         return Builder.load_file("ui/app.kv")
 
     def on_start(self):
@@ -76,6 +74,10 @@ class MainQuestApp(MDApp):
 
         Config.load_data(self.config_path)
         self.journal.import_journal(self.data_path)
+
+        # initialize stylig
+        self.theme_cls.primary_palette = Config.get("primary_palette", "Olive")
+        self.theme_cls.theme_style = Config.get("theme_style", "Dark")
 
         # initialize quests
         for quest in self.journal.quests:
@@ -267,7 +269,8 @@ class MainQuestApp(MDApp):
         self.root.ids.main_color_theme_text.text = "Main Theme: " + self.theme_cls.primary_palette
 
     def select_main_color_theme(self):
-        pass
+        d = ThemeSelectDialog()
+        d.open()
 
     def on_more_pressed(self, *args):
         drop_down = MDDropdownMenu()
@@ -424,10 +427,14 @@ class MainQuestApp(MDApp):
         ]
         date_dialog.open()
 
-    def on_stop(self):
+    def save(self) -> None:
         self.journal.export_journal(self.data_path)
+        Config.save(self.config_path)
+
+    def on_stop(self):
+        self.save()
         return super().on_stop()
 
     def on_pause(self):
-        self.journal.export_journal(self.data_path)
+        self.save()
         return super().on_pause()

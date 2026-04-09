@@ -1,6 +1,6 @@
 from typing import Dict
 
-from config_reader import Config
+from config import Config
 
 from datetime import date
 

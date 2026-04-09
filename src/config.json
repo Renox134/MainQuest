@@ -11,6 +11,8 @@
     "month_heatmap_normal": "#07771d",
     "month_heatmap_high": "#19dd41",
     "month_heatmap_cell_gap": 5,
-    "month_heatmap_radius": [5]
-
+    "month_heatmap_radius": [
+        5
+    ],
+    "primary_palette": "Olive"
 }

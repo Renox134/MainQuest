@@ -1,6 +1,6 @@
 from model.task import Task
 from model.quest import Quest
-from config_reader import Config
+from config import Config
 from ui.mq_resources import ListTaskItem
 
 from datetime import datetime, time

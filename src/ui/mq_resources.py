@@ -5,7 +5,7 @@ from model.quest import Quest
 from model.goal import Goal
 from model.milestone import Milestone
 from journal import Journal
-from config_reader import Config
+from config import Config
 
 from datetime import datetime
 
@@ -27,7 +27,7 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.app import MDApp
 from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
-    MDDialogSupportingText
+    MDDialogSupportingText, MDDialogContentContainer
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarActionButton, MDSnackbarSupportingText, \
     MDSnackbarActionButtonText, MDSnackbarButtonContainer
 
@@ -125,18 +125,38 @@ class ThemeSelectDialog(MDDialog):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        def confirm():
-            print("Selected [ThEME] as the new theme")
+        self.selected_theme = None
+
+        color_options = [
+            "Red", "Pink", "Purple", "Indigo",
+            "Navy", "Blue", "Lightblue", "Cyan", "Teal",
+            "Green", "Lightgreen", "Olive", "Lime",
+            "Yellow", "Orange", "Orangered",
+            "Brown", "Gray"
+        ]
+
+        def on_item_press(item, color):
+            MDApp.get_running_app().theme_cls.primary_palette = color
+            Config.store("primary_palette", color)
             self.dismiss()
 
-        # create scroll view filled with all possible color themes
         scroll_view = ScrollView(size_hint_y=None, height=300)
         color_list_layout = MDBoxLayout(orientation='vertical', adaptive_height=True)
 
+        for color in color_options:
+            item = MDListItem(
+                MDListItemLeadingIcon(icon="palette", icon_color=color.lower(), theme_icon_color="Custom"),
+                MDListItemHeadlineText(text=color, text_color=color.lower(), theme_text_color="Custom"),
+                on_release=lambda x, c=color: on_item_press(x, c),
+            )
+            color_list_layout.add_widget(item)
+
+        scroll_view.add_widget(color_list_layout)
+
         self.add_widget(MDDialogHeadlineText(text="Select Main Theme"))
+        self.add_widget(MDDialogContentContainer(scroll_view))
         self.add_widget(MDDialogButtonContainer(
             Widget(),
-            MDIconButton(icon="check", on_release=lambda x: confirm()),
             MDIconButton(icon="close", on_release=lambda x: self.dismiss())
         ))
 

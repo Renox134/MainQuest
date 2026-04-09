@@ -76,10 +76,14 @@ MDScreen:
 
                 MDNavigationDrawerItem:
 
+                    MDNavigationDrawerItemLeadingIcon:
+                        icon: "palette"
+
                     MDNavigationDrawerItemText:
-                        text: "Colors"
+                        text: "Styling Options"
 
                 MDNavigationDrawerItem:
+                    on_release: app.select_main_color_theme()
 
                     MDNavigationDrawerItemText:
                         id: main_color_theme_text
