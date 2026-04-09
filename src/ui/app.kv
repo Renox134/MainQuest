@@ -92,4 +92,17 @@ MDScreen:
                         icon: "square"
                         on_release: app.select_main_color_theme()
 
+                MDNavigationDrawerItem:
+
+                    MDNavigationDrawerItemText:
+                        id: theme_style_text
+
+                    MDSwitch:
+                        id: theme_style_switch
+                        icon_active: "lightbulb-on"
+                        icon_active_color: "white"
+                        icon_inactive: "lightbulb"
+                        icon_inactive_color: "grey"
+                        on_active: app.update_app_lighting_theme()
+
                 MDNavigationDrawerDivider:

@@ -137,6 +137,7 @@ class ThemeSelectDialog(MDDialog):
 
         def on_item_press(item, color):
             MDApp.get_running_app().theme_cls.primary_palette = color
+            MDApp.get_running_app().root.ids.main_color_theme_text.text = "Main Theme: " + color
             Config.store("primary_palette", color)
             self.dismiss()
 

@@ -268,9 +268,19 @@ class MainQuestApp(MDApp):
         self.root.ids.nav_drawer.set_state("toggle")
         self.root.ids.main_color_theme_text.text = "Main Theme: " + self.theme_cls.primary_palette
 
+        # adjust for theme style
+        style = self.theme_cls.theme_style
+        self.root.ids.theme_style_text.text = "Theme Style: " + style
+        self.root.ids.theme_style_switch.active = style == "Light"
+
     def select_main_color_theme(self):
         d = ThemeSelectDialog()
         d.open()
+
+    def update_app_lighting_theme(self):
+        state = "Light" if self.root.ids.theme_style_switch.active else "Dark"
+        self.theme_cls.theme_style = state
+        Config.store("theme_style", state)
 
     def on_more_pressed(self, *args):
         drop_down = MDDropdownMenu()
@@ -285,7 +295,7 @@ class MainQuestApp(MDApp):
 
         def save_press():
             drop_down.dismiss()
-            self.journal.export_journal(self.data_path)
+            self.save()
 
         menu_items = []
 

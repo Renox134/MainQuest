@@ -14,5 +14,6 @@
     "month_heatmap_radius": [
         5
     ],
-    "primary_palette": "Olive"
+    "primary_palette": "Olive",
+    "theme_style": "Dark"
 }
