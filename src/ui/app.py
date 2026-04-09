@@ -263,8 +263,11 @@ class MainQuestApp(MDApp):
         print("Dummy")
 
     def on_menu_pressed(self, *args):
-        self.root.ids.top_app_bar.do_layout()
-        print("menu pressed")
+        self.root.ids.nav_drawer.set_state("toggle")
+        self.root.ids.main_color_theme_text.text = "Main Theme: " + self.theme_cls.primary_palette
+
+    def select_main_color_theme(self):
+        pass
 
     def on_more_pressed(self, *args):
         drop_down = MDDropdownMenu()

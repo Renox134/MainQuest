@@ -60,3 +60,32 @@ MDScreen:
                             icon: "calendar"
                             text: "Calendar"
                             on_release: app.on_calendar_pressed()
+
+        MDNavigationDrawer:
+            id: nav_drawer
+            drawer_type: "modal"
+            radius: 0, dp(16), dp(16), 0
+
+            MDNavigationDrawerMenu:
+
+                MDNavigationDrawerLabel:
+                    text: "Settings"
+                    halign: "center"
+
+                MDNavigationDrawerDivider:
+
+                MDNavigationDrawerItem:
+
+                    MDNavigationDrawerItemText:
+                        text: "Colors"
+
+                MDNavigationDrawerItem:
+
+                    MDNavigationDrawerItemText:
+                        id: main_color_theme_text
+
+                    MDIconButton:
+                        icon: "square"
+                        on_release: app.select_main_color_theme()
+
+                MDNavigationDrawerDivider:

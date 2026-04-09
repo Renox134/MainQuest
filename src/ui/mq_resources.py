@@ -16,12 +16,14 @@ from kivy.uix.widget import Widget
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.metrics import dp
+from kivy.uix.scrollview import ScrollView
 
 from kivymd.uix.navigationbar import MDNavigationItem
 from kivymd.uix.list import MDListItem, MDListItemSupportingText, MDListItemTertiaryText, \
     MDListItemLeadingIcon, MDListItemHeadlineText
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.button import MDIconButton
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.app import MDApp
 from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
@@ -112,6 +114,26 @@ class ConfirmDialog(MDDialog):
 
         self.add_widget(MDDialogHeadlineText(text=heading))
         self.add_widget(MDDialogSupportingText(text=supporting_text))
+        self.add_widget(MDDialogButtonContainer(
+            Widget(),
+            MDIconButton(icon="check", on_release=lambda x: confirm()),
+            MDIconButton(icon="close", on_release=lambda x: self.dismiss())
+        ))
+
+
+class ThemeSelectDialog(MDDialog):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        def confirm():
+            print("Selected [ThEME] as the new theme")
+            self.dismiss()
+
+        # create scroll view filled with all possible color themes
+        scroll_view = ScrollView(size_hint_y=None, height=300)
+        color_list_layout = MDBoxLayout(orientation='vertical', adaptive_height=True)
+
+        self.add_widget(MDDialogHeadlineText(text="Select Main Theme"))
         self.add_widget(MDDialogButtonContainer(
             Widget(),
             MDIconButton(icon="check", on_release=lambda x: confirm()),
