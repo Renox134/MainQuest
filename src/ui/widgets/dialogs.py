@@ -234,11 +234,11 @@ class ExportDialog(MDDialog):
     # ------------------------------------------------------------------ SAF
     def _launch_saf_picker(self):
         intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-        # Pre-open the Downloads folder as a sensible default
+        # Pass the initial URI as a string, not a Uri object
         downloads_uri = Uri.parse(
             "content://com.android.externalstorage.documents/document/primary%3ADownloads"
         )
-        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, downloads_uri)
+        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, downloads_uri.toString())
         mActivity.startActivityForResult(intent, REQUEST_CODE_PICK_FOLDER)
 
     def _bind_activity_result(self):
