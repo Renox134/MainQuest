@@ -1,5 +1,8 @@
 from config import Config
 
+import os
+import shutil
+
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
 from kivy.uix.colorpicker import ColorPicker
@@ -8,9 +11,21 @@ from kivymd.app import MDApp
 from kivymd.uix.list import MDListItem, MDListItemLeadingIcon, MDListItemHeadlineText
 from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
     MDDialogSupportingText, MDDialogContentContainer
-from kivymd.uix.button import MDIconButton
+from kivymd.uix.button import MDIconButton, MDButton, MDButtonText
 from kivymd.uix.textfield import MDTextField, MDTextFieldMaxLengthText, MDTextFieldHelperText
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.filemanager import MDFileManager
+from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
+from kivymd.uix.label import MDLabel
+
+try:
+    from android.permissions import request_permissions, Permission
+    from android import mActivity
+    from jnius import autoclass
+
+    IS_ANDROID = True
+except ImportError:
+    IS_ANDROID = False
 
 
 class ConfirmDialog(MDDialog):
@@ -130,3 +145,99 @@ class NumberSelectDialog(MDDialog):
             MDIconButton(icon="check", on_release=lambda x: confirm()),
             MDIconButton(icon="close", on_release=lambda x: self.dismiss())
         ))
+
+
+class ExportDialog(MDDialog):
+    def __init__(self, data_path: str, config_path: str, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.data_path = data_path
+        self.config_path = config_path
+        self.selected_folder = None
+
+        self.file_manager = MDFileManager(
+            exit_manager=self._close_file_manager,
+            select_path=self._on_folder_selected,
+            selector="folder",
+        )
+
+        self.status_label = MDLabel(
+            text="No folder selected",
+            halign="center",
+            adaptive_height=True,
+        )
+
+        def on_browse():
+            if IS_ANDROID:
+                request_permissions(
+                    [Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE],
+                    lambda perms, grants: self._open_file_manager() if all(grants) else None
+                )
+            else:
+                self._open_file_manager()
+
+        def on_confirm():
+            if not self.selected_folder:
+                self.status_label.text = "Please select a folder first"
+                return
+            self._do_export()
+
+        self.add_widget(MDDialogHeadlineText(text="Export Data Files"))
+        self.add_widget(MDDialogContentContainer(
+            MDBoxLayout(
+                MDLabel(
+                    text=(
+                        "Select a destination folder to export:\n"
+                        "  • main_quest.json\n"
+                        "  • config.json\n\n"
+                        "Files are normally stored in the app's private\n"
+                        "data directory and not directly accessible\n"
+                        "via a file browser."
+                    ),
+                    adaptive_height=True,
+                ),
+                self.status_label,
+                MDButton(
+                    MDButtonText(text="Browse"),
+                    on_release=lambda x: on_browse(),
+                    style="tonal",
+                ),
+                orientation="vertical",
+                adaptive_height=True,
+                spacing="12dp",
+                padding="4dp",
+            )
+        ))
+        self.add_widget(MDDialogButtonContainer(
+            Widget(),
+            MDIconButton(icon="check", on_release=lambda x: on_confirm()),
+            MDIconButton(icon="close", on_release=lambda x: self.dismiss()),
+        ))
+
+    def _open_file_manager(self):
+        start = "/sdcard" if IS_ANDROID else os.path.expanduser("~")
+        self.file_manager.show(start)
+
+    def _close_file_manager(self, *args):
+        self.file_manager.close()
+
+    def _on_folder_selected(self, path: str):
+        self.selected_folder = path
+        self.status_label.text = f"Selected: {path}"
+        self.file_manager.close()
+
+    def _do_export(self):
+        try:
+            for src in (self.data_path, self.config_path):
+                filename = os.path.basename(src)
+                dst = os.path.join(self.selected_folder, filename)
+                shutil.copy2(src, dst)
+
+            self.dismiss()
+            MDSnackbar(
+                MDSnackbarText(text="Files exported successfully!"),
+                duration=3,
+            ).open()
+
+        except Exception as e:
+            self.status_label.text = f"Export failed: {e}"
