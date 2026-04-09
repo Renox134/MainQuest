@@ -19,13 +19,21 @@ from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 from kivymd.uix.label import MDLabel
 
 try:
+    from android import mActivity, api_version
     from android.permissions import request_permissions, Permission
-    from android import mActivity
     from jnius import autoclass
+
+    Intent = autoclass("android.content.Intent")
+    DocumentsContract = autoclass("android.provider.DocumentsContract")
+    Uri = autoclass("android.net.Uri")
+    Environment = autoclass("android.os.Environment")
+    PythonActivity = autoclass("org.kivy.android.PythonActivity")
 
     IS_ANDROID = True
 except ImportError:
     IS_ANDROID = False
+
+REQUEST_CODE_PICK_FOLDER = 9901
 
 
 class ConfirmDialog(MDDialog):
@@ -153,11 +161,11 @@ class ExportDialog(MDDialog):
 
         self.data_path = data_path
         self.config_path = config_path
-        self.selected_folder = None
+        self.selected_folder = None  # only used on desktop
 
         self.file_manager = MDFileManager(
             exit_manager=self._close_file_manager,
-            select_path=self._on_folder_selected,
+            select_path=self._on_folder_selected_desktop,
             selector="folder",
         )
 
@@ -169,18 +177,23 @@ class ExportDialog(MDDialog):
 
         def on_browse():
             if IS_ANDROID:
-                request_permissions(
-                    [Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE],
-                    lambda perms, grants: self._open_file_manager() if all(grants) else None
-                )
+                self._launch_saf_picker()
             else:
                 self._open_file_manager()
 
         def on_confirm():
-            if not self.selected_folder:
-                self.status_label.text = "Please select a folder first"
-                return
-            self._do_export()
+            if IS_ANDROID:
+                # On Android, export is triggered immediately after SAF pick,
+                # but allow re-triggering if a URI is already stored
+                if not hasattr(self, "_saf_uri") or self._saf_uri is None:
+                    self.status_label.text = "Please select a folder first"
+                    return
+                self._do_export_android(self._saf_uri)
+            else:
+                if not self.selected_folder:
+                    self.status_label.text = "Please select a folder first"
+                    return
+                self._do_export_desktop(self.selected_folder)
 
         self.add_widget(MDDialogHeadlineText(text="Export Data Files"))
         self.add_widget(MDDialogContentContainer(
@@ -214,30 +227,91 @@ class ExportDialog(MDDialog):
             MDIconButton(icon="close", on_release=lambda x: self.dismiss()),
         ))
 
+        # Register SAF activity result handler
+        if IS_ANDROID:
+            self._bind_activity_result()
+
+    # ------------------------------------------------------------------ SAF
+    def _launch_saf_picker(self):
+        intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+        # Pass the initial URI as a string, not a Uri object
+        downloads_uri = Uri.parse(
+            "content://com.android.externalstorage.documents/document/primary%3ADownloads"
+        )
+        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, downloads_uri.toString())
+        mActivity.startActivityForResult(intent, REQUEST_CODE_PICK_FOLDER)
+
+    def _bind_activity_result(self):
+        from android.activity import bind as android_bind
+        android_bind(on_activity_result=self._on_activity_result)
+
+    def _on_activity_result(self, request_code, result_code, intent_data):
+        RESULT_OK = -1  # android.app.Activity.RESULT_OK
+        if request_code != REQUEST_CODE_PICK_FOLDER:
+            return
+        if result_code != RESULT_OK or intent_data is None:
+            self.status_label.text = "Folder selection cancelled"
+            return
+
+        uri = intent_data.getData()
+        # Take persistable permission so we can write without any storage permission
+        mActivity.getContentResolver().takePersistableUriPermission(
+            uri,
+            Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        )
+
+        self._saf_uri = uri
+        self.status_label.text = f"Selected: {uri.getLastPathSegment()}"
+        # Export immediately after selection
+        self._do_export_android(uri)
+
+    # ------------------------------------------------------------------ Export
+    def _do_export_android(self, tree_uri):
+        try:
+            ContentResolver = autoclass("android.content.ContentResolver")
+            DocumentFile = autoclass("androidx.documentfile.provider.DocumentFile")
+
+            resolver = mActivity.getContentResolver()
+            tree = DocumentFile.fromTreeUri(mActivity, tree_uri)
+
+            for src_path in (self.data_path, self.config_path):
+                filename = os.path.basename(src_path)
+                # Create or overwrite the file in the chosen folder
+                existing = tree.findFile(filename)
+                if existing:
+                    existing.delete()
+                dest_doc = tree.createFile("application/json", filename)
+                dest_uri = dest_doc.getUri()
+
+                out_stream = resolver.openOutputStream(dest_uri)
+                with open(src_path, "rb") as f:
+                    data = f.read()
+                out_stream.write(data)
+                out_stream.close()
+
+            self.dismiss()
+            MDSnackbar(MDSnackbarText(text="Files exported successfully!"), duration=3).open()
+
+        except Exception as e:
+            self.status_label.text = f"Export failed: {e}"
+
+    def _do_export_desktop(self, folder: str):
+        try:
+            for src in (self.data_path, self.config_path):
+                shutil.copy2(src, os.path.join(folder, os.path.basename(src)))
+            self.dismiss()
+            MDSnackbar(MDSnackbarText(text="Files exported successfully!"), duration=3).open()
+        except Exception as e:
+            self.status_label.text = f"Export failed: {e}"
+
+    # ------------------------------------------------------------------ Desktop file manager
     def _open_file_manager(self):
-        start = "/sdcard" if IS_ANDROID else os.path.expanduser("~")
-        self.file_manager.show(start)
+        self.file_manager.show(os.path.expanduser("~"))
 
     def _close_file_manager(self, *args):
         self.file_manager.close()
 
-    def _on_folder_selected(self, path: str):
+    def _on_folder_selected_desktop(self, path: str):
         self.selected_folder = path
         self.status_label.text = f"Selected: {path}"
         self.file_manager.close()
-
-    def _do_export(self):
-        try:
-            for src in (self.data_path, self.config_path):
-                filename = os.path.basename(src)
-                dst = os.path.join(self.selected_folder, filename)
-                shutil.copy2(src, dst)
-
-            self.dismiss()
-            MDSnackbar(
-                MDSnackbarText(text="Files exported successfully!"),
-                duration=3,
-            ).open()
-
-        except Exception as e:
-            self.status_label.text = f"Export failed: {e}"

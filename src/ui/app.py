@@ -13,6 +13,8 @@ from ui.widgets.edit_quest_screen import EditQuestScreen
 from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressScreen
 from ui.widgets.dialogs import ThemeSelectDialog, ColorPickerDialog, NumberSelectDialog, \
     ExportDialog
+from ui.widgets.dialogs import ThemeSelectDialog, ColorPickerDialog, NumberSelectDialog, \
+    ExportDialog
 
 import os
 import shutil
@@ -39,7 +41,7 @@ from kivymd.uix.menu import MDDropdownMenu
 from kivymd.app import MDApp
 
 # this needs to be set to False when building
-PC_DEV = True  # times I accidentally build before setting to false: 10
+PC_DEV = False  # times I accidentally build before setting to false: 10
 
 if PC_DEV:
     Window.size = (350, 650)
