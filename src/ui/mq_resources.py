@@ -5,14 +5,14 @@ from model.quest import Quest
 from model.goal import Goal
 from model.milestone import Milestone
 from journal import Journal
-from config_reader import Config
+from ui.widgets.dialogs import ConfirmDialog
+from config import Config
 
 from datetime import datetime
 
 from kivy.properties import StringProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.animation import Animation
-from kivy.uix.widget import Widget
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.metrics import dp
@@ -21,11 +21,9 @@ from kivymd.uix.navigationbar import MDNavigationItem
 from kivymd.uix.list import MDListItem, MDListItemSupportingText, MDListItemTertiaryText, \
     MDListItemLeadingIcon, MDListItemHeadlineText
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.app import MDApp
-from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
-    MDDialogSupportingText
+
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarActionButton, MDSnackbarSupportingText, \
     MDSnackbarActionButtonText, MDSnackbarButtonContainer
 
@@ -96,27 +94,6 @@ class ListTaskItem(MDListItem):
         def undo():
             snackbar.dismiss()
             MDApp.get_running_app().undo_last_task()
-
-
-
-class ConfirmDialog(MDDialog):
-    def __init__(self, heading: str, supporting_text: str, confirm_func, *args, **kwargs):
-        self.heading = heading
-        self.supporting_text = supporting_text
-        self.confirm_func = confirm_func
-        super().__init__(*args, **kwargs)
-
-        def confirm():
-            self.dismiss()
-            confirm_func()
-
-        self.add_widget(MDDialogHeadlineText(text=heading))
-        self.add_widget(MDDialogSupportingText(text=supporting_text))
-        self.add_widget(MDDialogButtonContainer(
-            Widget(),
-            MDIconButton(icon="check", on_release=lambda x: confirm()),
-            MDIconButton(icon="close", on_release=lambda x: self.dismiss())
-        ))
 
 
 class MQ_Resource_Loader():

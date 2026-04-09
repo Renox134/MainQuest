@@ -2,7 +2,7 @@ from typing import List, Dict, Tuple
 
 from datetime import date, timedelta
 
-from config_reader import Config
+from config import Config
 
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, RoundedRectangle

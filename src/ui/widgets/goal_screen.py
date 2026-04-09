@@ -3,7 +3,7 @@ from typing import List
 from model.goal import Goal
 from ui.widgets.month_heat_map import MonthHeatmap
 from ui.widgets.weekly_bar_chart import WeeklyBarChart
-from config_reader import Config
+from config import Config
 
 from datetime import datetime, timedelta, date
 

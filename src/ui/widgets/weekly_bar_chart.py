@@ -1,6 +1,6 @@
 from typing import Dict
 
-from config_reader import Config
+from config import Config
 
 from datetime import date
 
@@ -127,7 +127,7 @@ class WeeklyBarChart(Widget):
                 bx = plot_x + i * (bar_w + BAR_GAP)
                 bh = (v / max_v) * plot_h if max_v > 0 else 0
 
-                Color(*get_color_from_hex(Config.get("month_heatmap_normal")))
+                Color(*get_color_from_hex(Config.get("bar_chart_color", "#07771C")))
                 Rectangle(pos=(bx, plot_y), size=(bar_w, bh))
 
                 # x label only at the first bar of each new month

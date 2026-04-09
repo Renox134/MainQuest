@@ -60,3 +60,114 @@ MDScreen:
                             icon: "calendar"
                             text: "Calendar"
                             on_release: app.on_calendar_pressed()
+
+        MDNavigationDrawer:
+            id: nav_drawer
+            drawer_type: "modal"
+            radius: 0, dp(16), dp(16), 0
+
+            MDNavigationDrawerMenu:
+
+                MDNavigationDrawerLabel:
+                    text: "Settings"
+                    halign: "center"
+
+                MDNavigationDrawerDivider:
+
+                MDNavigationDrawerItem:
+
+                    MDNavigationDrawerItemLeadingIcon:
+                        icon: "palette"
+
+                    MDNavigationDrawerItemText:
+                        text: "Styling Options"
+
+                MDNavigationDrawerItem:
+                    on_release: app.select_main_color_theme()
+
+                    MDNavigationDrawerItemText:
+                        id: main_color_theme_text
+
+                    MDIconButton:
+                        icon: "square"
+                        on_release: app.select_main_color_theme()
+
+                MDNavigationDrawerItem:
+
+                    MDNavigationDrawerItemText:
+                        id: theme_style_text
+
+                    MDSwitch:
+                        id: theme_style_switch
+                        icon_active: "lightbulb-on"
+                        icon_active_color: "white"
+                        icon_inactive: "lightbulb"
+                        icon_inactive_color: "grey"
+                        on_active: app.update_app_lighting_theme()
+
+                MDNavigationDrawerItem:
+
+                    MDNavigationDrawerItemText:
+                        text: "Diagramm Colors"
+                        halign: "center"
+
+                MDNavigationDrawerItem:
+                    on_release: app.open_color_picker("month_heatmap_empty")
+
+                    MDNavigationDrawerItemText:
+                        text: "No activity"
+
+                    MDIconButton:
+                        id: color_low_activity
+                        icon: "palette"
+                        on_release: app.open_color_picker("month_heatmap_empty")
+
+
+                MDNavigationDrawerItem:
+                    on_release: app.open_color_picker("month_heatmap_normal")
+
+                    MDNavigationDrawerItemText:
+                        text: "Medium activity"
+
+                    MDIconButton:
+                        id: color_medium_activity
+                        icon: "palette"
+                        on_release: app.open_color_picker("month_heatmap_normal")
+
+
+                MDNavigationDrawerItem:
+                    on_release: app.open_color_picker("month_heatmap_high")
+
+                    MDNavigationDrawerItemText:
+                        text: "High activity"
+
+                    MDIconButton:
+                        id: color_high_activity
+                        icon: "palette"
+                        on_release: app.open_color_picker("month_heatmap_high")
+
+                MDNavigationDrawerItem:
+                    on_release: app.open_color_picker("bar_chart_color")
+
+                    MDNavigationDrawerItemText:
+                        text: "Bar Chart Color"
+
+                    MDIconButton:
+                        id: color_high_activity
+                        icon: "palette"
+                        on_release: app.open_color_picker("bar_chart_color")
+
+                MDNavigationDrawerDivider:
+
+                MDNavigationDrawerItem:
+
+                    MDNavigationDrawerItemText:
+                        text: "Diagramm Settings"
+                        halign: "center"
+
+                MDNavigationDrawerItem:
+                    on_release: app.select_max_number_of_weeks_for_barchart()
+
+                    MDNavigationDrawerItemText:
+                        id: bar_chart_max_weeks
+                        text: "Max number of weeks: "
