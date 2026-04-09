@@ -1,5 +1,6 @@
 from model.quest import Quest
-from ui.mq_resources import ListTaskItem, ConfirmDialog
+from ui.mq_resources import ListTaskItem
+from ui.widgets.dialogs import ConfirmDialog
 
 from kivy.lang.builder import Builder
 from kivy.uix.behaviors import ButtonBehavior

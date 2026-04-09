@@ -1,6 +1,6 @@
 from typing import Any, List, Dict
 
-from config_reader import Config
+from config import Config
 from journal import Journal
 from model.task import Task
 from model.quest import Quest
@@ -11,6 +11,8 @@ from ui.widgets.goal_screen import GoalScreen
 from ui.widgets.edit_goal_screen import EditGoalScreen
 from ui.widgets.edit_quest_screen import EditQuestScreen
 from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressScreen
+from ui.widgets.dialogs import ThemeSelectDialog, ColorPickerDialog, NumberSelectDialog, \
+    ExportDialog
 from ui.widgets.dialogs import ThemeSelectDialog, ColorPickerDialog, NumberSelectDialog, \
     ExportDialog
 
@@ -24,6 +26,7 @@ from kivy.uix.widget import Widget
 from kivy.resources import resource_find
 from kivy.metrics import dp
 from kivy.clock import Clock
+from kivy.utils import get_color_from_hex
 
 import asynckivy
 
@@ -38,7 +41,7 @@ from kivymd.uix.menu import MDDropdownMenu
 from kivymd.app import MDApp
 
 # this needs to be set to False when building
-PC_DEV = False  # times I accidentally build before setting to false: 9
+PC_DEV = True  # times I accidentally build before setting to false: 10
 
 if PC_DEV:
     Window.size = (350, 650)
@@ -62,8 +65,6 @@ class MainQuestApp(MDApp):
         super().__init__(**kwargs)
 
     def build(self):
-        self.theme_cls.theme_style = "Dark"
-        self.theme_cls.primary_palette = "Olive"
         return Builder.load_file("ui/app.kv")
 
     def on_start(self):
@@ -78,6 +79,10 @@ class MainQuestApp(MDApp):
 
         Config.load_data(self.config_path)
         self.journal.import_journal(self.data_path)
+
+        # initialize stylig
+        self.theme_cls.primary_palette = Config.get("primary_palette", "Olive")
+        self.theme_cls.theme_style = Config.get("theme_style", "Dark")
 
         # initialize quests
         for quest in self.journal.quests:
@@ -265,8 +270,47 @@ class MainQuestApp(MDApp):
         print("Dummy")
 
     def on_menu_pressed(self, *args):
-        self.root.ids.top_app_bar.do_layout()
-        print("menu pressed")
+        self.root.ids.nav_drawer.set_state("toggle")
+        self.root.ids.main_color_theme_text.text = "Main Theme: " + self.theme_cls.primary_palette
+
+        # adjust for theme style
+        style = self.theme_cls.theme_style
+        self.root.ids.theme_style_text.text = "Theme Style: " + style
+        self.root.ids.theme_style_switch.active = style == "Light"
+
+        text = "Max number of weeks: " + str(Config.get("goal_weekly_plot_max_weeks", 52))
+        self.root.ids.bar_chart_max_weeks.text = text
+
+    def select_main_color_theme(self):
+        d = ThemeSelectDialog()
+        d.open()
+
+    def update_app_lighting_theme(self):
+        state = "Light" if self.root.ids.theme_style_switch.active else "Dark"
+        self.theme_cls.theme_style = state
+        Config.store("theme_style", state)
+
+    def open_color_picker(self, config_key: str):
+        def rgb_to_hex(r, g, b):
+            r = int(255 * r)
+            g = int(255 * g)
+            b = int(255 * b)
+            return f'#{r:02X}{g:02X}{b:02X}'
+
+        def confirm(color):
+            Config.store(config_key, rgb_to_hex(color[0], color[1], color[2]))
+
+        current_color = Config.get(config_key, "#ffffff")
+        ColorPickerDialog(lambda x: confirm(x), get_color_from_hex(current_color)).open()
+
+    def select_max_number_of_weeks_for_barchart(self):
+        def confirm(text: str):
+            Config.store("goal_weekly_plot_max_weeks", int(text))
+            text = "Max number of weeks: " + str(Config.get("goal_weekly_plot_max_weeks", 52))
+            self.root.ids.bar_chart_max_weeks.text = text
+
+        current = str(Config.get("goal_weekly_plot_max_weeks", 52))
+        NumberSelectDialog(current, 3, lambda x: confirm(x)).open()
 
     def on_more_pressed(self, *args):
         drop_down = MDDropdownMenu()
@@ -426,10 +470,14 @@ class MainQuestApp(MDApp):
     def export(self):
         ExportDialog(self.data_path, self.config_path).open()
 
-    def on_stop(self):
+    def save(self) -> None:
         self.journal.export_journal(self.data_path)
+        Config.save(self.config_path)
+
+    def on_stop(self):
+        self.save()
         return super().on_stop()
 
     def on_pause(self):
-        self.journal.export_journal(self.data_path)
+        self.save()
         return super().on_pause()

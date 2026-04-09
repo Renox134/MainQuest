@@ -1,7 +1,7 @@
 from journal import Journal
 from model.quest import Quest
 from ui.widgets.quest_widget import QuestWidget
-from ui.mq_resources import ConfirmDialog
+from ui.widgets.dialogs import ConfirmDialog
 
 from kivymd.app import MDApp
 from kivymd.uix.menu import MDDropdownMenu
@@ -114,7 +114,7 @@ class EditQuestScreen(MDScreen):
         Are you sure you want to permanently delete this quest?
         By deleting the quest, all tasks are aborted and all goals will loose the all progress that
         was previously added through this quest. In contrast,aborting the quest would keep the
-        progress that was already done, while only remaning tasks are aborted. 
+        progress that was already done, while only remaning tasks are aborted.
         """
         ConfirmDialog("Delete Quest", warning_text, lambda: confirm_func()).open()
 

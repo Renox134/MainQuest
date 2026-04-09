@@ -1,7 +1,7 @@
 from typing import Dict, Any, List, Optional
 from datetime import datetime, date, time
 
-from config_reader import Config
+from config import Config
 
 
 class Task:

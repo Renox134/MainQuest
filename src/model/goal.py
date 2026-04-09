@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, date
 
 from model.quest import Quest
 from object_parser import ObjectParser
-from config_reader import Config
+from config import Config
 
 
 class Goal:

@@ -7,10 +7,14 @@
     "goal_high_performance_border": 5,
     "goal_weekly_plot_max_weeks": 52,
     "date_format_goal_screen": "%d.%m",
-    "month_heatmap_empty": "#07160A",
-    "month_heatmap_normal": "#07771d",
-    "month_heatmap_high": "#19dd41",
+    "month_heatmap_empty": "#06230A",
+    "month_heatmap_normal": "#07771C",
+    "month_heatmap_high": "#18DD40",
+    "bar_chart_color": "#07771C",
     "month_heatmap_cell_gap": 5,
-    "month_heatmap_radius": [5]
-
+    "month_heatmap_radius": [
+        5
+    ],
+    "primary_palette": "Olive",
+    "theme_style": "Dark"
 }
