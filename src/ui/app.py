@@ -41,7 +41,7 @@ from kivymd.uix.menu import MDDropdownMenu
 from kivymd.app import MDApp
 
 # this needs to be set to False when building
-PC_DEV = True  # times I accidentally build before setting to false: 10
+PC_DEV = False  # times I accidentally build before setting to false: 10
 
 if PC_DEV:
     Window.size = (350, 650)

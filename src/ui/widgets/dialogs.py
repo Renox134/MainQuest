@@ -1,4 +1,4 @@
-from config_reader import Config
+from config import Config
 
 import os
 import shutil
