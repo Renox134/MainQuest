@@ -10,7 +10,8 @@ from ui.widgets.task_screen import TaskScreen
 from ui.widgets.goal_screen import GoalScreen
 from ui.widgets.edit_goal_screen import EditGoalScreen
 from ui.widgets.edit_quest_screen import EditQuestScreen
-from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressScreen, ThemeSelectDialog
+from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressScreen
+from ui.widgets.dialogs import ThemeSelectDialog, ColorPickerDialog
 
 import os
 import shutil
@@ -22,6 +23,7 @@ from kivy.uix.widget import Widget
 from kivy.resources import resource_find
 from kivy.metrics import dp
 from kivy.clock import Clock
+from kivy.utils import get_color_from_hex
 
 import asynckivy
 
@@ -281,6 +283,19 @@ class MainQuestApp(MDApp):
         state = "Light" if self.root.ids.theme_style_switch.active else "Dark"
         self.theme_cls.theme_style = state
         Config.store("theme_style", state)
+
+    def open_color_picker(self, config_key: str):
+        def rgb_to_hex(r, g, b):
+            r = int(255 * r)
+            g = int(255 * g)
+            b = int(255 * b)
+            return f'#{r:02X}{g:02X}{b:02X}'
+
+        def confirm(color):
+            Config.store(config_key, rgb_to_hex(color[0], color[1], color[2]))
+
+        current_color = Config.get(config_key, "#ffffff")
+        ColorPickerDialog(lambda x: confirm(x), get_color_from_hex(current_color)).open()
 
     def on_more_pressed(self, *args):
         drop_down = MDDropdownMenu()

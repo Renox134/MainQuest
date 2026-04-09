@@ -1,7 +1,7 @@
 from journal import Journal
 from model.quest import Quest
 from ui.widgets.quest_widget import QuestWidget
-from ui.mq_resources import ConfirmDialog
+from ui.widgets.dialogs import ConfirmDialog
 
 from kivymd.app import MDApp
 from kivymd.uix.menu import MDDropdownMenu

@@ -105,4 +105,56 @@ MDScreen:
                         icon_inactive_color: "grey"
                         on_active: app.update_app_lighting_theme()
 
+                MDNavigationDrawerItem:
+
+                    MDNavigationDrawerItemText:
+                        text: "Diagramm Colors"
+                        halign: "center"
+
+                MDNavigationDrawerItem:
+                    on_release: app.open_color_picker("month_heatmap_empty")
+
+                    MDNavigationDrawerItemText:
+                        text: "No activity"
+
+                    MDIconButton:
+                        id: color_low_activity
+                        icon: "palette"
+                        on_release: app.open_color_picker("month_heatmap_empty")
+
+
+                MDNavigationDrawerItem:
+                    on_release: app.open_color_picker("month_heatmap_normal")
+
+                    MDNavigationDrawerItemText:
+                        text: "Medium activity"
+
+                    MDIconButton:
+                        id: color_medium_activity
+                        icon: "palette"
+                        on_release: app.open_color_picker("month_heatmap_normal")
+
+
+                MDNavigationDrawerItem:
+                    on_release: app.open_color_picker("month_heatmap_high")
+
+                    MDNavigationDrawerItemText:
+                        text: "High activity"
+
+                    MDIconButton:
+                        id: color_high_activity
+                        icon: "palette"
+                        on_release: app.open_color_picker("month_heatmap_high")
+
+                MDNavigationDrawerItem:
+                    on_release: app.open_color_picker("bar_chart_color")
+
+                    MDNavigationDrawerItemText:
+                        text: "Bar Chart Color"
+
+                    MDIconButton:
+                        id: color_high_activity
+                        icon: "palette"
+                        on_release: app.open_color_picker("bar_chart_color")
+
                 MDNavigationDrawerDivider:
