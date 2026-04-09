@@ -11,6 +11,8 @@ from ui.widgets.goal_screen import GoalScreen
 from ui.widgets.edit_goal_screen import EditGoalScreen
 from ui.widgets.edit_quest_screen import EditQuestScreen
 from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressScreen
+from ui.widgets.dialogs import ThemeSelectDialog, ColorPickerDialog, NumberSelectDialog, \
+    ExportDialog
 
 import os
 import shutil
@@ -277,9 +279,9 @@ class MainQuestApp(MDApp):
             drop_down.dismiss()
             self.open_new_goal_dialog()
 
-        def save_press():
+        def export_press():
             drop_down.dismiss()
-            self.journal.export_journal(self.data_path)
+            self.export()
 
         menu_items = []
 
@@ -294,8 +296,8 @@ class MainQuestApp(MDApp):
         elif self.root.ids.screen_manager.current == "main_window":
             menu_items.extend([
                 {
-                    "text": "Save",
-                    "on_release": lambda: save_press()
+                    "text": "Export",
+                    "on_release": lambda: export_press()
                 },
                 {
                     "text": "Add new Quest",
@@ -420,6 +422,9 @@ class MainQuestApp(MDApp):
             self.y - (date_dialog.height - dp(320)),
         ]
         date_dialog.open()
+
+    def export(self):
+        ExportDialog(self.data_path, self.config_path).open()
 
     def on_stop(self):
         self.journal.export_journal(self.data_path)
