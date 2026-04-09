@@ -9,14 +9,12 @@ from kivymd.uix.list import MDListItem, MDListItemLeadingIcon, MDListItemHeadlin
 from kivymd.uix.dialog import MDDialog, MDDialogButtonContainer, MDDialogHeadlineText, \
     MDDialogSupportingText, MDDialogContentContainer
 from kivymd.uix.button import MDIconButton
+from kivymd.uix.textfield import MDTextField, MDTextFieldMaxLengthText, MDTextFieldHelperText
 from kivymd.uix.boxlayout import MDBoxLayout
 
 
 class ConfirmDialog(MDDialog):
     def __init__(self, heading: str, supporting_text: str, confirm_func, *args, **kwargs):
-        self.heading = heading
-        self.supporting_text = supporting_text
-        self.confirm_func = confirm_func
         super().__init__(*args, **kwargs)
 
         def confirm():
@@ -57,8 +55,10 @@ class ThemeSelectDialog(MDDialog):
 
         for color in color_options:
             item = MDListItem(
-                MDListItemLeadingIcon(icon="palette", icon_color=color.lower(), theme_icon_color="Custom"),
-                MDListItemHeadlineText(text=color, text_color=color.lower(), theme_text_color="Custom"),
+                MDListItemLeadingIcon(icon="palette", icon_color=color.lower(),
+                                      theme_icon_color="Custom"),
+                MDListItemHeadlineText(text=color, text_color=color.lower(),
+                                       theme_text_color="Custom"),
                 on_release=lambda x, c=color: on_item_press(x, c),
             )
             color_list_layout.add_widget(item)
@@ -95,6 +95,36 @@ class ColorPickerDialog(MDDialog):
             self.color_picker,
             orientation="vertical"
         ))
+        self.add_widget(MDDialogButtonContainer(
+            Widget(),
+            MDIconButton(icon="check", on_release=lambda x: confirm()),
+            MDIconButton(icon="close", on_release=lambda x: self.dismiss())
+        ))
+
+
+class NumericTextField(MDTextField):
+    def insert_text(self, substring, from_undo=False):
+        filtered = ''.join(c for c in substring if c.isdigit())
+        super().insert_text(filtered, from_undo=from_undo)
+
+
+class NumberSelectDialog(MDDialog):
+    def __init__(self, current: str, max_digits: int, confirm_func, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.text_field = NumericTextField(
+            MDTextFieldHelperText(text="Only digits are allowed", mode="on_error"),
+            MDTextFieldMaxLengthText(max_text_length=max_digits),
+            mode="filled",
+            text=current,
+        )
+
+        def confirm():
+            self.dismiss()
+            confirm_func(self.text_field.text)
+
+        self.add_widget(MDDialogHeadlineText(text="Select Number"))
+        self.add_widget(MDDialogContentContainer(self.text_field))
         self.add_widget(MDDialogButtonContainer(
             Widget(),
             MDIconButton(icon="check", on_release=lambda x: confirm()),

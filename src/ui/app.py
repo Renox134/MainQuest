@@ -11,7 +11,7 @@ from ui.widgets.goal_screen import GoalScreen
 from ui.widgets.edit_goal_screen import EditGoalScreen
 from ui.widgets.edit_quest_screen import EditQuestScreen
 from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressScreen
-from ui.widgets.dialogs import ThemeSelectDialog, ColorPickerDialog
+from ui.widgets.dialogs import ThemeSelectDialog, ColorPickerDialog, NumberSelectDialog
 
 import os
 import shutil
@@ -275,6 +275,9 @@ class MainQuestApp(MDApp):
         self.root.ids.theme_style_text.text = "Theme Style: " + style
         self.root.ids.theme_style_switch.active = style == "Light"
 
+        text = "Max number of weeks: " + str(Config.get("goal_weekly_plot_max_weeks", 52))
+        self.root.ids.bar_chart_max_weeks.text = text
+
     def select_main_color_theme(self):
         d = ThemeSelectDialog()
         d.open()
@@ -296,6 +299,15 @@ class MainQuestApp(MDApp):
 
         current_color = Config.get(config_key, "#ffffff")
         ColorPickerDialog(lambda x: confirm(x), get_color_from_hex(current_color)).open()
+
+    def select_max_number_of_weeks_for_barchart(self):
+        def confirm(text: str):
+            Config.store("goal_weekly_plot_max_weeks", int(text))
+            text = "Max number of weeks: " + str(Config.get("goal_weekly_plot_max_weeks", 52))
+            self.root.ids.bar_chart_max_weeks.text = text
+
+        current = str(Config.get("goal_weekly_plot_max_weeks", 52))
+        NumberSelectDialog(current, 3, lambda x: confirm(x)).open()
 
     def on_more_pressed(self, *args):
         drop_down = MDDropdownMenu()

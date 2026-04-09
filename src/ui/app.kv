@@ -158,3 +158,10 @@ MDScreen:
                         on_release: app.open_color_picker("bar_chart_color")
 
                 MDNavigationDrawerDivider:
+
+                MDNavigationDrawerItem:
+                    on_release: app.select_max_number_of_weeks_for_barchart()
+
+                    MDNavigationDrawerItemText:
+                        id: bar_chart_max_weeks
+                        text: "Max number of weeks: "

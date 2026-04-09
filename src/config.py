@@ -22,10 +22,12 @@ class Config():
             return default
         else:
             return DATA[key]
-        
+
+    @staticmethod
     def store(key: str, value: Any) -> None:
         DATA[key] = value
-        
+
+    @staticmethod
     def save(path: str) -> None:
         with open(path, "w", encoding="utf8") as file:
             json.dump(DATA, file, indent=4)
