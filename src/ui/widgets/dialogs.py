@@ -20,9 +20,8 @@ from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 from kivymd.uix.label import MDLabel
 
 try:
-    from android import mActivity, api_version
-    from android.permissions import request_permissions, Permission
-    from jnius import autoclass
+    from android import mActivity  # type: ignore
+    from jnius import autoclass  # type: ignore
 
     Intent = autoclass("android.content.Intent")
     DocumentsContract = autoclass("android.provider.DocumentsContract")
@@ -243,7 +242,7 @@ class ExportDialog(MDDialog):
         mActivity.startActivityForResult(intent, REQUEST_CODE_PICK_FOLDER)
 
     def _bind_activity_result(self):
-        from android.activity import bind as android_bind
+        from android.activity import bind as android_bind  # type: ignore
         android_bind(on_activity_result=self._on_activity_result)
 
     def _on_activity_result(self, request_code, result_code, intent_data):
@@ -269,7 +268,6 @@ class ExportDialog(MDDialog):
     # ------------------------------------------------------------------ Export
     def _do_export_android(self, tree_uri):
         try:
-            ContentResolver = autoclass("android.content.ContentResolver")
             DocumentFile = autoclass("androidx.documentfile.provider.DocumentFile")
 
             resolver = mActivity.getContentResolver()

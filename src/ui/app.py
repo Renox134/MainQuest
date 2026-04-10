@@ -13,8 +13,6 @@ from ui.widgets.edit_quest_screen import EditQuestScreen
 from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressScreen
 from ui.widgets.dialogs import ThemeSelectDialog, ColorPickerDialog, NumberSelectDialog, \
     ExportDialog
-from ui.widgets.dialogs import ThemeSelectDialog, ColorPickerDialog, NumberSelectDialog, \
-    ExportDialog
 
 import os
 import shutil
