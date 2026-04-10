@@ -6,6 +6,7 @@ import shutil
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
 from kivy.uix.colorpicker import ColorPicker
+from kivy.metrics import dp
 
 from kivymd.app import MDApp
 from kivymd.uix.list import MDListItem, MDListItemLeadingIcon, MDListItemHeadlineText
@@ -73,7 +74,7 @@ class ThemeSelectDialog(MDDialog):
             Config.store("primary_palette", color)
             self.dismiss()
 
-        scroll_view = ScrollView(size_hint_y=None, height=300)
+        scroll_view = ScrollView(size_hint_y=None, height=dp(300))
         color_list_layout = MDBoxLayout(orientation='vertical', adaptive_height=True)
 
         for color in color_options:
@@ -110,7 +111,7 @@ class ColorPickerDialog(MDDialog):
         self.color_picker = ColorPicker(
             color=initial_color,
             size_hint_y=None,
-            height=400
+            height=dp(400)
         )
 
         self.add_widget(MDDialogHeadlineText(text="Select Color"))
