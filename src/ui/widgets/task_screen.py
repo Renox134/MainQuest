@@ -5,6 +5,7 @@ from ui.mq_resources import ListTaskItem
 
 from datetime import datetime, time
 
+from kivymd.app import MDApp
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 from kivymd.uix.pickers import MDModalDatePicker, MDTimePickerDialVertical
 from kivymd.uix.screen import MDScreen
@@ -12,6 +13,7 @@ from kivymd.uix.list import MDListItem, MDListItemHeadlineText
 from kivymd.uix.divider import MDDivider
 
 from kivy.metrics import dp
+from kivy.core.window import Window
 from kivy.lang import Builder
 Builder.load_file("ui/widgets/task_screen.kv")
 
@@ -170,3 +172,16 @@ class TaskScreen(MDScreen):
             pos_hint={"center_x": 0.5},
             size_hint_x=0.9,
         ).open()
+
+    def on_enter(self):
+        Window.bind(on_keyboard=self.back_click)
+
+    def on_pre_leave(self):
+        Window.unbind(on_keyboard=self.back_click)
+
+    def back_click(self, window, key, keycode, *largs):
+        if key == 27:
+            # Navigate to previous screen
+            MDApp.get_running_app().close_task_screen(self)
+            return True
+        return False

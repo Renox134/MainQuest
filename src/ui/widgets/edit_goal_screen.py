@@ -141,3 +141,16 @@ class EditGoalScreen(MDScreen):
 
     def update_high_performance_border(self) -> None:
         self.goal.high_performance_border = int(self.ids.slider.value)
+
+    def on_enter(self):
+        Window.bind(on_keyboard=self.back_click)
+
+    def on_pre_leave(self):
+        Window.unbind(on_keyboard=self.back_click)
+
+    def back_click(self, window, key, keycode, *largs):
+        if key == 27:
+            # Navigate to previous screen
+            self.save_and_close()
+            return True
+        return False

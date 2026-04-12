@@ -8,8 +8,10 @@ from config import Config
 from datetime import datetime, timedelta, date
 
 from kivymd.uix.screen import MDScreen
+from kivymd.app import MDApp
 
 from kivy.metrics import dp
+from kivy.core.window import Window
 from kivy.lang import Builder
 Builder.load_file("ui/widgets/goal_screen.kv")
 
@@ -29,6 +31,19 @@ class GoalScreen(MDScreen):
     def __init__(self, *args, **kwargs):
         self.month_heatmaps: list[MonthHeatmap] = []
         super().__init__(*args, **kwargs)
+
+    def on_enter(self):
+        Window.bind(on_keyboard=self.back_click)
+
+    def on_pre_leave(self):
+        Window.unbind(on_keyboard=self.back_click)
+
+    def back_click(self, window, key, keycode, *largs):
+        if key == 27:
+            # Navigate to previous screen
+            MDApp.get_running_app().close_context_screen()
+            return True
+        return False
 
     def on_kv_post(self, base_widget):
         swiper = self.ids.swiper
