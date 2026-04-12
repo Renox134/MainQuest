@@ -76,12 +76,12 @@ class ListTaskItem(MDListItem):
 
         all_subtasks = self.task.get_linearized_task_list(self.task)
         progress_text = ""
-        if len(all_subtasks) > 0:
+        if len(all_subtasks) - 1 > 0:
             completion = 0
             for t in all_subtasks:
                 if t.completion_date is not None:
                     completion += 1
-            progress_text += str(completion) + "/" + str(len(all_subtasks))
+            progress_text += str(completion) + "/" + str(len(all_subtasks) - 1)
 
         if progress_text != "":
             self.add_widget(MDListItemTrailingSupportingText(text=progress_text))
