@@ -19,7 +19,7 @@ from kivy.metrics import dp
 
 from kivymd.uix.navigationbar import MDNavigationItem
 from kivymd.uix.list import MDListItem, MDListItemSupportingText, MDListItemTertiaryText, \
-    MDListItemLeadingIcon, MDListItemHeadlineText
+    MDListItemLeadingIcon, MDListItemHeadlineText, MDListItemTrailingSupportingText
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.app import MDApp
@@ -60,11 +60,31 @@ class ListTaskItem(MDListItem):
         time_format = Config.get("time_format")
         if self.task.notes != "":
             self.add_widget(MDListItemSupportingText(text=self.task.notes))
+
+        due_date_text = ""
         if self.task.date is not None:
-            due_date_text = "Due: " + self.task.date.strftime(date_format)
+            due_date_text += self.task.date.strftime(date_format)
         if self.task.start_time is not None:
-            due_date_text += f", {self.task.start_time.strftime(time_format)}"
+            due_date_text += ", " if due_date_text != "" else ""
+            due_date_text += f"{self.task.start_time.strftime(time_format)}"
+        if self.task.end_time is not None:
+            due_date_text += " - " if due_date_text != "" else ""
+            due_date_text += f"{self.task.end_time.strftime(time_format)}"
+
+        if due_date_text != "":
             self.add_widget(MDListItemTertiaryText(text=due_date_text))
+
+        all_subtasks = self.task.get_linearized_task_list(self.task)
+        progress_text = ""
+        if len(all_subtasks) > 0:
+            completion = 0
+            for t in all_subtasks:
+                if t.completion_date is not None:
+                    completion += 1
+            progress_text += str(completion) + "/" + str(len(all_subtasks))
+
+        if progress_text != "":
+            self.add_widget(MDListItemTrailingSupportingText(text=progress_text))
 
     def complete_task(self):
         Task.complete_task_recursively(self.task, datetime.now(), False)
