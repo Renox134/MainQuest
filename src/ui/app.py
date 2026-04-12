@@ -163,7 +163,9 @@ class MainQuestApp(MDApp):
         entry_field = MDTextField(
             MDTextFieldHintText(
                 text="Quest Name"
-                )
+                ),
+                input_type="text",
+                keyboard_suggestions=True,
             )
 
         def confirm_func():
@@ -194,7 +196,9 @@ class MainQuestApp(MDApp):
         entry_field = MDTextField(
             MDTextFieldHintText(
                 text="Goal Name"
-                )
+                ),
+                input_type="text",
+                keyboard_suggestions=True,
             )
 
         def confirm_func():
@@ -225,7 +229,9 @@ class MainQuestApp(MDApp):
         entry_field = MDTextField(
             MDTextFieldHintText(
                 text="Task Description"
-                )
+                ),
+                input_type="text",
+                keyboard_suggestions=True,
             )
 
         def confirm_func():

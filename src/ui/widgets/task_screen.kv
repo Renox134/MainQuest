@@ -20,6 +20,8 @@
                 id: description_field
                 mode: "filled"
                 on_focus: root.update_description()
+                keyboard_suggestions: True
+                input_type: "text"
 
                 MDTextFieldHintText:
                     text: "Task Description"
@@ -28,6 +30,8 @@
                 id: notes_field
                 mode: "filled"
                 on_focus: root.update_notes()
+                input_type: "text"
+                keyboard_suggestions: True
 
                 MDTextFieldHintText:
                     text: "Notes"
