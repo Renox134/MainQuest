@@ -252,7 +252,54 @@ class MainQuestApp(MDApp):
             keyboard_suggestions=True,
         )
 
+        suggestion_menu = MDDropdownMenu(
+            caller=entry_field,
+            items=[],
+            width_mult=4,
+            position="bottom"
+        )
+
+        is_applying_suggestion = False
+
+        def on_text_change(instance, value: str) -> None:
+            if is_applying_suggestion:
+                return
+            if len(value) < 3:
+                suggestion_menu.dismiss()
+                return
+
+            matches = [
+                entry for entry in cache
+                if entry.lower().startswith(value.lower())
+            ]
+
+            if not matches:
+                suggestion_menu.dismiss()
+                return
+
+            suggestion_menu.items = [
+                {
+                    "text": entry,
+                    "on_release": lambda e=entry: apply_suggestion(e),
+                }
+                for entry in matches
+            ]
+            try:
+                suggestion_menu.open()
+            except WidgetException:
+                print("Widget exception caught")
+
+        def apply_suggestion(text: str) -> None:
+            nonlocal is_applying_suggestion
+            is_applying_suggestion = True
+            entry_field.text = text
+            is_applying_suggestion = False
+            suggestion_menu.dismiss()
+
+        entry_field.bind(text=on_text_change)
+
         def confirm_func():
+            suggestion_menu.dismiss()
             self.add_new_task(entry_field.text, calling_widget)
             dialog.dismiss()
 
