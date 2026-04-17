@@ -4,6 +4,10 @@ import json
 from datetime import datetime
 
 from model.quest import Quest
+from config import Config
+
+Config.load_data("src/config.json")
+
 
 class TestQuest:
 
@@ -30,8 +34,8 @@ class TestQuest:
     def quest_export(self, request: pytest.FixtureRequest, quest: str):
         try:
             q_1: Quest = request.getfixturevalue(quest)
+            print(isinstance(q_1, Quest))
             with open("test/test_quest.json", "w", encoding="utf-8") as file:
-
                 json.dump(q_1.to_dict(), file, indent=4)
         except:
             assert False

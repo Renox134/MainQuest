@@ -46,7 +46,8 @@
                 {
                     "description": "Build shelter"
                 }
-            ]
+            ],
+            "enable_cache": true
         },
         {
             "name": "Test Quest 1",
@@ -88,7 +89,8 @@
                 {
                     "description": "Build shelter"
                 }
-            ]
+            ],
+            "enable_cache": true
         },
         {
             "name": "Test Quest 2",
@@ -130,7 +132,8 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "enable_cache": true
         }
     ],
     "goals": [

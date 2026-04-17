@@ -44,5 +44,6 @@
         {
             "description": "Build shelter"
         }
-    ]
+    ],
+    "enable_cache": true
 }
