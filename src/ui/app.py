@@ -468,7 +468,6 @@ class MainQuestApp(MDApp):
         manager: MDScreenManager = self.root.ids.outer_screen_manager
         new_task_screen: TaskScreen = TaskScreen(task, parent_quest,
                                                  parent_task,
-                                                 self.open_new_task_dialog,
                                                  self.open_task_screens)
         manager.add_widget(new_task_screen)
         manager.transition.direction = "left"
