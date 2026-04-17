@@ -260,12 +260,16 @@ class MainQuestApp(MDApp):
         )
 
         is_applying_suggestion = False
+        menu_open = False
+        menu_open_pending = False
 
         def on_text_change(instance, value: str) -> None:
+            nonlocal menu_open, menu_open_pending
             if is_applying_suggestion:
                 return
             if len(value) < 3:
                 suggestion_menu.dismiss()
+                menu_open = False
                 return
 
             matches = [
@@ -275,6 +279,8 @@ class MainQuestApp(MDApp):
 
             if not matches:
                 suggestion_menu.dismiss()
+                menu_open = False
+                menu_open_pending = False
                 return
 
             suggestion_menu.items = [
@@ -284,17 +290,26 @@ class MainQuestApp(MDApp):
                 }
                 for entry in matches
             ]
-            try:
-                suggestion_menu.open()
-            except WidgetException:
-                print("Widget exception caught")
+            if not menu_open and not menu_open_pending:
+                menu_open_pending = True
+                def _open_menu(dt):
+                    nonlocal menu_open, menu_open_pending
+                    menu_open_pending = False
+                    try:
+                        suggestion_menu.open()
+                        menu_open = True
+                    except WidgetException:
+                        pass
+                Clock.schedule_once(_open_menu, 0.2)
 
         def apply_suggestion(text: str) -> None:
-            nonlocal is_applying_suggestion
+            nonlocal is_applying_suggestion, menu_open, menu_open_pending
             is_applying_suggestion = True
             entry_field.text = text
             is_applying_suggestion = False
             suggestion_menu.dismiss()
+            menu_open = False
+            menu_open_pending = False
 
         entry_field.bind(text=on_text_change)
 
