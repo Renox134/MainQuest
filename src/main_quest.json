@@ -71,7 +71,8 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "enable_cache": true
         },
         {
             "name": "Craft Weapons",
@@ -146,7 +147,8 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "enable_cache": true
         },
         {
             "name": "Find Allies",
@@ -189,7 +191,8 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "enable_cache": true
         },
         {
             "name": "Explore the Land",
@@ -212,7 +215,8 @@
                     "end_time": "08:00",
                     "completion_date": "28/02/2026, 07:55"
                 }
-            ]
+            ],
+            "enable_cache": true
         },
         {
             "name": "Study Dragons",
@@ -235,7 +239,8 @@
                     "end_time": "16:00",
                     "completion_date": "26/02/2026, 15:40"
                 }
-            ]
+            ],
+            "enable_cache": true
         },
         {
             "name": "Find a Dragon",
@@ -297,7 +302,8 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "enable_cache": true
         }
     ],
     "goals": [

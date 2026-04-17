@@ -28,10 +28,11 @@ class Quest:
 
         return Quest(
             name=data.get("name", ""),
-            tasks=tasks
+            tasks=tasks,
+            enable_cache=data.get("enable_cache", True)
             )
 
-    def __init__(self, name: str = "", tasks: List[Task] = []):
+    def __init__(self, name: str = "", tasks: List[Task] = [], enable_cache: bool = True):
         """
         Initializes a quest.
 
@@ -40,6 +41,7 @@ class Quest:
         """
         self.name: str = name
         self.tasks: List[Task] = tasks
+        self.enable_cache = enable_cache
 
     def get_all_tasks(self, include_completed: bool = True) -> List[Task]:
         """Returns a list of all tasks (including nested ones) that are assigned to this quest.
@@ -71,6 +73,14 @@ class Quest:
 
         return result
 
+    def get_descriptions(self, only_completed_tasks: bool = True) -> List[str]:
+        result: List[str] = []
+        for t in self.tasks:
+            if not only_completed_tasks or t.completion_date is not None:
+               result.append(t.description)
+
+        return result
+
     def __str__(self) -> str:
         name = "Name: \t\t" + self.name + "\n"
         obj = "tasks:\n"
@@ -83,7 +93,8 @@ class Quest:
 
     def to_dict(self) -> Dict[str, Any]:
         return {"name": self.name,
-                "tasks": [o.to_dict() for o in self.tasks]
+                "tasks": [o.to_dict() for o in self.tasks],
+                "enable_cache": self.enable_cache
                 }
 
     def __eq__(self, other: Any) -> bool:
@@ -92,4 +103,5 @@ class Quest:
         return (
             self.name == other.name
             and [obj for obj in self.tasks] == [obj for obj in other.tasks]
+            and self.enable_cache == other.enable_cache
         )

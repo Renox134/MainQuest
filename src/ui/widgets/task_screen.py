@@ -1,3 +1,5 @@
+from typing import List
+
 from model.task import Task
 from model.quest import Quest
 from config import Config
@@ -5,6 +7,7 @@ from ui.mq_resources import ListTaskItem
 
 from datetime import datetime, time
 
+from kivymd.app import MDApp
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 from kivymd.uix.pickers import MDModalDatePicker, MDTimePickerDialVertical
 from kivymd.uix.screen import MDScreen
@@ -12,6 +15,7 @@ from kivymd.uix.list import MDListItem, MDListItemHeadlineText
 from kivymd.uix.divider import MDDivider
 
 from kivy.metrics import dp
+from kivy.core.window import Window
 from kivy.lang import Builder
 Builder.load_file("ui/widgets/task_screen.kv")
 
@@ -19,12 +23,11 @@ Builder.load_file("ui/widgets/task_screen.kv")
 class TaskScreen(MDScreen):
 
     def __init__(self, task: Task, parent_quest: Quest, parent_task: Task | None,
-                 add_task_func, screen_id: int, *args, **kwargs):
+                 screen_id: int, *args, **kwargs):
         self.name = f"task_screen_{str(screen_id)}"
         self.task: Task = task
         self.parent_quest = parent_quest
         self.parent_task = parent_task
-        self.add_task_func = add_task_func
         self.date_dialog = None
         self.time_dialog = None
         self.__time_target = 0
@@ -62,7 +65,8 @@ class TaskScreen(MDScreen):
 
         self.ids.subtask_list.add_widget(MDListItem(
             MDListItemHeadlineText(text="Add subtask"),
-            on_release=lambda x: self.add_task_func(self))
+            on_release=lambda x:\
+                MDApp.get_running_app().open_new_task_dialog(self, self.get_cache_options()))
             )
 
     def open_date_selector(self):
@@ -170,3 +174,23 @@ class TaskScreen(MDScreen):
             pos_hint={"center_x": 0.5},
             size_hint_x=0.9,
         ).open()
+
+    def get_cache_options(self, only_completed: bool = True) -> List[str]:
+        result: List[str] = []
+        for sub in self.task.subtasks:
+            if not only_completed or sub.completion_date is not None:
+                result.append(sub.description)
+        return result
+
+    def on_enter(self):
+        Window.bind(on_keyboard=self.back_click)
+
+    def on_pre_leave(self):
+        Window.unbind(on_keyboard=self.back_click)
+
+    def back_click(self, window, key, keycode, *largs):
+        if key == 27:
+            # Navigate to previous screen
+            MDApp.get_running_app().close_task_screen(self)
+            return True
+        return False

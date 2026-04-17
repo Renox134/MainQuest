@@ -30,14 +30,25 @@
 
         MDGridLayout:
             cols: 1
-            rows: 2
+            rows: 3
 
             MDTextField:
                 id: name_field
                 mode: "filled"
+                input_type: "text"
+                keyboard_suggestions: True
 
                 MDTextFieldHintText:
                     text: "Name"
+
+            MDListItem:
+                MDListItemHeadlineText:
+                    text: "Use task cacheing"
+
+                MDSwitch:
+                    id: cache_switch
+                    icon_active: "check"
+                    icon_inactive: "close"
 
             MDBoxLayout:
                 ScrollView:

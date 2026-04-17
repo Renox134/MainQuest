@@ -13,8 +13,6 @@ from ui.widgets.edit_quest_screen import EditQuestScreen
 from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressScreen
 from ui.widgets.dialogs import ThemeSelectDialog, ColorPickerDialog, NumberSelectDialog, \
     ExportDialog
-from ui.widgets.dialogs import ThemeSelectDialog, ColorPickerDialog, NumberSelectDialog, \
-    ExportDialog
 
 import os
 import shutil
@@ -27,6 +25,7 @@ from kivy.resources import resource_find
 from kivy.metrics import dp
 from kivy.clock import Clock
 from kivy.utils import get_color_from_hex
+from kivy.uix.widget import WidgetException
 
 import asynckivy
 
@@ -149,6 +148,22 @@ class MainQuestApp(MDApp):
 
     def add_new_task(self, description: str, parent_widget) -> None:
         to_add = Task(description)
+        if isinstance(parent_widget, TaskScreen):
+            if parent_widget.parent_quest.enable_cache:
+                # search past completed tasks for description match
+                for t in parent_widget.parent_quest.tasks:
+                    if t.completion_date is None:
+                        continue
+                    if t.description == description:
+                        to_add = t.copy()
+        elif isinstance(parent_widget, QuestWidget):
+            if parent_widget.quest.enable_cache:
+                # search past completed tasks for description match
+                for t in parent_widget.quest.tasks:
+                    if t.completion_date is None:
+                        continue
+                    if t.description == description:
+                        to_add = t.copy()
 
         # either add task to quest or to subtasks
         if isinstance(parent_widget, TaskScreen):
@@ -165,7 +180,9 @@ class MainQuestApp(MDApp):
         entry_field = MDTextField(
             MDTextFieldHintText(
                 text="Quest Name"
-                )
+                ),
+            input_type="text",
+            keyboard_suggestions=True,
             )
 
         def confirm_func():
@@ -196,7 +213,9 @@ class MainQuestApp(MDApp):
         entry_field = MDTextField(
             MDTextFieldHintText(
                 text="Goal Name"
-                )
+                ),
+            input_type="text",
+            keyboard_suggestions=True,
             )
 
         def confirm_func():
@@ -223,14 +242,79 @@ class MainQuestApp(MDApp):
         dialog.pos_hint = {"center_x": .5, "center_y": .75}
         dialog.open()
 
-    def open_new_task_dialog(self, calling_widget: TaskScreen | QuestWidget) -> None:
+    def open_new_task_dialog(self, calling_widget: TaskScreen | QuestWidget,
+                             cache: List[str] = []) -> None:
         entry_field = MDTextField(
             MDTextFieldHintText(
                 text="Task Description"
-                )
-            )
+            ),
+            input_type="text",
+            keyboard_suggestions=True,
+        )
+
+        suggestion_menu = MDDropdownMenu(
+            caller=entry_field,
+            items=[],
+            width_mult=4,
+            position="bottom"
+        )
+
+        is_applying_suggestion = False
+        menu_open = False
+        menu_open_pending = False
+
+        def on_text_change(instance, value: str) -> None:
+            nonlocal menu_open, menu_open_pending
+            if is_applying_suggestion:
+                return
+            if len(value) < 3:
+                suggestion_menu.dismiss()
+                menu_open = False
+                return
+
+            matches = [
+                entry for entry in cache
+                if entry.lower().startswith(value.lower())
+            ]
+
+            if not matches:
+                suggestion_menu.dismiss()
+                menu_open = False
+                menu_open_pending = False
+                return
+
+            suggestion_menu.items = [
+                {
+                    "text": entry,
+                    "on_release": lambda e=entry: apply_suggestion(e),
+                }
+                for entry in matches
+            ]
+            if not menu_open and not menu_open_pending:
+                menu_open_pending = True
+                def _open_menu(dt):
+                    nonlocal menu_open, menu_open_pending
+                    menu_open_pending = False
+                    try:
+                        suggestion_menu.open()
+                        menu_open = True
+                    except WidgetException:
+                        pass
+                Clock.schedule_once(_open_menu, 0.2)
+
+        def apply_suggestion(text: str) -> None:
+            nonlocal is_applying_suggestion, menu_open, menu_open_pending
+            is_applying_suggestion = True
+            entry_field.text = text
+            is_applying_suggestion = False
+            suggestion_menu.dismiss()
+            menu_open = False
+            menu_open_pending = False
+
+        entry_field.bind(text=on_text_change)
 
         def confirm_func():
+            suggestion_menu.dismiss()
             self.add_new_task(entry_field.text, calling_widget)
             dialog.dismiss()
 
@@ -384,7 +468,6 @@ class MainQuestApp(MDApp):
         manager: MDScreenManager = self.root.ids.outer_screen_manager
         new_task_screen: TaskScreen = TaskScreen(task, parent_quest,
                                                  parent_task,
-                                                 self.open_new_task_dialog,
                                                  self.open_task_screens)
         manager.add_widget(new_task_screen)
         manager.transition.direction = "left"

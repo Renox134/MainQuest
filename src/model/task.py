@@ -149,6 +149,13 @@ class Task:
 
         return result
 
+    def copy(self) -> "Task":
+        return Task(description=self.description, subtasks=[s.copy() for s in self.subtasks],
+                    notes=self.notes,
+                    date=None, start_time=self.start_time, end_time=self.end_time,
+                    completion_date=None
+                    )
+
     def __str__(self) -> str:
         out = [f"Description:\t{self.description}"]
         date_format = Config.get("date_format")

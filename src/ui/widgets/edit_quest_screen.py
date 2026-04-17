@@ -24,8 +24,12 @@ class EditQuestScreen(MDScreen):
         self.journal = journal
         self.parent_widget = parent_widget
         self.checkboxes = []
+        # set titles
         self.ids.quest_title.text = self.quest.name
         self.ids.name_field.text = self.quest.name
+
+        # set cache switch
+        self.ids.cache_switch.active = quest.enable_cache
 
         self.ids.goal_list_layout.clear_widgets()
 
@@ -45,6 +49,7 @@ class EditQuestScreen(MDScreen):
     def save_and_close(self) -> None:
         self.update_name()
         self.update_associating_goals()
+        self.update_caching()
         MDApp.get_running_app().update_progress_screen()
         MDApp.get_running_app().close_context_screen()
 
@@ -131,3 +136,19 @@ class EditQuestScreen(MDScreen):
             else:
                 if self.quest in goal.associated_quests:
                     goal.associated_quests.remove(self.quest)
+
+    def update_caching(self) -> None:
+        self.quest.enable_cache = self.ids.cache_switch.active
+
+    def on_enter(self):
+        Window.bind(on_keyboard=self.back_click)
+
+    def on_pre_leave(self):
+        Window.unbind(on_keyboard=self.back_click)
+
+    def back_click(self, window, key, keycode, *largs):
+        if key == 27:
+            # Navigate to previous screen
+            self.save_and_close()
+            return True
+        return False

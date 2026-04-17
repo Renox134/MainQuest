@@ -3,8 +3,12 @@ import pytest
 from typing import List
 from model.quest import Quest
 from model.goal import Goal
+from config import Config
 from journal import Journal
 from object_parser import ObjectParser
+
+Config.load_data("src/config.json")
+
 
 
 class TestJournal:
@@ -29,7 +33,6 @@ class TestJournal:
 
         journal_2: Journal = Journal()
         journal_2.import_journal("test/test_journal.json")
-        return
 
         # asser quests are equal
         assert len(journal_2.quests) == len(journal_1.quests)
