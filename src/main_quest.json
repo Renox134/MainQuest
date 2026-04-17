@@ -1,306 +1,201 @@
 {
     "quests": [
         {
-            "name": "Survive",
+            "name": "Hacker Contest",
             "tasks": [
                 {
-                    "description": "Collect water",
-                    "notes": "Water in necessary to survive",
-                    "date": "27/04/2026",
-                    "start_time": "06:00",
-                    "end_time": "23:59",
+                    "description": "Finish the Application challenge",
+                    "completion_date": "12/04/2026, 09:13",
                     "subtasks": [
                         {
-                            "description": "Find a water source",
-                            "date": "27/04/2026",
-                            "start_time": "20:00",
-                            "end_time": "23:00",
-                            "subtasks": [
-                                {
-                                    "description": "Build a rain collector",
-                                    "date": "27/04/2026",
-                                    "start_time": "20:00",
-                                    "end_time": "23:00"
-                                },
-                                {
-                                    "description": "Look for a stream",
-                                    "date": "27/04/2026",
-                                    "start_time": "06:00",
-                                    "end_time": "10:00"
-                                }
-                            ]
+                            "description": "Retrieve Flag 1",
+                            "completion_date": "10/04/2026, 22:14"
                         },
                         {
-                            "description": "Fill containers",
-                            "date": "27/04/2026",
-                            "start_time": "23:30"
+                            "description": "Retrieve Flag 2",
+                            "completion_date": "10/04/2026, 22:14"
+                        },
+                        {
+                            "description": "Retrieve Flag 3",
+                            "completion_date": "10/04/2026, 22:14"
+                        },
+                        {
+                            "description": "Retrieve Flag 4",
+                            "completion_date": "12/04/2026, 09:13"
+                        },
+                        {
+                            "description": "Document everything",
+                            "completion_date": "12/04/2026, 09:13"
+                        },
+                        {
+                            "description": "Send out the PDF file",
+                            "completion_date": "12/04/2026, 09:13"
                         }
                     ]
                 },
                 {
-                    "description": "Gather food",
-                    "date": "28/04/2026",
-                    "start_time": "00:00",
-                    "end_time": "19:00",
-                    "subtasks": [
-                        {
-                            "description": "Collect fruits",
-                            "date": "27/04/2026",
-                            "start_time": "12:00",
-                            "end_time": "13:00"
-                        },
-                        {
-                            "description": "Hunt small animals",
-                            "date": "27/04/2026",
-                            "start_time": "18:00",
-                            "end_time": "19:00"
-                        }
-                    ]
-                },
-                {
-                    "description": "Build shelter",
-                    "subtasks": [
-                        {
-                            "description": "Gather wood"
-                        },
-                        {
-                            "description": "Construct frame"
-                        },
-                        {
-                            "description": "Add roof covering"
-                        }
-                    ]
+                    "description": "Sign up for Hacker Days ",
+                    "completion_date": "16/04/2026, 09:06"
                 }
             ],
             "enable_cache": true
         },
         {
-            "name": "Craft Weapons",
+            "name": "NetSec",
             "tasks": [
                 {
-                    "description": "Gather crafting materials",
-                    "date": "02/03/2026",
+                    "description": "Read the Moodle"
+                }
+            ],
+            "enable_cache": true
+        },
+        {
+            "name": "Multimedia Security ",
+            "tasks": [
+                {
+                    "description": "Write Report ",
+                    "completion_date": "16/04/2026, 06:56"
+                }
+            ],
+            "enable_cache": true
+        },
+        {
+            "name": "Usability Security Privacy ",
+            "tasks": [
+                {
+                    "description": "Write Report ",
+                    "completion_date": "16/04/2026, 06:56"
+                }
+            ],
+            "enable_cache": true
+        },
+        {
+            "name": "Swedish",
+            "tasks": [
+                {
+                    "description": "Attend Lecture "
+                }
+            ],
+            "enable_cache": true
+        },
+        {
+            "name": "Blockchain Technology ",
+            "tasks": [
+                {
+                    "description": "Write report "
+                }
+            ],
+            "enable_cache": true
+        },
+        {
+            "name": "EBD",
+            "tasks": [
+                {
+                    "description": "Figure out current Todos"
+                }
+            ],
+            "enable_cache": true
+        },
+        {
+            "name": "Main Quest",
+            "tasks": [
+                {
+                    "description": "Quest context Screen",
+                    "completion_date": "08/04/2026, 15:13",
+                    "subtasks": [
+                        {
+                            "description": "Rename quest",
+                            "completion_date": "08/04/2026, 15:13"
+                        },
+                        {
+                            "description": "Complete Quest",
+                            "completion_date": "08/04/2026, 15:13"
+                        },
+                        {
+                            "description": "Abort Quest",
+                            "completion_date": "08/04/2026, 15:13"
+                        },
+                        {
+                            "description": "Edit associated Goals",
+                            "completion_date": "08/04/2026, 15:13"
+                        }
+                    ]
+                },
+                {
+                    "description": "Main menu drawer",
+                    "date": "09/04/2026",
                     "start_time": "08:00",
-                    "end_time": "14:00",
+                    "end_time": "12:00",
+                    "completion_date": "09/04/2026, 16:54",
                     "subtasks": [
                         {
-                            "description": "Collect sturdy branches",
-                            "date": "02/03/2026",
-                            "start_time": "08:00",
-                            "end_time": "09:30",
-                            "completion_date": "02/03/2026, 09:10"
+                            "description": "Edit App Color Scheme",
+                            "completion_date": "09/04/2026, 12:22"
                         },
                         {
-                            "description": "Find sharp stones",
-                            "date": "02/03/2026",
-                            "start_time": "10:00",
-                            "end_time": "11:00"
+                            "description": "Clear Journal",
+                            "completion_date": "09/04/2026, 16:54"
                         },
                         {
-                            "description": "Gather vines for bindings",
-                            "date": "02/03/2026",
-                            "start_time": "12:00",
-                            "end_time": "13:00"
+                            "description": "Edit weekly plot border",
+                            "completion_date": "09/04/2026, 16:54"
+                        },
+                        {
+                            "description": "(Default high performance border)",
+                            "completion_date": "09/04/2026, 12:22"
                         }
                     ]
                 },
                 {
-                    "description": "Craft a spear",
-                    "date": "03/03/2026",
-                    "start_time": "09:00",
-                    "end_time": "11:00",
+                    "description": "Quality of Life",
                     "subtasks": [
                         {
-                            "description": "Sharpen spear tip",
-                            "date": "03/03/2026",
-                            "start_time": "09:00",
-                            "end_time": "09:30"
+                            "description": "Phone autocorrect",
+                            "completion_date": "12/04/2026, 10:07"
                         },
                         {
-                            "description": "Attach stone tip",
-                            "date": "03/03/2026",
-                            "start_time": "09:30",
-                            "end_time": "10:30"
+                            "description": "Integrate backwards arrow",
+                            "completion_date": "12/04/2026, 13:25"
+                        },
+                        {
+                            "description": "Show subtask completion progress",
+                            "completion_date": "12/04/2026, 13:25"
+                        },
+                        {
+                            "description": "Fix initial Topbar Layout"
+                        },
+                        {
+                            "description": "Fix Bouncing Quest widget"
+                        },
+                        {
+                            "description": "Keep quest widgets opened"
+                        },
+                        {
+                            "description": "Fix color choose dialog",
+                            "completion_date": "10/04/2026, 08:46"
                         }
                     ]
                 },
                 {
-                    "description": "Craft a wooden club",
-                    "date": "01/03/2026",
-                    "start_time": "15:00",
-                    "end_time": "16:00",
-                    "completion_date": "01/03/2026, 15:50",
+                    "description": "Task Upgrade",
                     "subtasks": [
                         {
-                            "description": "Select heavy branch",
-                            "date": "01/03/2026",
-                            "start_time": "15:00",
-                            "end_time": "15:10",
-                            "completion_date": "01/03/2026, 15:05"
+                            "description": "Repeatable Tasks"
                         },
                         {
-                            "description": "Carve handle grip",
-                            "date": "01/03/2026",
-                            "start_time": "15:10",
-                            "end_time": "15:40",
-                            "completion_date": "01/03/2026, 15:35"
-                        }
-                    ]
-                }
-            ],
-            "enable_cache": true
-        },
-        {
-            "name": "Find Allies",
-            "tasks": [
-                {
-                    "description": "Locate nearby settlements",
-                    "subtasks": [
-                        {
-                            "description": "Scout nearby hills"
+                            "description": "Add 'Abort Task' feature"
                         },
                         {
-                            "description": "Look for smoke signals"
+                            "description": "Move task to other Quest"
+                        },
+                        {
+                            "description": "Priority Feature"
                         }
                     ]
                 },
                 {
-                    "description": "Gain trust of villagers",
-                    "subtasks": [
-                        {
-                            "description": "Offer gathered food"
-                        },
-                        {
-                            "description": "Help repair fences"
-                        }
-                    ]
-                },
-                {
-                    "description": "Meet wandering trader",
-                    "date": "28/04/2026",
-                    "start_time": "12:00",
-                    "end_time": "13:00",
-                    "completion_date": "28/02/2026, 12:45",
-                    "subtasks": [
-                        {
-                            "description": "Exchange information",
-                            "date": "28/04/2026",
-                            "start_time": "12:10",
-                            "end_time": "12:30",
-                            "completion_date": "28/02/2026, 12:25"
-                        }
-                    ]
-                }
-            ],
-            "enable_cache": true
-        },
-        {
-            "name": "Explore the Land",
-            "tasks": [
-                {
-                    "description": "Map surrounding forest",
-                    "subtasks": [
-                        {
-                            "description": "Mark dangerous areas"
-                        },
-                        {
-                            "description": "Identify edible plants"
-                        }
-                    ]
-                },
-                {
-                    "description": "Climb observation hill",
-                    "date": "28/04/2026",
-                    "start_time": "07:00",
-                    "end_time": "08:00",
-                    "completion_date": "28/02/2026, 07:55"
-                }
-            ],
-            "enable_cache": true
-        },
-        {
-            "name": "Study Dragons",
-            "tasks": [
-                {
-                    "description": "Research dragon weaknesses",
-                    "subtasks": [
-                        {
-                            "description": "Study ancient texts"
-                        },
-                        {
-                            "description": "Compare eyewitness accounts"
-                        }
-                    ]
-                },
-                {
-                    "description": "Collect dragon folklore",
-                    "date": "26/04/2026",
-                    "start_time": "14:00",
-                    "end_time": "16:00",
-                    "completion_date": "26/02/2026, 15:40"
-                }
-            ],
-            "enable_cache": true
-        },
-        {
-            "name": "Find a Dragon",
-            "tasks": [
-                {
-                    "description": "Search in northern Europe",
-                    "subtasks": [
-                        {
-                            "description": "Explore forests in Scandinavia"
-                        },
-                        {
-                            "description": "Interview local witnesses"
-                        },
-                        {
-                            "description": "Check historical archives"
-                        }
-                    ]
-                },
-                {
-                    "description": "Search in northern America",
-                    "date": "28/04/2026",
-                    "start_time": "00:00",
-                    "end_time": "10:00",
-                    "subtasks": [
-                        {
-                            "description": "Investigate Canadian forests",
-                            "date": "27/04/2026",
-                            "start_time": "12:00",
-                            "end_time": "13:00"
-                        },
-                        {
-                            "description": "Scout mountain ranges",
-                            "date": "27/04/2026",
-                            "start_time": "16:00",
-                            "end_time": "17:00"
-                        }
-                    ]
-                },
-                {
-                    "description": "Search in Siberia",
-                    "date": "28/04/2026",
-                    "start_time": "00:00",
-                    "end_time": "10:00",
-                    "completion_date": "01/03/2026, 14:00",
-                    "subtasks": [
-                        {
-                            "description": "Travel to Siberia",
-                            "date": "22/02/2026",
-                            "start_time": "10:00",
-                            "end_time": "11:00",
-                            "completion_date": "23/02/2026, 09:00"
-                        },
-                        {
-                            "description": "Search taiga region",
-                            "date": "25/02/2026",
-                            "start_time": "09:00",
-                            "end_time": "10:00",
-                            "completion_date": "27/02/2026, 22:00"
-                        }
-                    ]
+                    "description": "Export",
+                    "completion_date": "09/04/2026, 17:00"
                 }
             ],
             "enable_cache": true
@@ -308,140 +203,50 @@
     ],
     "goals": [
         {
-            "name": "Beat the Game",
+            "name": "Make 'Main Quest' fun to use",
             "quest_names": [
-                "Survive",
-                "Craft Weapons",
-                "Find Allies",
-                "Explore the Land",
-                "Study Dragons",
-                "Find a Dragon"
+                "Main Quest"
             ],
-            "progress_dict": {
-                "01/01/2026": 1,
-                "02/01/2026": 1,
-                "03/01/2026": 2,
-                "04/01/2026": 1,
-                "05/01/2026": 2,
-                "06/01/2026": 1,
-                "07/01/2026": 1,
-                "08/01/2026": 6,
-                "09/01/2026": 2,
-                "10/01/2026": 1,
-                "11/01/2026": 2,
-                "12/01/2026": 1,
-                "13/01/2026": 1,
-                "14/01/2026": 2,
-                "15/01/2026": 6,
-                "16/01/2026": 1,
-                "17/01/2026": 2,
-                "18/01/2026": 1,
-                "19/01/2026": 1,
-                "20/01/2026": 2,
-                "21/01/2026": 1,
-                "23/01/2026": 2,
-                "25/01/2026": 1,
-                "27/01/2026": 2,
-                "29/01/2026": 1,
-                "31/01/2026": 2,
-                "02/02/2026": 5,
-                "04/02/2026": 1,
-                "06/02/2026": 2,
-                "07/02/2026": 1,
-                "09/02/2026": 4
-            },
-            "daily_count_border": 30,
-            "progress_time_border": "01/01/2026",
+            "progress_dict": {},
+            "daily_count_border": 100,
+            "progress_time_border": "08/04/2026",
             "high_performance_border": 5
         },
         {
-            "name": "Build Power",
+            "name": "Get a job in Cyber Security ",
             "quest_names": [
-                "Craft Weapons",
-                "Find Allies"
+                "Hacker Contest",
+                "NetSec",
+                "Usability Security Privacy "
             ],
-            "progress_dict": {
-                "01/01/2026": 0,
-                "08/01/2026": 2,
-                "15/01/2026": 3,
-                "02/02/2026": 2,
-                "09/02/2026": 1
-            },
-            "daily_count_border": 30,
-            "progress_time_border": "01/01/2026",
+            "progress_dict": {},
+            "daily_count_border": 100,
+            "progress_time_border": "10/04/2026",
             "high_performance_border": 5
         },
         {
-            "name": "Survival & Exploration",
+            "name": "Masters Degree",
             "quest_names": [
-                "Survive",
-                "Explore the Land"
+                "Hacker Contest",
+                "NetSec",
+                "Multimedia Security ",
+                "Usability Security Privacy ",
+                "Swedish",
+                "Blockchain Technology "
             ],
-            "progress_dict": {
-                "01/01/2026": 1,
-                "03/01/2026": 1,
-                "05/01/2026": 2,
-                "07/01/2026": 1,
-                "08/01/2026": 3,
-                "10/01/2026": 2,
-                "12/01/2026": 1,
-                "14/01/2026": 2,
-                "15/01/2026": 1,
-                "17/01/2026": 1,
-                "19/01/2026": 2,
-                "21/01/2026": 1,
-                "23/01/2026": 2,
-                "25/01/2026": 1,
-                "27/01/2026": 1,
-                "29/01/2026": 2,
-                "31/01/2026": 1,
-                "02/02/2026": 2,
-                "05/02/2026": 1,
-                "07/02/2026": 2,
-                "09/02/2026": 2
-            },
-            "daily_count_border": 30,
-            "progress_time_border": "01/01/2026",
+            "progress_dict": {},
+            "daily_count_border": 100,
+            "progress_time_border": "15/04/2026",
             "high_performance_border": 5
         },
         {
-            "name": "Dragon Hunt",
-            "quest_names": [
-                "Study Dragons",
-                "Find a Dragon"
-            ],
-            "progress_dict": {
-                "08/01/2026": 1,
-                "15/01/2026": 2,
-                "01/01/2026": 0,
-                "02/02/2026": 1,
-                "09/02/2026": 1
-            },
-            "daily_count_border": 30,
-            "progress_time_border": "01/01/2026",
+            "name": "Financial independence",
+            "quest_names": [],
+            "progress_dict": {},
+            "daily_count_border": 100,
+            "progress_time_border": "16/04/2026",
             "high_performance_border": 5
         }
     ],
-    "milestones": [
-        {
-            "name": "Awake",
-            "datetime": "01/01/2026",
-            "type": "Quest"
-        },
-        {
-            "name": "Discovere ancient dragon lore.",
-            "datetime": "15/01/2026",
-            "type": "Quest"
-        },
-        {
-            "name": "He who speaks fire.",
-            "datetime": "22/01/2026",
-            "type": "Quest"
-        },
-        {
-            "name": "Get the hell out.",
-            "datetime": "28/01/2026",
-            "type": "Quest"
-        }
-    ]
+    "milestones": []
 }
