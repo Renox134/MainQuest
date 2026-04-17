@@ -55,6 +55,7 @@ class EditQuestScreen(MDScreen):
 
     def update_name(self) -> None:
         self.quest.name = self.ids.name_field.text
+        MDApp.get_running_app().update_quest_widgets()
 
     def on_more_pressed(self) -> None:
         self.drop_down = MDDropdownMenu()

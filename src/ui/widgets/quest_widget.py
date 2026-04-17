@@ -30,6 +30,7 @@ class QuestWidget(MDExpansionPanel):
         self.update_widgets()
 
     def update_widgets(self) -> None:
+        self.ids.name_text_field.text = self.quest.name
         self.ids.task_list.clear_widgets()
         for task in self.quest.tasks:
             if task.completion_date is None:

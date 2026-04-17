@@ -79,7 +79,7 @@
             "enable_cache": true
         },
         {
-            "name": "Blockchain Technology ",
+            "name": "Digital Text Forensic",
             "tasks": [
                 {
                     "description": "Write report "
@@ -232,7 +232,7 @@
                 "Multimedia Security ",
                 "Usability Security Privacy ",
                 "Swedish",
-                "Blockchain Technology "
+                "Digital Text Forensic"
             ],
             "progress_dict": {},
             "daily_count_border": 100,
