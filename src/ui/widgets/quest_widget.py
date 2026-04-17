@@ -44,7 +44,7 @@ class QuestWidget(MDExpansionPanel):
 
         def add_task():
             drop_down.dismiss()
-            MDApp.get_running_app().open_new_task_dialog(self)
+            MDApp.get_running_app().open_new_task_dialog(self, cache=self.quest.get_descriptions())
 
         def finish():
             drop_down.dismiss()

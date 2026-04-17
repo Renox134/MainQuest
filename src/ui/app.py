@@ -25,6 +25,7 @@ from kivy.resources import resource_find
 from kivy.metrics import dp
 from kivy.clock import Clock
 from kivy.utils import get_color_from_hex
+from kivy.uix.widget import WidgetException
 
 import asynckivy
 
@@ -147,6 +148,22 @@ class MainQuestApp(MDApp):
 
     def add_new_task(self, description: str, parent_widget) -> None:
         to_add = Task(description)
+        if isinstance(parent_widget, TaskScreen):
+            if parent_widget.parent_quest.enable_cache:
+                # search past completed tasks for description match
+                for t in parent_widget.parent_quest.tasks:
+                    if t.completion_date is None:
+                        continue
+                    if t.description == description:
+                        to_add = t.copy()
+        elif isinstance(parent_widget, QuestWidget):
+            if parent_widget.quest.enable_cache:
+                # search past completed tasks for description match
+                for t in parent_widget.quest.tasks:
+                    if t.completion_date is None:
+                        continue
+                    if t.description == description:
+                        to_add = t.copy()
 
         # either add task to quest or to subtasks
         if isinstance(parent_widget, TaskScreen):
@@ -225,14 +242,15 @@ class MainQuestApp(MDApp):
         dialog.pos_hint = {"center_x": .5, "center_y": .75}
         dialog.open()
 
-    def open_new_task_dialog(self, calling_widget: TaskScreen | QuestWidget) -> None:
+    def open_new_task_dialog(self, calling_widget: TaskScreen | QuestWidget,
+                             cache: List[str] = []) -> None:
         entry_field = MDTextField(
             MDTextFieldHintText(
                 text="Task Description"
-                ),
+            ),
             input_type="text",
             keyboard_suggestions=True,
-            )
+        )
 
         def confirm_func():
             self.add_new_task(entry_field.text, calling_widget)
