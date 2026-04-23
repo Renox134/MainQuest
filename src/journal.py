@@ -1,4 +1,6 @@
 import json
+import os
+import tempfile
 
 from datetime import datetime
 
@@ -59,8 +61,15 @@ class Journal:
             "milestones": milestone_dicts
         }
 
-        with open(path, "w") as file:
-            json.dump(to_export, file, indent=4, ensure_ascii=False)
+        # export to tmp file, the replace for more safety
+        dir_name = os.path.dirname(path)
+
+        with tempfile.NamedTemporaryFile("w", dir=dir_name, delete=False, suffix=".tmp") as tmp:
+            json.dump(to_export, tmp, indent=4, ensure_ascii=False)
+            tmp_path = tmp.name
+
+        # atomically replace
+        os.replace(tmp_path, path)
 
     def import_journal(self, path: str) -> None:
         # clear out everything old
@@ -69,7 +78,11 @@ class Journal:
         self.milestones = []
 
         with open(path, "r") as file:
-            raw_input = json.load(file)
+            raw_input = {}
+            try:
+                raw_input = json.load(file)
+            except json.JSONDecodeError as e:
+                print(e)
             if isinstance(raw_input, dict):
                 quest_dicts = raw_input.get("quests", [])
                 goal_dicts = raw_input.get("goals", [])

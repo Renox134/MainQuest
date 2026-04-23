@@ -7,6 +7,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
 from kivy.uix.colorpicker import ColorPicker
 from kivy.metrics import dp
+from kivy.clock import Clock
 
 from kivymd.app import MDApp
 from kivymd.uix.list import MDListItem, MDListItemLeadingIcon, MDListItemHeadlineText
@@ -314,3 +315,225 @@ class ExportDialog(MDDialog):
         self.selected_folder = path
         self.status_label.text = f"Selected: {path}"
         self.file_manager.close()
+
+
+class ImportDialog(MDDialog):
+    def __init__(self, data_path: str, config_path: str, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.data_path = data_path
+        self.config_path = config_path
+
+        # Track the pending import target: "data" or "config"
+        self._pending_target: str | None = None
+
+        # Desktop: one file manager instance, reused for both files
+        self.file_manager = MDFileManager(
+            exit_manager=self._close_file_manager,
+            select_path=self._on_file_selected_desktop,
+            selector="file",
+            ext=[".json"],
+        )
+
+        self.status_label = MDLabel(
+            text="Choose a file to import",
+            halign="center",
+            adaptive_height=True,
+        )
+
+        def on_browse(target: str):
+            self._pending_target = target
+            if IS_ANDROID:
+                self._launch_saf_picker()
+            else:
+                self._open_file_manager()
+
+        def on_confirm(target: str):
+            """Re-trigger import if a URI/path is already stored."""
+            self._pending_target = target
+            if IS_ANDROID:
+                uri = getattr(self, "_saf_uri", None)
+                if not uri:
+                    self.status_label.text = "Please select a file first"
+                    return
+                self._do_import_android(uri)
+            else:
+                path = getattr(self, "_selected_file", None)
+                if not path:
+                    self.status_label.text = "Please select a file first"
+                    return
+                self._do_import_desktop(path)
+
+        # ── UI ──────────────────────────────────────────────────────────────
+        self.add_widget(MDDialogHeadlineText(text="Import Data Files"))
+        self.add_widget(MDDialogContentContainer(
+            MDBoxLayout(
+                MDLabel(
+                    text=(
+                        "Select a source file to import.\n"
+                        "The existing file will be overwritten."
+                    ),
+                    adaptive_height=True,
+                ),
+                self.status_label,
+                # ── main_quest.json row ──────────────────────────────────
+                MDBoxLayout(
+                    MDLabel(
+                        text="main_quest.json",
+                        adaptive_height=True,
+                    ),
+                    MDButton(
+                        MDButtonText(text="Browse"),
+                        on_release=lambda x: on_browse("data"),
+                        style="tonal",
+                    ),
+                    MDIconButton(
+                        icon="check",
+                        on_release=lambda x: on_confirm("data"),
+                    ),
+                    orientation="horizontal",
+                    adaptive_height=True,
+                    spacing="8dp",
+                ),
+                # ── config.json row ──────────────────────────────────────
+                MDBoxLayout(
+                    MDLabel(
+                        text="config.json",
+                        adaptive_height=True,
+                    ),
+                    MDButton(
+                        MDButtonText(text="Browse"),
+                        on_release=lambda x: on_browse("config"),
+                        style="tonal",
+                    ),
+                    MDIconButton(
+                        icon="check",
+                        on_release=lambda x: on_confirm("config"),
+                    ),
+                    orientation="horizontal",
+                    adaptive_height=True,
+                    spacing="8dp",
+                ),
+                orientation="vertical",
+                adaptive_height=True,
+                spacing="12dp",
+                padding="4dp",
+            )
+        ))
+        self.add_widget(MDDialogButtonContainer(
+            Widget(),
+            MDIconButton(icon="close", on_release=lambda x: self.dismiss()),
+        ))
+
+        if IS_ANDROID:
+            self._bind_activity_result()
+
+    # ------------------------------------------------------------------ SAF
+    def _launch_saf_picker(self):
+        intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.setType("application/json")
+        # Hint toward Downloads on first open
+        downloads_uri = Uri.parse(
+            "content://com.android.externalstorage.documents/document/primary%3ADownloads"
+        )
+        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, downloads_uri.toString())
+        mActivity.startActivityForResult(intent, REQUEST_CODE_PICK_FOLDER)
+
+    def _bind_activity_result(self):
+        from android.activity import bind as android_bind  # type: ignore
+        android_bind(on_activity_result=self._on_activity_result)
+
+    def _on_activity_result(self, request_code, result_code, intent_data):
+        RESULT_OK = -1
+        if request_code != REQUEST_CODE_PICK_FOLDER:
+            return
+        if result_code != RESULT_OK or intent_data is None:
+            self.status_label.text = "File selection cancelled"
+            self._pending_target = None
+            return
+
+        uri = intent_data.getData()
+        mActivity.getContentResolver().takePersistableUriPermission(
+            uri,
+            Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+        )
+
+        self._saf_uri = uri
+        self.status_label.text = f"Selected: {uri.getLastPathSegment()}"
+        self._do_import_android(uri)
+
+    # ------------------------------------------------------------------ Import
+    def _do_import_android(self, file_uri):
+        if not self._pending_target:
+            self.status_label.text = "No target set — tap Browse first"
+            return
+        dest_path = (
+            self.data_path if self._pending_target == "data" else self.config_path
+        )
+        try:
+            resolver = mActivity.getContentResolver()
+            in_stream = resolver.openInputStream(file_uri)
+
+            # Read all bytes from the Java InputStream
+            byte_list = []
+            buf = [0] * 4096
+            while True:
+                n = in_stream.read(buf)
+                if n == -1:
+                    break
+                byte_list.extend(buf[:n])
+            in_stream.close()
+            with open(dest_path, "wb") as f:
+                for b in byte_list:
+                    print(chr(b))
+                f.write(bytes(byte_list))
+
+            self._saf_uri = None
+            self._pending_target = None
+            self.status_label.text = "Choose a file to import"
+
+            filename = os.path.basename(dest_path)
+            Clock.schedule_once(
+                lambda dt: MDSnackbar(
+                    MDSnackbarText(text=f"Imported {filename} successfully!"),
+                    duration=3,
+                ).open()
+            )
+
+        except Exception as e:
+            self.status_label.text = f"Import failed: {e}"
+
+    def _do_import_desktop(self, src_path: str):
+        if not self._pending_target:
+            self.status_label.text = "No target set — tap Browse first"
+            return
+        dest_path = (
+            self.data_path if self._pending_target == "data" else self.config_path
+        )
+        try:
+            shutil.copy2(src_path, dest_path)
+            self._selected_file = None
+            self._pending_target = None
+            self.status_label.text = "Choose a file to import"
+            MDSnackbar(
+                MDSnackbarText(text=f"Imported {os.path.basename(dest_path)} successfully!"),
+                duration=3,
+            ).open()
+
+        except Exception as e:
+            self.status_label.text = f"Import failed: {e}"
+
+    # ------------------------------------------------------------------ Desktop file manager
+    def _open_file_manager(self):
+        self.file_manager.show(os.path.expanduser("~"))
+
+    def _close_file_manager(self, *args):
+        self.file_manager.close()
+
+    def _on_file_selected_desktop(self, path: str):
+        self._selected_file = path
+        self.status_label.text = f"Selected: {os.path.basename(path)}"
+        self.file_manager.close()
+        # Import immediately on desktop (mirrors export behaviour)
+        self._do_import_desktop(path)

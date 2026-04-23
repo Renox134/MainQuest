@@ -1,4 +1,4 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Set
 
 from datetime import datetime, date
 
@@ -74,12 +74,12 @@ class Quest:
         return result
 
     def get_descriptions(self, only_completed_tasks: bool = True) -> List[str]:
-        result: List[str] = []
+        result: Set[str] = {}
         for t in self.tasks:
             if not only_completed_tasks or t.completion_date is not None:
-               result.append(t.description)
+                result.add(t.description)
 
-        return result
+        return list(result)
 
     def __str__(self) -> str:
         name = "Name: \t\t" + self.name + "\n"

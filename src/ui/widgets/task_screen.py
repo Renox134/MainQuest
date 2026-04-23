@@ -65,7 +65,7 @@ class TaskScreen(MDScreen):
 
         self.ids.subtask_list.add_widget(MDListItem(
             MDListItemHeadlineText(text="Add subtask"),
-            on_release=lambda x:\
+            on_release=lambda x:
                 MDApp.get_running_app().open_new_task_dialog(self, self.get_cache_options()))
             )
 

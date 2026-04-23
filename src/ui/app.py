@@ -12,7 +12,7 @@ from ui.widgets.edit_goal_screen import EditGoalScreen
 from ui.widgets.edit_quest_screen import EditQuestScreen
 from ui.mq_resources import MQ_Resource_Loader, animate_removal, ProgressScreen
 from ui.widgets.dialogs import ThemeSelectDialog, ColorPickerDialog, NumberSelectDialog, \
-    ExportDialog
+    ExportDialog, ImportDialog
 
 import os
 import shutil
@@ -292,6 +292,7 @@ class MainQuestApp(MDApp):
             ]
             if not menu_open and not menu_open_pending:
                 menu_open_pending = True
+
                 def _open_menu(dt):
                     nonlocal menu_open, menu_open_pending
                     menu_open_pending = False
@@ -411,6 +412,10 @@ class MainQuestApp(MDApp):
             drop_down.dismiss()
             self.export()
 
+        def import_press():
+            drop_down.dismiss()
+            self.import_file()
+
         menu_items = []
 
         # add menu items depending on the currently opened window
@@ -424,13 +429,17 @@ class MainQuestApp(MDApp):
         elif self.root.ids.screen_manager.current == "main_window":
             menu_items.extend([
                 {
+                    "text": "Add new Quest",
+                    "on_release": lambda: add_quest_press(),
+                },
+                {
                     "text": "Export",
                     "on_release": lambda: export_press()
                 },
                 {
-                    "text": "Add new Quest",
-                    "on_release": lambda: add_quest_press(),
-                }
+                    "text": "Import",
+                    "on_release": lambda: import_press()
+                },
             ]
             )
 
@@ -553,6 +562,9 @@ class MainQuestApp(MDApp):
     def export(self):
         ExportDialog(self.data_path, self.config_path).open()
 
+    def import_file(self):
+        ImportDialog(self.data_path, self.config_path).open()
+
     def save(self) -> None:
         self.journal.export_journal(self.data_path)
         Config.save(self.config_path)
@@ -563,4 +575,5 @@ class MainQuestApp(MDApp):
 
     def on_pause(self):
         self.save()
-        return super().on_pause()
+        super().on_pause()
+        return True

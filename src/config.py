@@ -1,5 +1,7 @@
 from typing import Any, Optional
 import json
+import os
+import tempfile
 
 DATA = {}
 
@@ -29,5 +31,10 @@ class Config():
 
     @staticmethod
     def save(path: str) -> None:
-        with open(path, "w", encoding="utf8") as file:
-            json.dump(DATA, file, indent=4)
+        dir_name = os.path.dirname(path)
+
+        with tempfile.NamedTemporaryFile("w", dir=dir_name, delete=False, suffix=".tmp") as tmp:
+            json.dump(DATA, tmp, indent=4)
+            tmp_path = tmp.name
+
+        os.replace(tmp_path, path)
