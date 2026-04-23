@@ -74,7 +74,7 @@ class Quest:
         return result
 
     def get_descriptions(self, only_completed_tasks: bool = True) -> List[str]:
-        result: Set[str] = {}
+        result: Set[str] = set()
         for t in self.tasks:
             if not only_completed_tasks or t.completion_date is not None:
                 result.add(t.description)
