@@ -101,17 +101,17 @@ class MonthHeatmap(MDSwiperItem):
 
     def goal_data_to_completion_score_list(self, data: Dict[date, int]) -> List[int]:
         # create list with all days that matter for the month
-        month_list: List[date] = [self.inclusion_borders[0]]
-        next_day: date = month_list[0]
-        for i in range(35):
+        day_list: List[date] = [self.inclusion_borders[0]]
+        next_day: date = day_list[0]
+        for _ in range(35):
             next_day = next_day + timedelta(days=1)
             if next_day <= self.inclusion_borders[1]:
-                month_list.append(next_day)
+                day_list.append(next_day)
             else:
                 break
 
         scores: List[int] = []
-        for d in month_list:
+        for d in day_list:
             scores.append(data.get(d, 0))
 
         return scores

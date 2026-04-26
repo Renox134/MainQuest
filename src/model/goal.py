@@ -56,7 +56,7 @@ class Goal:
                              daily_border: date | int,
                              lower_bound: date) -> Dict[date, int]:
         result: Dict[date, int] = {}
-        daily_count_bound: int | date
+        daily_count_bound: date
 
         if isinstance(daily_border, int):
             daily_count_bound = (datetime.now() - timedelta(days=daily_border)).date()
@@ -126,9 +126,14 @@ class Goal:
 
         # include current progress of associated quests
         for q in self.associated_quests:
-            result |= q.get_progress_dict()
-            result = self.format_progress_dict(result, self.daily_count_border,
-                                               self.progress_time_border)
+            to_add = q.get_progress_dict()
+            for k, v in to_add.items():
+                if k in result:
+                    result[k] += v
+                else:
+                    result[k] = v
+        result = self.format_progress_dict(result, self.daily_count_border,
+                                           self.progress_time_border)
         return result
 
     def get_weekly_progress(self) -> Dict[date, int]:
@@ -136,9 +141,28 @@ class Goal:
 
         # include current progress of associated quests
         for q in self.associated_quests:
-            result |= q.get_progress_dict()
-            result = self.format_progress_dict(result, 0, self.progress_time_border)
+            to_add = q.get_progress_dict()
+            for k, v in to_add.items():
+                if k in result:
+                    result[k] += v
+                else:
+                    result[k] = v
+        self.fill_gaps_in_progress_dict(result)
+        result = self.format_progress_dict(result, 0, self.progress_time_border)
         return result
+    
+    def fill_gaps_in_progress_dict(self, progress_dict: Dict[date, int]) -> None:
+        # find earliest and latest date
+        earliest = datetime.now().date()
+        latest = datetime.now().date()
+
+        for d in progress_dict.keys():
+            if d < earliest:
+                earliest = d
+        current = earliest
+        while current <= latest:
+            progress_dict[current] = progress_dict.get(current, 0)
+            current = current + timedelta(days=1)
 
     def to_dict(self) -> Dict[str, Any]:
         str_progress_dict = {}
