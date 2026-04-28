@@ -5,7 +5,7 @@ from model.quest import Quest
 from config import Config
 from ui.mq_resources import ListTaskItem
 
-from datetime import datetime, time
+from datetime import datetime, time, date
 
 from kivymd.app import MDApp
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
@@ -113,7 +113,7 @@ class TaskScreen(MDScreen):
         if self.task.date is None:
             self.task.date = datetime(date_dialog.get_date()[0].year,
                                       date_dialog.get_date()[0].month,
-                                      date_dialog.get_date()[0].day)
+                                      date_dialog.get_date()[0].day).date()
         else:
             self.task.date = self.task.date.replace(date_dialog.get_date()[0].year,
                                                     date_dialog.get_date()[0].month,

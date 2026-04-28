@@ -36,6 +36,20 @@
                 {
                     "description": "Sign up for Hacker Days ",
                     "completion_date": "16/04/2026, 09:06"
+                },
+                {
+                    "description": "read ethical guidelines ",
+                    "completion_date": "23/04/2026, 15:37"
+                },
+                {
+                    "description": "sign up for group",
+                    "completion_date": "23/04/2026, 14:25"
+                },
+                {
+                    "description": "read into presentation topics",
+                    "date": "05/05/2026",
+                    "start_time": "15:00",
+                    "end_time": "16:00"
                 }
             ],
             "enable_cache": true
@@ -44,7 +58,60 @@
             "name": "NetSec",
             "tasks": [
                 {
-                    "description": "Read the Moodle"
+                    "description": "Read the Moodle",
+                    "completion_date": "22/04/2026, 22:43"
+                },
+                {
+                    "description": "attend lecture ",
+                    "completion_date": "22/04/2026, 22:44"
+                },
+                {
+                    "description": "Exercise 1",
+                    "subtasks": [
+                        {
+                            "description": "Read the paper",
+                            "completion_date": "28/04/2026, 13:18",
+                            "subtasks": [
+                                {
+                                    "description": "Stage 1",
+                                    "completion_date": "24/04/2026, 16:43"
+                                },
+                                {
+                                    "description": "stage 2",
+                                    "completion_date": "24/04/2026, 16:43"
+                                },
+                                {
+                                    "description": "stage 3",
+                                    "completion_date": "28/04/2026, 13:18"
+                                }
+                            ]
+                        },
+                        {
+                            "description": "write out question ideas",
+                            "completion_date": "28/04/2026, 13:18"
+                        },
+                        {
+                            "description": "refine questions ",
+                            "completion_date": "28/04/2026, 13:18"
+                        },
+                        {
+                            "description": "submit questions ",
+                            "completion_date": "28/04/2026, 13:18"
+                        },
+                        {
+                            "description": "Answer questions "
+                        }
+                    ]
+                },
+                {
+                    "description": "Watch lecture",
+                    "completion_date": "28/04/2026, 13:18"
+                },
+                {
+                    "description": "Review diffie hellman"
+                },
+                {
+                    "description": "attend lecture "
                 }
             ],
             "enable_cache": true
@@ -55,6 +122,12 @@
                 {
                     "description": "Write Report ",
                     "completion_date": "16/04/2026, 06:56"
+                },
+                {
+                    "description": "attend lecture "
+                },
+                {
+                    "description": "Write Report "
                 }
             ],
             "enable_cache": true
@@ -65,6 +138,28 @@
                 {
                     "description": "Write Report ",
                     "completion_date": "16/04/2026, 06:56"
+                },
+                {
+                    "description": "attend lecture ",
+                    "completion_date": "22/04/2026, 22:45"
+                },
+                {
+                    "description": "Write Report ",
+                    "completion_date": "23/04/2026, 17:55"
+                },
+                {
+                    "description": "attend lecture "
+                },
+                {
+                    "description": "get the bonus",
+                    "subtasks": [
+                        {
+                            "description": "connect"
+                        },
+                        {
+                            "description": "look for presentation topic on 2"
+                        }
+                    ]
                 }
             ],
             "enable_cache": true
@@ -72,6 +167,114 @@
         {
             "name": "Swedish",
             "tasks": [
+                {
+                    "description": "Attend Lecture ",
+                    "completion_date": "23/04/2026, 13:52"
+                },
+                {
+                    "description": "Exercise 1",
+                    "date": "23/04/2026",
+                    "completion_date": "23/04/2026, 08:34",
+                    "subtasks": [
+                        {
+                            "description": "page 6",
+                            "completion_date": "23/04/2026, 08:34"
+                        },
+                        {
+                            "description": "page 7",
+                            "completion_date": "23/04/2026, 08:34"
+                        }
+                    ]
+                },
+                {
+                    "description": "get books",
+                    "date": "27/04/2026",
+                    "completion_date": "23/04/2026, 08:34",
+                    "subtasks": [
+                        {
+                            "description": "get textbook ",
+                            "completion_date": "22/04/2026, 22:47"
+                        },
+                        {
+                            "description": "get task book ",
+                            "completion_date": "23/04/2026, 08:34"
+                        }
+                    ]
+                },
+                {
+                    "description": "Homework ",
+                    "date": "24/04/2026",
+                    "start_time": "09:00",
+                    "end_time": "10:00",
+                    "completion_date": "27/04/2026, 10:50",
+                    "subtasks": [
+                        {
+                            "description": "Figure out what to do",
+                            "completion_date": "23/04/2026, 15:45"
+                        },
+                        {
+                            "description": "Train introducing dialogue ",
+                            "completion_date": "24/04/2026, 12:36"
+                        },
+                        {
+                            "description": "page 8",
+                            "completion_date": "24/04/2026, 12:36"
+                        },
+                        {
+                            "description": "page 9",
+                            "completion_date": "24/04/2026, 12:36"
+                        },
+                        {
+                            "description": "page 10",
+                            "completion_date": "24/04/2026, 12:36"
+                        },
+                        {
+                            "description": "Train introducing dialogue ",
+                            "completion_date": "27/04/2026, 10:50"
+                        }
+                    ]
+                },
+                {
+                    "description": "Attend Lecture ",
+                    "completion_date": "28/04/2026, 13:17"
+                },
+                {
+                    "description": "Start vocabulary anki",
+                    "completion_date": "24/04/2026, 09:27"
+                },
+                {
+                    "description": "Learn Anki",
+                    "completion_date": "24/04/2026, 12:25"
+                },
+                {
+                    "description": "Learn Anki",
+                    "completion_date": "27/04/2026, 10:50"
+                },
+                {
+                    "description": "Homework ",
+                    "start_time": "09:00",
+                    "end_time": "10:00",
+                    "subtasks": [
+                        {
+                            "description": "train anki"
+                        },
+                        {
+                            "description": "Train alphabet "
+                        },
+                        {
+                            "description": "page 11"
+                        },
+                        {
+                            "description": "page 12"
+                        },
+                        {
+                            "description": "page 13"
+                        },
+                        {
+                            "description": "page 14"
+                        }
+                    ]
+                },
                 {
                     "description": "Attend Lecture "
                 }
@@ -82,7 +285,18 @@
             "name": "Digital Text Forensic",
             "tasks": [
                 {
+                    "description": "Write report ",
+                    "completion_date": "22/04/2026, 22:48"
+                },
+                {
+                    "description": "Write report ",
+                    "completion_date": "23/04/2026, 15:33"
+                },
+                {
                     "description": "Write report "
+                },
+                {
+                    "description": "attend lecture"
                 }
             ],
             "enable_cache": true
@@ -91,7 +305,26 @@
             "name": "EBD",
             "tasks": [
                 {
-                    "description": "Figure out current Todos"
+                    "description": "Figure out current Todos",
+                    "completion_date": "24/04/2026, 12:37"
+                },
+                {
+                    "description": "Attend meeting "
+                },
+                {
+                    "description": "create separate metric",
+                    "completion_date": "25/04/2026, 11:53"
+                },
+                {
+                    "description": "fix ui",
+                    "completion_date": "27/04/2026, 09:43"
+                },
+                {
+                    "description": "fix missing graph update",
+                    "completion_date": "27/04/2026, 09:43"
+                },
+                {
+                    "description": "read merge request "
                 }
             ],
             "enable_cache": true
@@ -173,6 +406,10 @@
                         {
                             "description": "Fix color choose dialog",
                             "completion_date": "10/04/2026, 08:46"
+                        },
+                        {
+                            "description": "fix bugs in bar chart",
+                            "completion_date": "28/04/2026, 13:45"
                         }
                     ]
                 },
@@ -180,7 +417,8 @@
                     "description": "Task Upgrade",
                     "subtasks": [
                         {
-                            "description": "Repeatable Tasks"
+                            "description": "Repeatable Tasks",
+                            "completion_date": "28/04/2026, 13:46"
                         },
                         {
                             "description": "Add 'Abort Task' feature"
@@ -203,13 +441,13 @@
     ],
     "goals": [
         {
-            "name": "Make 'Main Quest' fun to use",
+            "name": "Make 'Main Quest' usable",
             "quest_names": [
                 "Main Quest"
             ],
             "progress_dict": {},
             "daily_count_border": 100,
-            "progress_time_border": "08/04/2026",
+            "progress_time_border": "01/04/2026",
             "high_performance_border": 5
         },
         {
@@ -217,11 +455,13 @@
             "quest_names": [
                 "Hacker Contest",
                 "NetSec",
-                "Usability Security Privacy "
+                "Multimedia Security ",
+                "Usability Security Privacy ",
+                "Digital Text Forensic"
             ],
             "progress_dict": {},
             "daily_count_border": 100,
-            "progress_time_border": "10/04/2026",
+            "progress_time_border": "01/04/2026",
             "high_performance_border": 5
         },
         {
@@ -241,10 +481,18 @@
         },
         {
             "name": "Financial independence",
-            "quest_names": [],
+            "quest_names": [
+                "Hacker Contest",
+                "NetSec",
+                "Multimedia Security ",
+                "Usability Security Privacy ",
+                "Swedish",
+                "Digital Text Forensic",
+                "EBD"
+            ],
             "progress_dict": {},
             "daily_count_border": 100,
-            "progress_time_border": "16/04/2026",
+            "progress_time_border": "01/04/2026",
             "high_performance_border": 5
         }
     ],

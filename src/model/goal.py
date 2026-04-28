@@ -66,7 +66,7 @@ class Goal:
             return result
 
         for d, count in base.items():
-            if d >= daily_count_bound:
+            if d > daily_count_bound:
                 result[d] = result.get(d, 0) + count
             elif d < lower_bound:
                 continue
@@ -134,6 +134,7 @@ class Goal:
                     result[k] = v
         result = self.format_progress_dict(result, self.daily_count_border,
                                            self.progress_time_border)
+        print(f"get_progress of {self.name}: ", result)
         return result
 
     def get_weekly_progress(self) -> Dict[date, int]:
@@ -149,6 +150,7 @@ class Goal:
                     result[k] = v
         self.fill_gaps_in_progress_dict(result)
         result = self.format_progress_dict(result, 0, self.progress_time_border)
+        print(f"get_weekly_progress of {self.name}: ", result)
         return result
     
     def fill_gaps_in_progress_dict(self, progress_dict: Dict[date, int]) -> None:

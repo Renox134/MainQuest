@@ -8,7 +8,7 @@ from journal import Journal
 from ui.widgets.dialogs import ConfirmDialog
 from config import Config
 
-from datetime import datetime
+from datetime import datetime, date
 
 from kivy.properties import StringProperty
 from kivy.uix.behaviors import ButtonBehavior
@@ -61,16 +61,7 @@ class ListTaskItem(MDListItem):
         if self.task.notes != "":
             self.add_widget(MDListItemSupportingText(text=self.task.notes))
 
-        due_date_text = ""
-        if self.task.date is not None:
-            due_date_text += self.task.date.strftime(date_format)
-        if self.task.start_time is not None:
-            due_date_text += ", " if due_date_text != "" else ""
-            due_date_text += f"{self.task.start_time.strftime(time_format)}"
-        if self.task.end_time is not None:
-            due_date_text += " - " if due_date_text != "" else ""
-            due_date_text += f"{self.task.end_time.strftime(time_format)}"
-
+        due_date_text = self.format_due_date_text(self.task, date_format, time_format)
         if due_date_text != "":
             self.add_widget(MDListItemTertiaryText(text=due_date_text))
 
@@ -85,6 +76,72 @@ class ListTaskItem(MDListItem):
 
         if progress_text != "":
             self.add_widget(MDListItemTrailingSupportingText(text=progress_text))
+
+    def format_due_date_text(self, task: Task, date_format: str, time_format: str) -> str:
+        """
+        Format a human-friendly due date string for a task.
+
+        - Today/tomorrow use 'Today'/'Tomorrow'
+        - Within the next 6 days: weekday name (e.g. 'Friday')
+        - Further away: the raw date format (e.g. '04/12/2026')
+
+        Time phrasing adapts based on whether a label was written:
+        - No date label: times are joined with ' - ' or shown plainly
+        - With date label + start only:  'Friday at 14:00'
+        - With date label + range:       'Friday from 14:00 to 15:00'
+        - Far-future with range:         '04/12/2026, 14:00 - 15:00'  (compact)
+        """
+        today = date.today()
+        due_date_text = ""
+        use_natural_phrasing = False  # True when we wrote 'Today', 'Tomorrow', or a weekday
+
+        # --- Date part ---
+        if task.date is not None:
+            delta = (task.date - today).days
+
+            if delta == 0:
+                due_date_text = "Today"
+                use_natural_phrasing = True
+            elif delta == 1:
+                due_date_text = "Tomorrow"
+                use_natural_phrasing = True
+            elif 2 <= delta <= 6:
+                due_date_text = task.date.strftime("%A")  # e.g. 'Friday'
+                use_natural_phrasing = True
+            else:
+                due_date_text = task.date.strftime(date_format)
+                use_natural_phrasing = False
+
+        # --- Time part ---
+        has_start = task.start_time is not None
+        has_end = task.end_time is not None
+
+        if has_start or has_end:
+            start_str = task.start_time.strftime(time_format) if has_start else None
+            end_str = task.end_time.strftime(time_format) if has_end else None
+
+            if due_date_text == "":
+                # No date at all — just show the time(s) plainly
+                if has_start and has_end:
+                    due_date_text = f"{start_str} - {end_str}"
+                else:
+                    due_date_text = start_str or end_str
+
+            elif use_natural_phrasing:
+                # Natural label ('Today', 'Tomorrow', weekday) → friendly phrasing
+                if has_start and has_end:
+                    due_date_text += f" from {start_str} to {end_str}"
+                else:
+                    due_date_text += f" at {start_str or end_str}"
+
+            else:
+                # Explicit date string → compact, comma-separated
+                if has_start and has_end:
+                    due_date_text += f", {start_str} - {end_str}"
+                else:
+                    due_date_text += f", {start_str or end_str}"
+
+        return due_date_text
 
     def complete_task(self):
         Task.complete_task_recursively(self.task, datetime.now(), False)
